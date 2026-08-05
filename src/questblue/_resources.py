@@ -10,6 +10,7 @@ from . import dlc as dlc_models
 from . import enterprise_fax as enterprise_fax_models
 from . import fax as fax_models
 from . import international_did as international_did_models
+from . import lnp as lnp_models
 from . import reports as report_models
 from . import sip_trunk as sip_models
 from . import sms as sms_models
@@ -1466,20 +1467,79 @@ class AsyncReports(Resource):
 
 
 class LNP(Resource):
-    def check(self, **params: Any) -> Any:
-        return self._request("GET", "/lnp/check", params)
+    def check(
+        self, request: lnp_models.LNPCheckRequest
+    ) -> Union[lnp_models.LNPCheckResponse, WarningResponse]:
+        return lnp_models.parse_lnp_response(
+            lnp_models.LNPCheckResponse,
+            self._request("GET", "/lnp/check", request.to_request_params()),
+        )
 
-    def create(self, **params: Any) -> Any:
-        return self._request("POST", "/lnp", params)
+    def create(
+        self, request: lnp_models.LNPCreateRequest
+    ) -> Union[lnp_models.LNPCreateResponse, WarningResponse]:
+        return lnp_models.parse_lnp_response(
+            lnp_models.LNPCreateResponse,
+            self._request("POST", "/lnp", request.to_request_params()),
+        )
 
-    def list(self, **params: Any) -> Any:
-        return self._request("GET", "/lnp", params)
+    def list(
+        self, request: Optional[lnp_models.LNPListRequest] = None
+    ) -> Union[lnp_models.LNPListResponse, WarningResponse]:
+        request = request or lnp_models.LNPListRequest()
+        return lnp_models.parse_lnp_response(
+            lnp_models.LNPListResponse,
+            self._request("GET", "/lnp", request.to_request_params()),
+        )
 
-    def update(self, **params: Any) -> Any:
-        return self._request("PUT", "/lnp", params)
+    def update(self, request: lnp_models.LNPUpdateRequest) -> Optional[WarningResponse]:
+        return lnp_models.parse_empty_lnp_response(
+            self._request("PUT", "/lnp", request.to_request_params())
+        )
 
-    def delete(self, **params: Any) -> Any:
-        return self._request("DELETE", "/lnp", params)
+    def delete(self, request_id: int) -> Optional[WarningResponse]:
+        request = lnp_models.LNPDeleteRequest(id=request_id)
+        return lnp_models.parse_empty_lnp_response(
+            self._request("DELETE", "/lnp", request.to_request_params())
+        )
+
+
+class AsyncLNP(Resource):
+    async def check(
+        self, request: lnp_models.LNPCheckRequest
+    ) -> Union[lnp_models.LNPCheckResponse, WarningResponse]:
+        return lnp_models.parse_lnp_response(
+            lnp_models.LNPCheckResponse,
+            await self._request("GET", "/lnp/check", request.to_request_params()),
+        )
+
+    async def create(
+        self, request: lnp_models.LNPCreateRequest
+    ) -> Union[lnp_models.LNPCreateResponse, WarningResponse]:
+        return lnp_models.parse_lnp_response(
+            lnp_models.LNPCreateResponse,
+            await self._request("POST", "/lnp", request.to_request_params()),
+        )
+
+    async def list(
+        self, request: Optional[lnp_models.LNPListRequest] = None
+    ) -> Union[lnp_models.LNPListResponse, WarningResponse]:
+        request = request or lnp_models.LNPListRequest()
+        return lnp_models.parse_lnp_response(
+            lnp_models.LNPListResponse,
+            await self._request("GET", "/lnp", request.to_request_params()),
+        )
+
+    async def update(self, request: lnp_models.LNPUpdateRequest) -> Optional[WarningResponse]:
+        return lnp_models.parse_empty_lnp_response(
+            await self._request("PUT", "/lnp", request.to_request_params())
+        )
+
+    async def delete(self, request_id: int) -> Optional[WarningResponse]:
+        request = lnp_models.LNPDeleteRequest(id=request_id)
+        return lnp_models.parse_empty_lnp_response(
+            await self._request("DELETE", "/lnp", request.to_request_params())
+        )
 
 
 class Servers(Resource):
@@ -1526,6 +1586,7 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.fax = AsyncFax(client)
         client.enterprise_fax = AsyncEnterpriseFax(client)
         client.reports = AsyncReports(client)
+        client.lnp = AsyncLNP(client)
     else:
         client.account = Account(client)
         client.dids = DIDs(client)
@@ -1536,5 +1597,5 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.fax = Fax(client)
         client.enterprise_fax = EnterpriseFax(client)
         client.reports = Reports(client)
-    client.lnp = LNP(client)
+        client.lnp = LNP(client)
     client.servers = Servers(client)

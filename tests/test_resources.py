@@ -4,6 +4,7 @@ from typing import Any
 
 import pytest
 
+from questblue import LNPCheckRequest
 from questblue._resources import (
     DLC,
     LNP,
@@ -31,6 +32,8 @@ class Recorder:
             return {"data": [], "total": 0}
         if path == "/sms/history":
             return {"data": [], "total": 0, "total_pages": 0, "current_page": 1}
+        if path == "/lnp/check":
+            return {"data": {"foc_days": 3}}
         return {}
 
 
@@ -55,5 +58,8 @@ def test_resource_groups_route_to_expected_endpoints(
 ) -> None:
     recorder = Recorder()
     resource = resource_type(recorder)
-    getattr(resource, method_name)()
+    if resource_type is LNP:
+        getattr(resource, method_name)(LNPCheckRequest(number2port=[15551234567]))
+    else:
+        getattr(resource, method_name)()
     assert recorder.calls[0][:2] == expected

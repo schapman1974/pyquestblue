@@ -39,6 +39,7 @@ if TYPE_CHECKING:
         AsyncEnterpriseFax,
         AsyncFax,
         AsyncInternationalDIDs,
+        AsyncLNP,
         AsyncReports,
         AsyncSIPTrunks,
         AsyncSMS,
@@ -471,7 +472,7 @@ class AsyncQuestBlue:
     fax: AsyncFax
     enterprise_fax: AsyncEnterpriseFax
     reports: AsyncReports
-    lnp: LNP
+    lnp: AsyncLNP
     servers: Servers
 
     def __init__(
