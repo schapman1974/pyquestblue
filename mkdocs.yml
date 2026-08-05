@@ -48,6 +48,8 @@ nav:
       - Webhooks and integrations: integrations.md
       - Migration guides: migrations.md
       - Compatibility and releases: compatibility.md
+      - 1.0 release checklist: release-checklist.md
+      - 1.0 security review: security-review-1.0.md
       - White-label architecture:
           - Capability gaps: white-label.md
           - Follow-on backlog: white-label-backlog.md

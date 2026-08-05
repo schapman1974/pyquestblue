@@ -1,7 +1,7 @@
 # Models and pagination
 
 pyquestblue uses Pydantic v2 for its public request and response contract. Pydantic provides runtime
-validation, JSON Schema generation, generic envelopes, and Python 3.9 compatibility. Resource
+validation, JSON Schema generation, generic envelopes, and Python 3.10 compatibility. Resource
 models should inherit from `QuestBlueModel` rather than directly from Pydantic's `BaseModel`.
 
 ## Forward compatibility

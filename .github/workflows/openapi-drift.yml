@@ -15,6 +15,6 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Compare live and pinned QuestBlue contracts
         run: python scripts/update_openapi.py --check

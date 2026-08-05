@@ -2,8 +2,8 @@
 
 ## Versioning and public API
 
-pyquestblue follows Semantic Versioning. Before 1.0, minor releases may refine public interfaces and
-the migration guide records intentional incompatibilities. Starting with 1.0:
+pyquestblue follows Semantic Versioning. The 1.0 release candidate freezes the documented public
+surface; any release-candidate incompatibility is recorded in the migration guide. Starting with 1.0:
 
 - patch releases contain compatible bug, security, documentation, and typing fixes;
 - minor releases add compatible features and may introduce deprecations;
@@ -40,7 +40,7 @@ new patch version after correcting the problem.
 
 ## Platform support
 
-CPython 3.9 through 3.13 are tested. Linux runs the complete quality and packaging gate; macOS and
+CPython 3.10 through 3.14 are tested. Linux runs the complete quality and packaging gate; macOS and
 Windows run the full behavioral suite on every supported interpreter. Other Python implementations
 and operating systems may work but are not release blockers until added to the matrix.
 
