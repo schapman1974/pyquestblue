@@ -1,0 +1,161 @@
+from __future__ import annotations
+
+import json
+
+import httpx
+import pytest
+
+from questblue import (
+    AsyncQuestBlue,
+    QuestBlue,
+    QuestBlueAPIError,
+    QuestBlueAuthenticationError,
+    QuestBlueConfigurationError,
+    QuestBlueRateLimitError,
+)
+from questblue._client import redact_headers
+
+
+def test_client_sends_both_authentication_layers_and_decodes_json() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.headers["security-key"] == "key"
+        assert request.headers["authorization"].startswith("Basic ")
+        assert request.url.path == "/account/getbalance"
+        return httpx.Response(200, json={"data": {"balance": "12.50"}})
+
+    http = httpx.Client(
+        base_url="https://api.questblue.test",
+        transport=httpx.MockTransport(handler),
+    )
+    client = QuestBlue("user", "password", "key", http_client=http)
+
+    assert client.account.balance() == {"data": {"balance": "12.50"}}
+
+
+def test_resource_encodes_lists_boole_and_omits_none() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.url.path == "/callhistory"
+        assert request.url.params["trunk"] == "primary,backup"
+        assert request.url.params["enabled"] == "true"
+        assert "unused" not in request.url.params
+        return httpx.Response(200, json={"data": []})
+
+    http = httpx.Client(base_url="https://example.test", transport=httpx.MockTransport(handler))
+    client = QuestBlue("user", "password", "key", http_client=http)
+
+    client.reports.call_history(trunk=["primary", "backup"], enabled=True, unused=None)
+
+
+def test_sms_convenience_method_uses_documented_path() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.method == "POST"
+        assert request.url.path == "/smsv2"
+        assert dict(request.url.params) == {
+            "did": "15551234567",
+            "did_to": "15557654321",
+            "msg": "hello",
+            "file_url": "https://example.test/a.png,https://example.test/b.png",
+        }
+        return httpx.Response(200, json={"data": [{"msg_id": "abc"}]})
+
+    http = httpx.Client(base_url="https://example.test", transport=httpx.MockTransport(handler))
+    client = QuestBlue("user", "password", "key", http_client=http)
+
+    result = client.sms.send(
+        15551234567,
+        15557654321,
+        "hello",
+        file_url=["https://example.test/a.png", "https://example.test/b.png"],
+    )
+    assert result["data"][0]["msg_id"] == "abc"
+
+
+def test_enterprise_fax_upload_is_json_with_base64_data() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.url.path == "/fax2/upload"
+        assert request.headers["content-type"] == "application/json"
+        assert json.loads(request.content) == {"file": "aGVsbG8=", "filename": "hello.txt"}
+        return httpx.Response(200, json={"file_id": "file-1"})
+
+    http = httpx.Client(base_url="https://example.test", transport=httpx.MockTransport(handler))
+    client = QuestBlue("user", "password", "key", http_client=http)
+
+    assert client.enterprise_fax.upload(b"hello", "hello.txt") == {"file_id": "file-1"}
+
+
+@pytest.mark.parametrize(
+    ("status_code", "error_type"),
+    [(401, QuestBlueAuthenticationError), (429, QuestBlueRateLimitError), (206, QuestBlueAPIError)],
+)
+def test_api_errors_include_questblue_message(
+    status_code: int, error_type: type[Exception]
+) -> None:
+    def handler(_: httpx.Request) -> httpx.Response:
+        return httpx.Response(status_code, json={"error": "not today"})
+
+    http = httpx.Client(base_url="https://example.test", transport=httpx.MockTransport(handler))
+    client = QuestBlue("user", "password", "key", max_retries=0, http_client=http)
+
+    with pytest.raises(error_type, match="not today"):
+        client.dids.list()
+
+
+def test_retry_recovers_from_server_error(monkeypatch: pytest.MonkeyPatch) -> None:
+    attempts = 0
+
+    def handler(_: httpx.Request) -> httpx.Response:
+        nonlocal attempts
+        attempts += 1
+        if attempts == 1:
+            return httpx.Response(503, json={"error": "busy"}, headers={"retry-after": "0"})
+        return httpx.Response(200, json={"ok": True})
+
+    monkeypatch.setattr("questblue._client.time.sleep", lambda _: None)
+    http = httpx.Client(base_url="https://example.test", transport=httpx.MockTransport(handler))
+    client = QuestBlue("user", "password", "key", max_retries=1, http_client=http)
+
+    assert client.dids.states() == {"ok": True}
+    assert attempts == 2
+
+
+def test_credentials_can_come_from_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("QUESTBLUE_USERNAME", "user")
+    monkeypatch.setenv("QUESTBLUE_PASSWORD", "password")
+    monkeypatch.setenv("QUESTBLUE_SECURITY_KEY", "key")
+    http = httpx.Client(
+        base_url="https://example.test",
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, json={})),
+    )
+    client = QuestBlue(http_client=http)
+    assert client.account.details() == {}
+
+
+def test_missing_credentials_are_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
+    for name in ("QUESTBLUE_USERNAME", "QUESTBLUE_PASSWORD", "QUESTBLUE_SECURITY_KEY"):
+        monkeypatch.delenv(name, raising=False)
+    with pytest.raises(QuestBlueConfigurationError):
+        QuestBlue()
+
+
+def test_sensitive_headers_are_redacted() -> None:
+    assert redact_headers(
+        {"Authorization": "Basic secret", "Security-Key": "secret", "Accept": "application/json"}
+    ) == {
+        "Authorization": "[REDACTED]",
+        "Security-Key": "[REDACTED]",
+        "Accept": "application/json",
+    }
+
+
+async def test_async_client() -> None:
+    async def handler(request: httpx.Request) -> httpx.Response:
+        assert request.url.path == "/did/available"
+        return httpx.Response(200, json={"data": ["15551234567"]})
+
+    http = httpx.AsyncClient(
+        base_url="https://example.test", transport=httpx.MockTransport(handler)
+    )
+    client = AsyncQuestBlue("user", "password", "key", http_client=http)
+
+    assert await client.dids.available(npa=919) == {"data": ["15551234567"]}
+    await http.aclose()
