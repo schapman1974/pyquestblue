@@ -23,19 +23,19 @@ must keep provider credentials server-side and enforce tenant authorization befo
   audit events, and isolation tests for any rebranded control plane.
 - CI enforces strict typing, linting, at least 90% branch coverage, sanitized recorded contracts,
   reproducible artifacts, dependency auditing, CodeQL, and cross-platform tests.
-- Releases use separate encrypted API-token secrets in protected TestPyPI and PyPI GitHub
-  environments. Tokens are never stored in the repository, and GitHub OIDC produces
-  build-provenance attestations for each artifact. Tokens should be project-scoped after the initial
-  package creation and rotated on suspected disclosure.
+- Releases use an encrypted API-token secret in the protected `pypi` GitHub environment. The token is
+  never stored in the repository, and GitHub OIDC produces build-provenance attestations for each
+  artifact. The token should be project-scoped after the initial package creation and rotated on
+  suspected disclosure.
 - Repository secret scanning, push protection, private vulnerability reporting, Dependabot security
   updates, and automated security fixes are enabled.
 
 ## Dependency review
 
-The pre-release lock included advisories reachable only through Python 3.9 development and optional
+The initial release audit found advisories reachable only through Python 3.9 development and optional
 integration resolution. Python 3.9 is end-of-life, so 1.0 supports CPython 3.10–3.14 and regenerates
-the lock against that range. The merged release candidate must show a clean runtime dependency audit
-and the GitHub advisory state must be rechecked before final publication.
+the lock against that range. The merged release must show a clean runtime dependency audit and the
+GitHub advisory state must be rechecked before publication.
 
 ## Live-validation status
 

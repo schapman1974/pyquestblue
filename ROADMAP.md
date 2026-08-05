@@ -161,7 +161,7 @@ production hardening.
 - Close or explicitly defer every API coverage gap.
 - Run the complete unit, recorded contract, and approved live contract suites.
 - Complete API reference, changelog, upgrade guide, and security review.
-- Publish a release candidate to TestPyPI, verify installation, then publish the signed 1.0 release.
+- Publish the attested 1.0 release from protected `main` and verify a clean PyPI installation.
 
 ## Questions requiring QuestBlue or live-account confirmation
 

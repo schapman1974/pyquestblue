@@ -2,7 +2,7 @@
 
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 
-## [1.0.0rc1] - 2026-08-05
+## [1.0.0] - 2026-08-05
 
 ### Added
 
@@ -25,4 +25,4 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 - QuestBlue does not document a sandbox or webhook authentication, retry, ordering, and unique-ID
   guarantees. Live tests therefore require explicit approval and a dedicated provider subaccount.
 
-[1.0.0rc1]: https://github.com/schapman1974/pyquestblue/releases/tag/v1.0.0rc1
+[1.0.0]: https://github.com/schapman1974/pyquestblue/releases/tag/v1.0.0

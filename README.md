@@ -5,7 +5,7 @@ It supports synchronous and asynchronous applications and provides resource-orie
 full documented QuestBlue 2.3.2 surface: accounts, voice and international DIDs, SIP trunks, SMS/MMS,
 10DLC, Fax.Pro, iFax Enterprise, reports, number portability, and VoIP servers.
 
-> Status: **1.0 release candidate**. All 103 pinned QuestBlue 2.3.2 operations have typed sync/async coverage;
+> Status: **stable 1.0**. All 103 pinned QuestBlue 2.3.2 operations have typed sync/async coverage;
 > production contract verification remains explicitly credential-gated.
 
 Versioned, searchable documentation is published at
@@ -196,13 +196,12 @@ documented in [`docs/transport.md`](docs/transport.md).
 ## Publishing
 
 - Every push and pull request is tested on Python 3.10 through 3.14.
-- **Publish to TestPyPI** is a manual GitHub Actions workflow.
 - Publishing a GitHub Release triggers **Publish to PyPI**.
-- Publishing uses separate TestPyPI and PyPI API tokens stored as encrypted secrets in their
-  protected GitHub environments. Build-provenance attestations continue to use GitHub OIDC.
+- Publishing uses a PyPI API token stored as an encrypted secret in the protected `pypi` GitHub
+  environment. Build-provenance attestations continue to use GitHub OIDC.
 
-Before the first release, add `TEST_PYPI_API_TOKEN` to the `testpypi` GitHub environment and
-`PYPI_API_TOKEN` to the `pypi` environment. TestPyPI and PyPI use separate accounts and tokens.
+Before the first release, add `PYPI_API_TOKEN` to the `pypi` GitHub environment. Never place the
+token in source, workflow files, command-line arguments, issue comments, or chat messages.
 
 ## White-label platform direction
 
