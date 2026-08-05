@@ -91,6 +91,34 @@
     "request_model": "InternationalDIDUpdateRequest",
     "response_model": "None | WarningResponse"
   },
+  "DELETE /siptrunk": {
+    "request_model": "SIPTrunkDeleteRequest",
+    "response_model": "None"
+  },
+  "GET /siptrunk": {
+    "request_model": "SIPTrunkListRequest",
+    "response_model": "SIPTrunkInventoryResponse | WarningResponse"
+  },
+  "GET /siptrunk/blockedcallers": {
+    "request_model": "BlockedCallersRequest",
+    "response_model": "BlockedCallersResponse | WarningResponse"
+  },
+  "GET /siptrunk/statuschecker": {
+    "request_model": "SIPTrunkStatusRequest",
+    "response_model": "SIPTrunkStatusResponse | WarningResponse"
+  },
+  "POST /siptrunk": {
+    "request_model": "SIPTrunkCreateRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "POST /siptrunk/blockcaller": {
+    "request_model": "BlockCallerRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /siptrunk": {
+    "request_model": "SIPTrunkUpdateRequest",
+    "response_model": "None | WarningResponse"
+  },
   "POST /account/callbackconfig": {
     "request_model": "CallbackConfigRequest",
     "response_model": "None | WarningResponse"

@@ -971,81 +971,81 @@
       "unit_tested": false
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": "deleteSiptrunk",
       "path": "/siptrunk",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SIPTrunkDeleteRequest",
+      "response_model": "None",
       "sdk_method": "sip_trunks.delete",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": true,
       "method": "GET",
       "operation_id": "getSiptrunks",
       "path": "/siptrunk",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SIPTrunkListRequest",
+      "response_model": "SIPTrunkInventoryResponse | WarningResponse",
       "sdk_method": "sip_trunks.list",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "createSiptrunk",
       "path": "/siptrunk",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SIPTrunkCreateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "sip_trunks.create",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "updateSiptrunk",
       "path": "/siptrunk",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SIPTrunkUpdateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "sip_trunks.update",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "blockCaller",
       "path": "/siptrunk/blockcaller",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "BlockCallerRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "sip_trunks.block_caller",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getBlockedCallers",
       "path": "/siptrunk/blockedcallers",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "BlockedCallersRequest",
+      "response_model": "BlockedCallersResponse | WarningResponse",
       "sdk_method": "sip_trunks.blocked_callers",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "checkSiptrunkRegistrationStatus",
       "path": "/siptrunk/statuschecker",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SIPTrunkStatusRequest",
+      "response_model": "SIPTrunkStatusResponse | WarningResponse",
       "sdk_method": "sip_trunks.status",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": false,
