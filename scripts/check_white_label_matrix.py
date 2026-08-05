@@ -35,7 +35,8 @@ def validate() -> list[str]:
     spec_path = ROOT / "spec" / metadata["spec_file"]
     spec = _load(spec_path)
     source = matrix.get("source", {})
-    digest = hashlib.sha256(spec_path.read_bytes()).hexdigest()
+    normalized = json.dumps(spec, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+    digest = hashlib.sha256(normalized.encode("utf-8")).hexdigest()
     operations = _operations(spec)
     for key, actual in (
         ("api_version", metadata["api_version"]),
