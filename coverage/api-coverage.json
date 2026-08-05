@@ -168,100 +168,100 @@
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": "deleteDID",
       "path": "/did",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "DIDDeleteRequest",
+      "response_model": "None",
       "sdk_method": "dids.delete",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": true,
       "method": "GET",
       "operation_id": "listDids",
       "path": "/did",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "DIDListRequest",
+      "response_model": "DIDInventoryResponse | WarningResponse",
       "sdk_method": "dids.list",
       "sync_async": true,
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "orderDID",
       "path": "/did",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "DIDOrderRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "dids.order",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "updateDID",
       "path": "/did",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "DIDUpdateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "dids.update",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": true,
       "method": "GET",
       "operation_id": "getAvailableDIDs",
       "path": "/did/available",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "DIDAvailabilityRequest",
+      "response_model": "AvailableDIDsResponse | WarningResponse",
       "sdk_method": "dids.available",
       "sync_async": true,
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "fraudValidate",
       "path": "/did/fraudvalidate",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "DIDFraudValidationRequest",
+      "response_model": "FraudValidationResponse | WarningResponse",
       "sdk_method": "dids.validate_fraud",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "moveToFax",
       "path": "/did/move2fax",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "DIDMoveToFaxRequest",
+      "response_model": "None",
       "sdk_method": "dids.move_to_fax",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getAvailableRatecenters",
       "path": "/did/ratecenters",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "DIDRateCentersRequest",
+      "response_model": "DIDRateCentersResponse | WarningResponse",
       "sdk_method": "dids.rate_centers",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getAvailableStates",
       "path": "/did/states",
       "request_model": null,
-      "response_model": null,
+      "response_model": "DIDStatesResponse | WarningResponse",
       "sdk_method": "dids.states",
       "sync_async": true,
       "unit_tested": true

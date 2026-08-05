@@ -31,6 +31,42 @@
     "request_model": null,
     "response_model": "InternationalRatesResponse | WarningResponse"
   },
+  "DELETE /did": {
+    "request_model": "DIDDeleteRequest",
+    "response_model": "None"
+  },
+  "GET /did": {
+    "request_model": "DIDListRequest",
+    "response_model": "DIDInventoryResponse | WarningResponse"
+  },
+  "GET /did/available": {
+    "request_model": "DIDAvailabilityRequest",
+    "response_model": "AvailableDIDsResponse | WarningResponse"
+  },
+  "GET /did/ratecenters": {
+    "request_model": "DIDRateCentersRequest",
+    "response_model": "DIDRateCentersResponse | WarningResponse"
+  },
+  "GET /did/states": {
+    "request_model": null,
+    "response_model": "DIDStatesResponse | WarningResponse"
+  },
+  "POST /did": {
+    "request_model": "DIDOrderRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "POST /did/fraudvalidate": {
+    "request_model": "DIDFraudValidationRequest",
+    "response_model": "FraudValidationResponse | WarningResponse"
+  },
+  "PUT /did": {
+    "request_model": "DIDUpdateRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /did/move2fax": {
+    "request_model": "DIDMoveToFaxRequest",
+    "response_model": "None"
+  },
   "POST /account/callbackconfig": {
     "request_model": "CallbackConfigRequest",
     "response_model": "None | WarningResponse"

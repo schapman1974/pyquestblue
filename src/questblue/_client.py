@@ -34,6 +34,7 @@ if TYPE_CHECKING:
         SMS,
         Account,
         AsyncAccount,
+        AsyncDIDs,
         DIDs,
         EnterpriseFax,
         Fax,
@@ -455,7 +456,7 @@ class AsyncQuestBlue:
     """Asynchronous client for the QuestBlue API."""
 
     account: AsyncAccount
-    dids: DIDs
+    dids: AsyncDIDs
     international_dids: InternationalDIDs
     sip_trunks: SIPTrunks
     sms: SMS

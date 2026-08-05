@@ -49,6 +49,7 @@ addopts = "--strict-markers --cov=questblue --cov-report=term-missing"
 testpaths = ["tests"]
 asyncio_mode = "auto"
 pythonpath = ["."]
+markers = ["live: opt-in tests that can contact a real provider sandbox"]
 
 [tool.coverage.run]
 branch = true
