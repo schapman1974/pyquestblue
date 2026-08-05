@@ -145,6 +145,10 @@ production risk classes, explicit live-test gates, and the verification matrix.
 See [`docs/integrations.md`](docs/integrations.md) for inbound messaging webhooks, FastAPI and
 Django adapters, safe observability, and white-label integration boundaries.
 
+See [`docs/compatibility.md`](docs/compatibility.md), [`SUPPORT.md`](SUPPORT.md), and
+[`SECURITY.md`](SECURITY.md) for supported platforms, SemVer and deprecation guarantees, the release
+process, support boundaries, and private vulnerability reporting.
+
 Every resource method accepts the parameter names from QuestBlue's API documentation. List values
 are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API
 addition that has not yet received a convenience method, the authenticated transport remains usable:

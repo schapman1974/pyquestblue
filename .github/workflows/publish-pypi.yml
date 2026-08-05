@@ -5,6 +5,7 @@ on:
     types: [published]
 
 permissions:
+  attestations: write
   contents: read
   id-token: write
 
@@ -21,5 +22,8 @@ jobs:
           python-version: "3.13"
       - run: python -m pip install build
       - run: python -m build
+      - name: Generate artifact attestation
+        uses: actions/attest@v4
+        with:
+          subject-path: "dist/*"
       - uses: pypa/gh-action-pypi-publish@release/v1
-

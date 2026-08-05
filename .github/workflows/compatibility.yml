@@ -1,4 +1,4 @@
-name: CI
+name: Cross-platform compatibility
 
 on:
   push:
@@ -10,10 +10,12 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [macos-15-intel, windows-latest]
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
@@ -23,23 +25,13 @@ jobs:
           cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e '.[dev]'
-      - run: ruff check .
-      - run: ruff format --check .
-      - run: mypy
-      - run: python scripts/check_contract_fixtures.py
-      - run: python scripts/check_docs.py
-      - run: python scripts/api_coverage.py --check
-      - run: mkdocs build --strict
-      - run: pytest
-      - run: python -m build
-      - run: python scripts/check_reproducible_build.py
-      - run: twine check dist/*
+      - run: pytest --no-cov
 
-  ci-success:
-    name: CI success
+  compatibility-success:
+    name: Compatibility success
     if: always()
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - name: Verify all test jobs passed
+      - name: Verify all compatibility jobs passed
         run: test '${{ needs.test.result }}' = 'success'
