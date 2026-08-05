@@ -9,6 +9,7 @@ from . import account as account_models
 from . import did as did_models
 from . import international_did as international_did_models
 from . import sip_trunk as sip_models
+from . import sms as sms_models
 from .models import WarningResponse
 
 
@@ -598,29 +599,135 @@ class AsyncSIPTrunks(Resource):
 
 
 class SMS(Resource):
-    def list(self, **params: Any) -> Any:
-        return self._request("GET", "/sms", params)
+    def list(
+        self, request: Optional[sms_models.SMSInventoryRequest] = None
+    ) -> Union[sms_models.SMSInventoryResponse, WarningResponse]:
+        request = request or sms_models.SMSInventoryRequest()
+        return sms_models.parse_sms_response(
+            sms_models.SMSInventoryResponse,
+            self._request("GET", "/sms", request.to_request_params()),
+        )
 
-    def send(self, did: int, did_to: int, msg: str, **params: Any) -> Any:
-        return self._request("POST", "/smsv2", {"did": did, "did_to": did_to, "msg": msg, **params})
+    def send(
+        self, request: sms_models.SendMessageRequest
+    ) -> Union[sms_models.SendMessageResponse, WarningResponse]:
+        return sms_models.parse_sms_response(
+            sms_models.SendMessageResponse,
+            self._request("POST", "/smsv2", request.to_request_params()),
+        )
 
-    def update(self, **params: Any) -> Any:
-        return self._request("PUT", "/smsv2", params)
+    def update(
+        self, request: sms_models.SMSSettingsUpdateRequest
+    ) -> Union[sms_models.SMSSettingsUpdateResponse, WarningResponse]:
+        return sms_models.parse_sms_response(
+            sms_models.SMSSettingsUpdateResponse,
+            self._request("PUT", "/smsv2", request.to_request_params()),
+        )
 
-    def offnet_order(self, **params: Any) -> Any:
-        return self._request("POST", "/sms/offnetorder", params)
+    def offnet_order(self, request: sms_models.OffnetOrderRequest) -> Optional[WarningResponse]:
+        return sms_models.parse_empty_sms_response(
+            self._request("POST", "/sms/offnetorder", request.to_request_params())
+        )
 
-    def offnet_status(self, **params: Any) -> Any:
-        return self._request("GET", "/sms/offnetstatus", params)
+    def offnet_status(
+        self, request: sms_models.OffnetStatusRequest
+    ) -> Union[sms_models.OffnetStatusResponse, WarningResponse]:
+        return sms_models.parse_sms_response(
+            sms_models.OffnetStatusResponse,
+            self._request("GET", "/sms/offnetstatus", request.to_request_params()),
+        )
 
-    def history(self, **params: Any) -> Any:
-        return self._request("GET", "/sms/history", params)
+    def history(
+        self, request: Optional[sms_models.SMSHistoryRequest] = None
+    ) -> Union[sms_models.SMSHistoryResponse, WarningResponse]:
+        request = request or sms_models.SMSHistoryRequest()
+        return sms_models.parse_sms_response(
+            sms_models.SMSHistoryResponse,
+            self._request("GET", "/sms/history", request.to_request_params()),
+        )
 
-    def delivery_status(self, **params: Any) -> Any:
-        return self._request("GET", "/sms/deliverystatus", params)
+    def delivery_status(
+        self, request: sms_models.MessageDeliveryStatusRequest
+    ) -> Union[sms_models.MessageDeliveryStatusResponse, WarningResponse]:
+        return sms_models.parse_sms_response(
+            sms_models.MessageDeliveryStatusResponse,
+            self._request("GET", "/sms/deliverystatus", request.to_request_params()),
+        )
 
-    def carrier(self, **params: Any) -> Any:
-        return self._request("GET", "/smschecktncarrier", params)
+    def carrier(
+        self, request: sms_models.CarrierLookupRequest
+    ) -> Union[sms_models.CarrierLookupResponse, WarningResponse]:
+        return sms_models.parse_sms_response(
+            sms_models.CarrierLookupResponse,
+            self._request("GET", "/smschecktncarrier", request.to_request_params()),
+        )
+
+
+class AsyncSMS(Resource):
+    async def list(
+        self, request: Optional[sms_models.SMSInventoryRequest] = None
+    ) -> Union[sms_models.SMSInventoryResponse, WarningResponse]:
+        request = request or sms_models.SMSInventoryRequest()
+        return sms_models.parse_sms_response(
+            sms_models.SMSInventoryResponse,
+            await self._request("GET", "/sms", request.to_request_params()),
+        )
+
+    async def send(
+        self, request: sms_models.SendMessageRequest
+    ) -> Union[sms_models.SendMessageResponse, WarningResponse]:
+        return sms_models.parse_sms_response(
+            sms_models.SendMessageResponse,
+            await self._request("POST", "/smsv2", request.to_request_params()),
+        )
+
+    async def update(
+        self, request: sms_models.SMSSettingsUpdateRequest
+    ) -> Union[sms_models.SMSSettingsUpdateResponse, WarningResponse]:
+        return sms_models.parse_sms_response(
+            sms_models.SMSSettingsUpdateResponse,
+            await self._request("PUT", "/smsv2", request.to_request_params()),
+        )
+
+    async def offnet_order(
+        self, request: sms_models.OffnetOrderRequest
+    ) -> Optional[WarningResponse]:
+        return sms_models.parse_empty_sms_response(
+            await self._request("POST", "/sms/offnetorder", request.to_request_params())
+        )
+
+    async def offnet_status(
+        self, request: sms_models.OffnetStatusRequest
+    ) -> Union[sms_models.OffnetStatusResponse, WarningResponse]:
+        return sms_models.parse_sms_response(
+            sms_models.OffnetStatusResponse,
+            await self._request("GET", "/sms/offnetstatus", request.to_request_params()),
+        )
+
+    async def history(
+        self, request: Optional[sms_models.SMSHistoryRequest] = None
+    ) -> Union[sms_models.SMSHistoryResponse, WarningResponse]:
+        request = request or sms_models.SMSHistoryRequest()
+        return sms_models.parse_sms_response(
+            sms_models.SMSHistoryResponse,
+            await self._request("GET", "/sms/history", request.to_request_params()),
+        )
+
+    async def delivery_status(
+        self, request: sms_models.MessageDeliveryStatusRequest
+    ) -> Union[sms_models.MessageDeliveryStatusResponse, WarningResponse]:
+        return sms_models.parse_sms_response(
+            sms_models.MessageDeliveryStatusResponse,
+            await self._request("GET", "/sms/deliverystatus", request.to_request_params()),
+        )
+
+    async def carrier(
+        self, request: sms_models.CarrierLookupRequest
+    ) -> Union[sms_models.CarrierLookupResponse, WarningResponse]:
+        return sms_models.parse_sms_response(
+            sms_models.CarrierLookupResponse,
+            await self._request("GET", "/smschecktncarrier", request.to_request_params()),
+        )
 
 
 class DLC(Resource):
@@ -820,12 +927,13 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.dids = AsyncDIDs(client)
         client.international_dids = AsyncInternationalDIDs(client)
         client.sip_trunks = AsyncSIPTrunks(client)
+        client.sms = AsyncSMS(client)
     else:
         client.account = Account(client)
         client.dids = DIDs(client)
         client.international_dids = InternationalDIDs(client)
         client.sip_trunks = SIPTrunks(client)
-    client.sms = SMS(client)
+        client.sms = SMS(client)
     client.dlc = DLC(client)
     client.fax = Fax(client)
     client.enterprise_fax = EnterpriseFax(client)

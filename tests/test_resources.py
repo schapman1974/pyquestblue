@@ -29,6 +29,8 @@ class Recorder:
             return {"data": [], "total": 0}
         if path == "/didinter/countrylist":
             return {"data": [], "total": 0}
+        if path == "/sms/history":
+            return {"data": [], "total": 0, "total_pages": 0, "current_page": 1}
         return {}
 
 

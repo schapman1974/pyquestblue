@@ -168,6 +168,13 @@ def test_repository_coverage_maps_every_pinned_operation() -> None:
     assert len(sip_operations) == 7
     assert all(operation["response_model"] for operation in sip_operations)
     assert all(operation["unit_tested"] for operation in sip_operations)
+    sms_paths = ("/sms", "/smsv2", "/smschecktncarrier")
+    sms_operations = [
+        operation for operation in report["operations"] if operation["path"].startswith(sms_paths)
+    ]
+    assert len(sms_operations) == 8
+    assert all(operation["response_model"] for operation in sms_operations)
+    assert all(operation["unit_tested"] for operation in sms_operations)
     assert render(report).endswith("\n")
 
 

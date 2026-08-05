@@ -13,6 +13,8 @@ from questblue import (
     QuestBlueAuthenticationError,
     QuestBlueConfigurationError,
     QuestBlueRateLimitError,
+    SendMessageRequest,
+    SendMessageResponse,
 )
 from questblue._client import redact_headers
 
@@ -64,12 +66,15 @@ def test_sms_convenience_method_uses_documented_path() -> None:
     client = QuestBlue("user", "password", "key", http_client=http)
 
     result = client.sms.send(
-        15551234567,
-        15557654321,
-        "hello",
-        file_url=["https://example.test/a.png", "https://example.test/b.png"],
+        SendMessageRequest(
+            did=15551234567,
+            did_to=15557654321,
+            msg="hello",
+            file_url=["https://example.test/a.png", "https://example.test/b.png"],
+        )
     )
-    assert result["data"][0]["msg_id"] == "abc"
+    assert isinstance(result, SendMessageResponse)
+    assert result.data[0].msg_id == "abc"
 
 
 def test_enterprise_fax_upload_is_json_with_base64_data() -> None:

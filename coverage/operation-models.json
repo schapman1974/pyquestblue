@@ -119,6 +119,38 @@
     "request_model": "SIPTrunkUpdateRequest",
     "response_model": "None | WarningResponse"
   },
+  "GET /sms": {
+    "request_model": "SMSInventoryRequest",
+    "response_model": "SMSInventoryResponse | WarningResponse"
+  },
+  "GET /sms/deliverystatus": {
+    "request_model": "MessageDeliveryStatusRequest",
+    "response_model": "MessageDeliveryStatusResponse | WarningResponse"
+  },
+  "GET /sms/history": {
+    "request_model": "SMSHistoryRequest",
+    "response_model": "SMSHistoryResponse | WarningResponse"
+  },
+  "GET /sms/offnetstatus": {
+    "request_model": "OffnetStatusRequest",
+    "response_model": "OffnetStatusResponse | WarningResponse"
+  },
+  "GET /smschecktncarrier": {
+    "request_model": "CarrierLookupRequest",
+    "response_model": "CarrierLookupResponse | WarningResponse"
+  },
+  "POST /sms/offnetorder": {
+    "request_model": "OffnetOrderRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "POST /smsv2": {
+    "request_model": "SendMessageRequest",
+    "response_model": "SendMessageResponse | WarningResponse"
+  },
+  "PUT /smsv2": {
+    "request_model": "SMSSettingsUpdateRequest",
+    "response_model": "SMSSettingsUpdateResponse | WarningResponse"
+  },
   "POST /account/callbackconfig": {
     "request_model": "CallbackConfigRequest",
     "response_model": "None | WarningResponse"
