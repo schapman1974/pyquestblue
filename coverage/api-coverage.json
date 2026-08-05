@@ -267,70 +267,70 @@
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": "deleteInternationalDID",
       "path": "/didinter",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "InternationalDIDDeleteRequest",
+      "response_model": "None",
       "sdk_method": "international_dids.delete",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getInternationalDIDs",
       "path": "/didinter",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "InternationalDIDListRequest",
+      "response_model": "InternationalDIDInventoryResponse | WarningResponse",
       "sdk_method": "international_dids.list",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "orderInternationalDID",
       "path": "/didinter",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "InternationalDIDOrderRequest",
+      "response_model": "InternationalDIDOrderResponse | WarningResponse",
       "sdk_method": "international_dids.order",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "updateInternationalDID",
       "path": "/didinter",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "InternationalDIDUpdateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "international_dids.update",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getInternationalCitiesList",
       "path": "/didinter/citylist",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "InternationalCitiesRequest",
+      "response_model": "InternationalCitiesResponse | WarningResponse",
       "sdk_method": "international_dids.cities",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getInternationalCountriesList",
       "path": "/didinter/countrylist",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "InternationalCountriesRequest",
+      "response_model": "InternationalCountriesResponse | WarningResponse",
       "sdk_method": "international_dids.countries",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": false,

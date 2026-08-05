@@ -27,6 +27,8 @@ class Recorder:
         self.calls.append((method, path, params, json))
         if path == "/did/states":
             return {"data": [], "total": 0}
+        if path == "/didinter/countrylist":
+            return {"data": [], "total": 0}
         return {}
 
 
