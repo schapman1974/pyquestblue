@@ -5,6 +5,9 @@ from __future__ import annotations
 import base64
 from typing import Any, List, Mapping, Optional, Union
 
+from . import account as account_models
+from .models import WarningResponse
+
 
 class Resource:
     def __init__(self, client: Any) -> None:
@@ -22,47 +25,213 @@ class Resource:
 
 
 class Account(Resource):
-    def balance(self) -> Any:
-        return self._request("GET", "/account/getbalance")
+    def balance(
+        self,
+    ) -> Union[account_models.AccountBalanceResponse, WarningResponse]:
+        payload = self._request("GET", "/account/getbalance")
+        return account_models.parse_account_response(account_models.AccountBalanceResponse, payload)
 
-    def details(self) -> Any:
-        return self._request("GET", "/account/getaccoundetails")
+    def details(
+        self,
+    ) -> Union[account_models.AccountDetailsResponse, WarningResponse]:
+        payload = self._request("GET", "/account/getaccoundetails")
+        return account_models.parse_account_response(account_models.AccountDetailsResponse, payload)
 
-    def rates(self, **params: Any) -> Any:
-        return self._request("GET", "/account/rates", params)
+    def rates(self) -> Union[account_models.ServiceRates, WarningResponse]:
+        payload = self._request("GET", "/account/rates")
+        return account_models.parse_account_response(account_models.ServiceRates, payload)
 
-    def countries(self) -> Any:
-        return self._request("GET", "/account/countrylist")
+    def countries(self) -> Union[account_models.CountryListResponse, WarningResponse]:
+        payload = self._request("GET", "/account/countrylist")
+        return account_models.parse_account_response(account_models.CountryListResponse, payload)
 
-    def country_rate(self, **params: Any) -> Any:
-        return self._request("GET", "/account/countryrate", params)
+    def country_rate(
+        self, country_id: int
+    ) -> Union[account_models.InternationalRatesResponse, WarningResponse]:
+        request = account_models.CountryRateRequest(country_id=country_id)
+        payload = self._request("GET", "/account/countryrate", request.to_request_params())
+        return account_models.parse_account_response(
+            account_models.InternationalRatesResponse, payload
+        )
 
-    def zone_2_rates(self, **params: Any) -> Any:
-        return self._request("GET", "/account/ratezone2", params)
+    def zone_2_rates(
+        self,
+    ) -> Union[account_models.InternationalRatesResponse, WarningResponse]:
+        payload = self._request("GET", "/account/ratezone2")
+        return account_models.parse_account_response(
+            account_models.InternationalRatesResponse, payload
+        )
 
-    def international_toll_free_rates(self, **params: Any) -> Any:
-        return self._request("GET", "/account/nonusintfrate", params)
+    def international_toll_free_rates(
+        self,
+    ) -> Union[account_models.InternationalTollFreeRatesResponse, WarningResponse]:
+        payload = self._request("GET", "/account/nonusintfrate")
+        return account_models.parse_account_response(
+            account_models.InternationalTollFreeRatesResponse, payload
+        )
 
-    def set_auto_refill(self, **params: Any) -> Any:
-        return self._request("PUT", "/account/setautorefill", params)
+    def set_auto_refill(
+        self, autorefill: account_models.AccountToggle
+    ) -> Optional[WarningResponse]:
+        request = account_models.SetAutorefillRequest(autorefill=autorefill)
+        payload = self._request("PUT", "/account/setautorefill", request.to_request_params())
+        return account_models.parse_empty_account_response(payload)
 
-    def set_balance_reload(self, **params: Any) -> Any:
-        return self._request("PUT", "/account/setbalancereload", params)
+    def set_balance_reload(
+        self,
+        min_balance: account_models.MinimumBalance,
+        reload_amount: account_models.ReloadAmount,
+    ) -> Optional[WarningResponse]:
+        request = account_models.SetBalanceReloadRequest(
+            min_balance=min_balance, reload_amount=reload_amount
+        )
+        payload = self._request("PUT", "/account/setbalancereload", request.to_request_params())
+        return account_models.parse_empty_account_response(payload)
 
-    def refill_balance(self, **params: Any) -> Any:
-        return self._request("PUT", "/account/refillbalance", params)
+    def refill_balance(
+        self, amount: int, *, mode: Optional[account_models.PaymentMode] = None
+    ) -> Optional[WarningResponse]:
+        request = account_models.RefillBalanceRequest(amount=amount, mode=mode)
+        payload = self._request("PUT", "/account/refillbalance", request.to_request_params())
+        return account_models.parse_empty_account_response(payload)
 
-    def set_low_balance_alert(self, **params: Any) -> Any:
-        return self._request("PUT", "/account/setlowbalancealert", params)
+    def set_low_balance_alert(
+        self, low_balance_alert_amount: int
+    ) -> Union[account_models.AccountActionResponse, WarningResponse]:
+        request = account_models.SetLowBalanceAlertRequest(
+            low_balance_alert_amount=low_balance_alert_amount
+        )
+        payload = self._request("PUT", "/account/setlowbalancealert", request.to_request_params())
+        return account_models.parse_account_response(account_models.AccountActionResponse, payload)
 
-    def set_daily_balance_alert(self, **params: Any) -> Any:
-        return self._request("PUT", "/account/setdailybalancealert", params)
+    def set_daily_balance_alert(
+        self, action: account_models.AccountToggle
+    ) -> Union[account_models.AccountActionResponse, WarningResponse]:
+        request = account_models.SetDailyBalanceAlertRequest(action=action)
+        payload = self._request("PUT", "/account/setdailybalancealert", request.to_request_params())
+        return account_models.parse_account_response(account_models.AccountActionResponse, payload)
 
-    def configure_callback(self, **params: Any) -> Any:
-        return self._request("POST", "/account/callbackconfig", params)
+    def configure_callback(
+        self, url: str, sections: account_models.CallbackSections
+    ) -> Optional[WarningResponse]:
+        request = account_models.CallbackConfigRequest.from_values(url, sections)
+        payload = self._request("POST", "/account/callbackconfig", request.to_request_params())
+        return account_models.parse_empty_account_response(payload)
 
-    def callback_status(self) -> Any:
-        return self._request("GET", "/account/callbackstatus")
+    def callback_status(
+        self,
+    ) -> Union[account_models.CallbackStatusResponse, WarningResponse]:
+        payload = self._request("GET", "/account/callbackstatus")
+        return account_models.parse_account_response(account_models.CallbackStatusResponse, payload)
+
+
+class AsyncAccount(Resource):
+    async def balance(
+        self,
+    ) -> Union[account_models.AccountBalanceResponse, WarningResponse]:
+        payload = await self._request("GET", "/account/getbalance")
+        return account_models.parse_account_response(account_models.AccountBalanceResponse, payload)
+
+    async def details(
+        self,
+    ) -> Union[account_models.AccountDetailsResponse, WarningResponse]:
+        payload = await self._request("GET", "/account/getaccoundetails")
+        return account_models.parse_account_response(account_models.AccountDetailsResponse, payload)
+
+    async def rates(self) -> Union[account_models.ServiceRates, WarningResponse]:
+        payload = await self._request("GET", "/account/rates")
+        return account_models.parse_account_response(account_models.ServiceRates, payload)
+
+    async def countries(self) -> Union[account_models.CountryListResponse, WarningResponse]:
+        payload = await self._request("GET", "/account/countrylist")
+        return account_models.parse_account_response(account_models.CountryListResponse, payload)
+
+    async def country_rate(
+        self, country_id: int
+    ) -> Union[account_models.InternationalRatesResponse, WarningResponse]:
+        request = account_models.CountryRateRequest(country_id=country_id)
+        payload = await self._request("GET", "/account/countryrate", request.to_request_params())
+        return account_models.parse_account_response(
+            account_models.InternationalRatesResponse, payload
+        )
+
+    async def zone_2_rates(
+        self,
+    ) -> Union[account_models.InternationalRatesResponse, WarningResponse]:
+        payload = await self._request("GET", "/account/ratezone2")
+        return account_models.parse_account_response(
+            account_models.InternationalRatesResponse, payload
+        )
+
+    async def international_toll_free_rates(
+        self,
+    ) -> Union[account_models.InternationalTollFreeRatesResponse, WarningResponse]:
+        payload = await self._request("GET", "/account/nonusintfrate")
+        return account_models.parse_account_response(
+            account_models.InternationalTollFreeRatesResponse, payload
+        )
+
+    async def set_auto_refill(
+        self, autorefill: account_models.AccountToggle
+    ) -> Optional[WarningResponse]:
+        request = account_models.SetAutorefillRequest(autorefill=autorefill)
+        payload = await self._request("PUT", "/account/setautorefill", request.to_request_params())
+        return account_models.parse_empty_account_response(payload)
+
+    async def set_balance_reload(
+        self,
+        min_balance: account_models.MinimumBalance,
+        reload_amount: account_models.ReloadAmount,
+    ) -> Optional[WarningResponse]:
+        request = account_models.SetBalanceReloadRequest(
+            min_balance=min_balance, reload_amount=reload_amount
+        )
+        payload = await self._request(
+            "PUT", "/account/setbalancereload", request.to_request_params()
+        )
+        return account_models.parse_empty_account_response(payload)
+
+    async def refill_balance(
+        self, amount: int, *, mode: Optional[account_models.PaymentMode] = None
+    ) -> Optional[WarningResponse]:
+        request = account_models.RefillBalanceRequest(amount=amount, mode=mode)
+        payload = await self._request("PUT", "/account/refillbalance", request.to_request_params())
+        return account_models.parse_empty_account_response(payload)
+
+    async def set_low_balance_alert(
+        self, low_balance_alert_amount: int
+    ) -> Union[account_models.AccountActionResponse, WarningResponse]:
+        request = account_models.SetLowBalanceAlertRequest(
+            low_balance_alert_amount=low_balance_alert_amount
+        )
+        payload = await self._request(
+            "PUT", "/account/setlowbalancealert", request.to_request_params()
+        )
+        return account_models.parse_account_response(account_models.AccountActionResponse, payload)
+
+    async def set_daily_balance_alert(
+        self, action: account_models.AccountToggle
+    ) -> Union[account_models.AccountActionResponse, WarningResponse]:
+        request = account_models.SetDailyBalanceAlertRequest(action=action)
+        payload = await self._request(
+            "PUT", "/account/setdailybalancealert", request.to_request_params()
+        )
+        return account_models.parse_account_response(account_models.AccountActionResponse, payload)
+
+    async def configure_callback(
+        self, url: str, sections: account_models.CallbackSections
+    ) -> Optional[WarningResponse]:
+        request = account_models.CallbackConfigRequest.from_values(url, sections)
+        payload = await self._request(
+            "POST", "/account/callbackconfig", request.to_request_params()
+        )
+        return account_models.parse_empty_account_response(payload)
+
+    async def callback_status(
+        self,
+    ) -> Union[account_models.CallbackStatusResponse, WarningResponse]:
+        payload = await self._request("GET", "/account/callbackstatus")
+        return account_models.parse_account_response(account_models.CallbackStatusResponse, payload)
 
 
 class DIDs(Resource):
@@ -353,9 +522,12 @@ class Servers(Resource):
         return self._request("DELETE", "/server/removebackup", params)
 
 
-def install_resources(client: Any) -> None:
+def install_resources(client: Any, *, async_client: bool = False) -> None:
     """Attach the complete resource tree to a sync or async client."""
-    client.account = Account(client)
+    if async_client:
+        client.account = AsyncAccount(client)
+    else:
+        client.account = Account(client)
     client.dids = DIDs(client)
     client.international_dids = InternationalDIDs(client)
     client.sip_trunks = SIPTrunks(client)

@@ -33,6 +33,7 @@ if TYPE_CHECKING:
         LNP,
         SMS,
         Account,
+        AsyncAccount,
         DIDs,
         EnterpriseFax,
         Fax,
@@ -453,7 +454,7 @@ class QuestBlue:
 class AsyncQuestBlue:
     """Asynchronous client for the QuestBlue API."""
 
-    account: Account
+    account: AsyncAccount
     dids: DIDs
     international_dids: InternationalDIDs
     sip_trunks: SIPTrunks
@@ -495,7 +496,7 @@ class AsyncQuestBlue:
     def _install_resources(self) -> None:
         from ._resources import install_resources
 
-        install_resources(self)
+        install_resources(self, async_client=True)
 
     async def request(
         self,
