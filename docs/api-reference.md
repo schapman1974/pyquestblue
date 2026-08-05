@@ -48,3 +48,4 @@ are exported from the top-level `questblue` package and documented in their reso
 ::: questblue.reports
 ::: questblue.lnp
 ::: questblue.servers
+::: questblue.webhooks

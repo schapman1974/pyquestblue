@@ -45,6 +45,7 @@ nav:
       - Models and pagination: modeling.md
       - Contract testing: contract-testing.md
       - Framework recipes: framework-recipes.md
+      - Webhooks and integrations: integrations.md
       - Migration guides: migrations.md
   - Resources:
       - Account: account.md
@@ -59,4 +60,3 @@ nav:
       - Number portability: lnp.md
       - VoIP servers: servers.md
   - API reference: api-reference.md
-
