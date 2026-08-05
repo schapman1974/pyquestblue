@@ -95,6 +95,18 @@ result = qb.request("GET", "/new-endpoint", params={"example": "value"})
 | `qb.lnp` | portability checks and LNP request lifecycle |
 | `qb.servers` | server inventory, IPs, upgrades, backup lifecycle |
 
+## API coverage contract
+
+The normalized QuestBlue OpenAPI 2.3.2 contract is pinned under [`spec/`](spec/). A deterministic
+coverage report under [`coverage/`](coverage/) maps every upstream HTTP operation to its SDK method,
+sync/async availability, request/response model status, unit tests, and documentation. CI rejects
+missing or extra operations, broken sync/async parity, or a stale report.
+
+```bash
+python scripts/api_coverage.py --check
+python scripts/update_openapi.py --check  # compares against the live QuestBlue contract
+```
+
 ## Errors and retries
 
 The client retries connection failures, HTTP 408/409/429 responses, and server errors with bounded
@@ -131,4 +143,3 @@ privately to the repository owner.
 ## License
 
 MIT
-
