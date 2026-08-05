@@ -56,7 +56,8 @@ the application boundary before exposing exports or downloads.
 
 `export_rows(response)` returns ordinary dictionaries. They can be passed directly to
 `csv.DictWriter`; pandas users can call `pandas.DataFrame(export_rows(response))` without making
-pandas a pyquestblue dependency. See [`examples/reports_export.py`](../examples/reports_export.py)
+pandas a pyquestblue dependency. See
+[`examples/reports_export.py`](https://github.com/schapman1974/pyquestblue/blob/main/examples/reports_export.py)
 for an executable standard-library CSV flow.
 
 ## Operation map
@@ -66,4 +67,3 @@ for an executable standard-library CSV flow.
 | `GET /callhistory` | `qb.reports.call_history` |
 | `GET /faxhistory` | `qb.reports.fax_history` |
 | `GET /faxdownload` | `qb.reports.download_fax` |
-

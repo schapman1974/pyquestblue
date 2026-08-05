@@ -34,7 +34,9 @@ confirmation after displaying the selected configuration and current rates. Serv
 confirm the exact server/backup IDs and capture current inventory first. Restrict IP changes to
 trusted operators and avoid logging allowlists or credentials.
 
-See [`examples/server_lifecycle.py`](../examples/server_lifecycle.py) for guarded provisioning and
+See
+[`examples/server_lifecycle.py`](https://github.com/schapman1974/pyquestblue/blob/main/examples/server_lifecycle.py)
+for guarded provisioning and
 restore helpers.
 
 ## Operation map
@@ -51,4 +53,3 @@ restore helpers.
 | `GET /server/listbackups` | `qb.servers.list_backups` |
 | `POST /server/restorebackup` | `qb.servers.restore_backup` |
 | `DELETE /server/removebackup` | `qb.servers.remove_backup` |
-

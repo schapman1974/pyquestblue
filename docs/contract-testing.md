@@ -16,7 +16,8 @@ production verification and never treats an ordinary customer account as a test 
 | Live destructive | Manual only | Backup, exact-ID confirmation, recovery plan, human approval |
 
 The machine-readable status is published in
-[`contracts/verification-matrix.json`](../contracts/verification-matrix.json). `verified` means the
+[`contracts/verification-matrix.json`](https://github.com/schapman1974/pyquestblue/blob/main/contracts/verification-matrix.json).
+`verified` means the
 listed evidence currently runs in CI; every live row remains explicitly unverified until a protected
 run succeeds with credentials. A green ordinary CI run does not imply live-provider verification.
 

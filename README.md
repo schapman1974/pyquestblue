@@ -5,8 +5,11 @@ It supports synchronous and asynchronous applications and provides resource-orie
 full documented QuestBlue 2.3.2 surface: accounts, voice and international DIDs, SIP trunks, SMS/MMS,
 10DLC, Fax.Pro, iFax Enterprise, reports, number portability, and VoIP servers.
 
-> Status: **0.1 alpha**. The transport and complete endpoint map are ready. Rich request/response
-> models and live-account contract tests are the next development layer.
+> Status: **pre-1.0**. All 103 pinned QuestBlue 2.3.2 operations have typed sync/async coverage;
+> production contract verification remains explicitly credential-gated.
+
+Versioned, searchable documentation is published at
+[schapman1974.github.io/pyquestblue](https://schapman1974.github.io/pyquestblue/).
 
 ## Install
 
