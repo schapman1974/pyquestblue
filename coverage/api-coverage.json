@@ -1048,92 +1048,92 @@
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getSMSSupportedDIDs",
       "path": "/sms",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SMSInventoryRequest",
+      "response_model": "SMSInventoryResponse | WarningResponse",
       "sdk_method": "sms.list",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getMessageDeliveryStatus",
       "path": "/sms/deliverystatus",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "MessageDeliveryStatusRequest",
+      "response_model": "MessageDeliveryStatusResponse | WarningResponse",
       "sdk_method": "sms.delivery_status",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getSMSRecords",
       "path": "/sms/history",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SMSHistoryRequest",
+      "response_model": "SMSHistoryResponse | WarningResponse",
       "sdk_method": "sms.history",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "updateOffnetSMS",
       "path": "/sms/offnetorder",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "OffnetOrderRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "sms.offnet_order",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getOffnetOrderStatus",
       "path": "/sms/offnetstatus",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "OffnetStatusRequest",
+      "response_model": "OffnetStatusResponse | WarningResponse",
       "sdk_method": "sms.offnet_status",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "checkDIDCarrier",
       "path": "/smschecktncarrier",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "CarrierLookupRequest",
+      "response_model": "CarrierLookupResponse | WarningResponse",
       "sdk_method": "sms.carrier",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": true,
       "method": "POST",
       "operation_id": "sendMessage",
       "path": "/smsv2",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SendMessageRequest",
+      "response_model": "SendMessageResponse | WarningResponse",
       "sdk_method": "sms.send",
       "sync_async": true,
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "updateSMSSettings",
       "path": "/smsv2",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SMSSettingsUpdateRequest",
+      "response_model": "SMSSettingsUpdateResponse | WarningResponse",
       "sdk_method": "sms.update",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     }
   ],
   "summary": {
