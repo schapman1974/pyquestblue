@@ -231,6 +231,18 @@
     "request_model": "FaxPauseRequest",
     "response_model": "None | WarningResponse"
   },
+  "GET /callhistory": {
+    "request_model": "CallHistoryRequest",
+    "response_model": "CallHistoryResponse | WarningResponse"
+  },
+  "GET /faxdownload": {
+    "request_model": "FaxDownloadRequest",
+    "response_model": "FaxDownloadResponse | WarningResponse"
+  },
+  "GET /faxhistory": {
+    "request_model": "FaxHistoryRequest",
+    "response_model": "FaxHistoryResponse | WarningResponse"
+  },
   "DELETE /fax2": {
     "request_model": "EnterpriseFaxDeleteRequest",
     "response_model": "None | WarningResponse"

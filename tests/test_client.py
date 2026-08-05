@@ -8,6 +8,7 @@ import pytest
 
 from questblue import (
     AsyncQuestBlue,
+    CallHistoryRequest,
     EnterpriseFaxUploadRequest,
     EnterpriseFaxUploadResponse,
     QuestBlue,
@@ -42,14 +43,13 @@ def test_resource_encodes_lists_boole_and_omits_none() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.url.path == "/callhistory"
         assert request.url.params["trunk"] == "primary,backup"
-        assert request.url.params["enabled"] == "true"
-        assert "unused" not in request.url.params
+        assert request.url.params["summary_only"] == "on"
         return httpx.Response(200, json={"data": []})
 
     http = httpx.Client(base_url="https://example.test", transport=httpx.MockTransport(handler))
     client = QuestBlue("user", "password", "key", http_client=http)
 
-    client.reports.call_history(trunk=["primary", "backup"], enabled=True, unused=None)
+    client.reports.call_history(CallHistoryRequest(trunk=["primary", "backup"], summary_only="on"))
 
 
 def test_sms_convenience_method_uses_documented_path() -> None:

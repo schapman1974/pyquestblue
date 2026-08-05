@@ -39,6 +39,7 @@ if TYPE_CHECKING:
         AsyncEnterpriseFax,
         AsyncFax,
         AsyncInternationalDIDs,
+        AsyncReports,
         AsyncSIPTrunks,
         AsyncSMS,
         DIDs,
@@ -469,7 +470,7 @@ class AsyncQuestBlue:
     dlc: AsyncDLC
     fax: AsyncFax
     enterprise_fax: AsyncEnterpriseFax
-    reports: Reports
+    reports: AsyncReports
     lnp: LNP
     servers: Servers
 

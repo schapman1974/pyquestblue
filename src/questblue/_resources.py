@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, AsyncIterator, Iterator, List, Mapping, Optional, Union
+from typing import Any, AsyncIterator, BinaryIO, Iterator, List, Mapping, Optional, Union
 
 from . import account as account_models
 from . import did as did_models
@@ -10,6 +10,7 @@ from . import dlc as dlc_models
 from . import enterprise_fax as enterprise_fax_models
 from . import fax as fax_models
 from . import international_did as international_did_models
+from . import reports as report_models
 from . import sip_trunk as sip_models
 from . import sms as sms_models
 from .models import WarningResponse
@@ -1337,14 +1338,131 @@ class AsyncEnterpriseFax(Resource):
 
 
 class Reports(Resource):
-    def call_history(self, **params: Any) -> Any:
-        return self._request("GET", "/callhistory", params)
+    def call_history(
+        self, request: Optional[report_models.CallHistoryRequest] = None
+    ) -> Union[report_models.CallHistoryResponse, WarningResponse]:
+        request = request or report_models.CallHistoryRequest()
+        return report_models.parse_report_response(
+            report_models.CallHistoryResponse,
+            self._request("GET", "/callhistory", request.to_request_params()),
+        )
 
-    def fax_history(self, **params: Any) -> Any:
-        return self._request("GET", "/faxhistory", params)
+    def iter_call_history(
+        self, request: Optional[report_models.CallHistoryRequest] = None
+    ) -> Iterator[report_models.CallHistoryRecord]:
+        current = request or report_models.CallHistoryRequest()
+        while True:
+            response = self.call_history(current)
+            if isinstance(response, WarningResponse):
+                return
+            yield from response.data
+            next_page = response.next_page(current.per_page)
+            if next_page is None:
+                return
+            current = current.model_copy(update={"page": next_page})
 
-    def download_fax(self, **params: Any) -> Any:
-        return self._request("GET", "/faxdownload", params)
+    def fax_history(
+        self, request: Optional[report_models.FaxHistoryRequest] = None
+    ) -> Union[report_models.FaxHistoryResponse, WarningResponse]:
+        request = request or report_models.FaxHistoryRequest()
+        return report_models.parse_report_response(
+            report_models.FaxHistoryResponse,
+            self._request("GET", "/faxhistory", request.to_request_params()),
+        )
+
+    def iter_fax_history(
+        self, request: Optional[report_models.FaxHistoryRequest] = None
+    ) -> Iterator[report_models.FaxHistoryRecord]:
+        current = request or report_models.FaxHistoryRequest()
+        while True:
+            response = self.fax_history(current)
+            if isinstance(response, WarningResponse):
+                return
+            yield from response.data
+            next_page = response.next_page()
+            if next_page is None:
+                return
+            current = current.model_copy(update={"page": next_page})
+
+    def download_fax(
+        self, fax_id: int
+    ) -> Union[report_models.FaxDownloadResponse, WarningResponse]:
+        request = report_models.FaxDownloadRequest(fax_id=fax_id)
+        return report_models.parse_report_response(
+            report_models.FaxDownloadResponse,
+            self._request("GET", "/faxdownload", request.to_request_params()),
+        )
+
+    def download_fax_to(self, fax_id: int, destination: BinaryIO) -> int:
+        response = self.download_fax(fax_id)
+        if isinstance(response, WarningResponse):
+            raise ValueError("QuestBlue returned a warning instead of a fax document")
+        return response.data.write_to(destination)
+
+
+class AsyncReports(Resource):
+    async def call_history(
+        self, request: Optional[report_models.CallHistoryRequest] = None
+    ) -> Union[report_models.CallHistoryResponse, WarningResponse]:
+        request = request or report_models.CallHistoryRequest()
+        return report_models.parse_report_response(
+            report_models.CallHistoryResponse,
+            await self._request("GET", "/callhistory", request.to_request_params()),
+        )
+
+    async def iter_call_history(
+        self, request: Optional[report_models.CallHistoryRequest] = None
+    ) -> AsyncIterator[report_models.CallHistoryRecord]:
+        current = request or report_models.CallHistoryRequest()
+        while True:
+            response = await self.call_history(current)
+            if isinstance(response, WarningResponse):
+                return
+            for record in response.data:
+                yield record
+            next_page = response.next_page(current.per_page)
+            if next_page is None:
+                return
+            current = current.model_copy(update={"page": next_page})
+
+    async def fax_history(
+        self, request: Optional[report_models.FaxHistoryRequest] = None
+    ) -> Union[report_models.FaxHistoryResponse, WarningResponse]:
+        request = request or report_models.FaxHistoryRequest()
+        return report_models.parse_report_response(
+            report_models.FaxHistoryResponse,
+            await self._request("GET", "/faxhistory", request.to_request_params()),
+        )
+
+    async def iter_fax_history(
+        self, request: Optional[report_models.FaxHistoryRequest] = None
+    ) -> AsyncIterator[report_models.FaxHistoryRecord]:
+        current = request or report_models.FaxHistoryRequest()
+        while True:
+            response = await self.fax_history(current)
+            if isinstance(response, WarningResponse):
+                return
+            for record in response.data:
+                yield record
+            next_page = response.next_page()
+            if next_page is None:
+                return
+            current = current.model_copy(update={"page": next_page})
+
+    async def download_fax(
+        self, fax_id: int
+    ) -> Union[report_models.FaxDownloadResponse, WarningResponse]:
+        request = report_models.FaxDownloadRequest(fax_id=fax_id)
+        return report_models.parse_report_response(
+            report_models.FaxDownloadResponse,
+            await self._request("GET", "/faxdownload", request.to_request_params()),
+        )
+
+    async def download_fax_to(self, fax_id: int, destination: BinaryIO) -> int:
+        response = await self.download_fax(fax_id)
+        if isinstance(response, WarningResponse):
+            raise ValueError("QuestBlue returned a warning instead of a fax document")
+        return response.data.write_to(destination)
 
 
 class LNP(Resource):
@@ -1407,6 +1525,7 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.dlc = AsyncDLC(client)
         client.fax = AsyncFax(client)
         client.enterprise_fax = AsyncEnterpriseFax(client)
+        client.reports = AsyncReports(client)
     else:
         client.account = Account(client)
         client.dids = DIDs(client)
@@ -1416,6 +1535,6 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.dlc = DLC(client)
         client.fax = Fax(client)
         client.enterprise_fax = EnterpriseFax(client)
-    client.reports = Reports(client)
+        client.reports = Reports(client)
     client.lnp = LNP(client)
     client.servers = Servers(client)
