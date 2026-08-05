@@ -2,8 +2,7 @@
 
 ## Versioning and public API
 
-pyquestblue follows Semantic Versioning. The 1.0 release candidate freezes the documented public
-surface; any release-candidate incompatibility is recorded in the migration guide. Starting with 1.0:
+pyquestblue follows Semantic Versioning. Version 1.0 freezes the documented public surface:
 
 - patch releases contain compatible bug, security, documentation, and typing fixes;
 - minor releases add compatible features and may introduce deprecations;
@@ -35,9 +34,8 @@ Every release is made from a reviewed, green commit on `main`:
    publishes the matching docs.
 6. Verify installation from PyPI and the GitHub attestation, then announce the release.
 
-TestPyPI is available through a manually approved workflow for release candidates. A failed or
-partially published release is never overwritten because package indexes are immutable; publish a
-new patch version after correcting the problem.
+A failed or partially published release is never overwritten because package indexes are immutable;
+publish a new patch version after correcting the problem.
 
 ## Platform support
 
