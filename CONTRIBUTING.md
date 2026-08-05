@@ -15,6 +15,7 @@ Direct pushes to `main` are protected.
    ruff check .
    ruff format --check .
    mypy
+   python scripts/api_coverage.py --check
    pytest
    python -m build
    twine check dist/*
@@ -26,3 +27,9 @@ Direct pushes to `main` are protected.
 Never use a production credential for ordinary tests. Live contract tests must use the approved
 sandbox/subaccount, redact sensitive content, and clearly separate billable or destructive actions.
 
+## OpenAPI contract
+
+The pinned upstream contract lives in [`spec/`](spec/). Check for upstream changes with
+`python scripts/update_openapi.py --check`. When it changes, update it with
+`python scripts/update_openapi.py`, regenerate `coverage/api-coverage.json`, and review the semantic
+operation/schema diff as part of the pull request.

@@ -1,0 +1,8 @@
+{
+  "api_version": "2.3.2",
+  "openapi_version": "3.1.0",
+  "retrieved_at": "2026-08-05",
+  "sha256": "87e02b1dae4e32ad4b1eb24f2e3c64fa84feb81dd5c394d66094870f9a05ce89",
+  "source": "https://docs.questblue.com/openapispec.json",
+  "spec_file": "questblue-openapi-2.3.2.json"
+}

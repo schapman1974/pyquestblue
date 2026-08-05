@@ -48,6 +48,7 @@ packages = ["src/questblue"]
 addopts = "--strict-markers --cov=questblue --cov-report=term-missing"
 testpaths = ["tests"]
 asyncio_mode = "auto"
+pythonpath = ["."]
 
 [tool.coverage.run]
 branch = true
@@ -62,4 +63,4 @@ select = ["E", "F", "I", "B", "SIM", "RUF"]
 [tool.mypy]
 python_version = "3.10"
 strict = true
-packages = ["questblue"]
+files = ["src/questblue", "scripts"]
