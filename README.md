@@ -94,6 +94,9 @@ for record in records:
 See [`docs/modeling.md`](docs/modeling.md) for validation, forward compatibility, raw payloads, and
 custom pagination selectors.
 
+See [`docs/transport.md`](docs/transport.md) for retry safety, per-request controls, raw responses,
+transport errors, structured logging, and OpenTelemetry hooks.
+
 Every resource method accepts the parameter names from QuestBlue's API documentation. List values
 are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API
 addition that has not yet received a convenience method, the authenticated transport remains usable:
@@ -132,10 +135,11 @@ python scripts/update_openapi.py --check  # compares against the live QuestBlue 
 
 ## Errors and retries
 
-The client retries connection failures, HTTP 408/409/429 responses, and server errors with bounded
-exponential backoff. QuestBlue's documented HTTP 206 error responses are also raised as exceptions.
-Catch `QuestBlueAPIError` for API failures or a narrower class such as
-`QuestBlueAuthenticationError` or `QuestBlueRateLimitError`.
+The client retries safe reads after connection failures, HTTP 408/409/429 responses, and server
+errors with bounded exponential backoff. Mutating and potentially billable requests are never
+retried automatically. QuestBlue's documented HTTP 206 error responses are raised as exceptions.
+Catch `QuestBlueAPIError` for API failures or a narrower transport class. The complete contract is
+documented in [`docs/transport.md`](docs/transport.md).
 
 ## Publishing
 

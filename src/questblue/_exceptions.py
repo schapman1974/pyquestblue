@@ -17,6 +17,14 @@ class QuestBlueConnectionError(QuestBlueError):
     """The QuestBlue API could not be reached."""
 
 
+class QuestBlueTimeoutError(QuestBlueConnectionError):
+    """A QuestBlue request exceeded its configured timeout."""
+
+
+class QuestBlueResponseError(QuestBlueError):
+    """QuestBlue returned a response that could not be decoded as declared."""
+
+
 class QuestBluePaginationError(QuestBlueError):
     """QuestBlue returned unsafe or inconsistent pagination metadata."""
 
