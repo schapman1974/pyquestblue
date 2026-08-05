@@ -162,6 +162,12 @@ def test_repository_coverage_maps_every_pinned_operation() -> None:
     assert len(international_did_operations) == 6
     assert all(operation["response_model"] for operation in international_did_operations)
     assert all(operation["unit_tested"] for operation in international_did_operations)
+    sip_operations = [
+        operation for operation in report["operations"] if operation["path"].startswith("/siptrunk")
+    ]
+    assert len(sip_operations) == 7
+    assert all(operation["response_model"] for operation in sip_operations)
+    assert all(operation["unit_tested"] for operation in sip_operations)
     assert render(report).endswith("\n")
 
 

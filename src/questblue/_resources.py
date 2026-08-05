@@ -8,6 +8,7 @@ from typing import Any, AsyncIterator, Iterator, List, Mapping, Optional, Union
 from . import account as account_models
 from . import did as did_models
 from . import international_did as international_did_models
+from . import sip_trunk as sip_models
 from .models import WarningResponse
 
 
@@ -499,26 +500,101 @@ class AsyncInternationalDIDs(Resource):
 
 
 class SIPTrunks(Resource):
-    def list(self, **params: Any) -> Any:
-        return self._request("GET", "/siptrunk", params)
+    def list(
+        self, request: Optional[sip_models.SIPTrunkListRequest] = None
+    ) -> Union[sip_models.SIPTrunkInventoryResponse, WarningResponse]:
+        request = request or sip_models.SIPTrunkListRequest()
+        return sip_models.parse_sip_response(
+            sip_models.SIPTrunkInventoryResponse,
+            self._request("GET", "/siptrunk", request.to_request_params()),
+        )
 
-    def create(self, **params: Any) -> Any:
-        return self._request("POST", "/siptrunk", params)
+    def create(self, request: sip_models.SIPTrunkCreateRequest) -> Optional[WarningResponse]:
+        return sip_models.parse_empty_sip_response(
+            self._request("POST", "/siptrunk", request.to_request_params())
+        )
 
-    def update(self, **params: Any) -> Any:
-        return self._request("PUT", "/siptrunk", params)
+    def update(self, request: sip_models.SIPTrunkUpdateRequest) -> Optional[WarningResponse]:
+        return sip_models.parse_empty_sip_response(
+            self._request("PUT", "/siptrunk", request.to_request_params())
+        )
 
-    def delete(self, **params: Any) -> Any:
-        return self._request("DELETE", "/siptrunk", params)
+    def delete(self, trunk: str) -> Optional[WarningResponse]:
+        request = sip_models.SIPTrunkDeleteRequest(trunk=trunk)
+        return sip_models.parse_empty_sip_response(
+            self._request("DELETE", "/siptrunk", request.to_request_params())
+        )
 
-    def status(self, **params: Any) -> Any:
-        return self._request("GET", "/siptrunk/statuschecker", params)
+    def status(self, trunk: str) -> Union[sip_models.SIPTrunkStatusResponse, WarningResponse]:
+        request = sip_models.SIPTrunkStatusRequest(trunk=trunk)
+        return sip_models.parse_sip_response(
+            sip_models.SIPTrunkStatusResponse,
+            self._request("GET", "/siptrunk/statuschecker", request.to_request_params()),
+        )
 
-    def block_caller(self, **params: Any) -> Any:
-        return self._request("POST", "/siptrunk/blockcaller", params)
+    def block_caller(self, request: sip_models.BlockCallerRequest) -> Optional[WarningResponse]:
+        return sip_models.parse_empty_sip_response(
+            self._request("POST", "/siptrunk/blockcaller", request.to_request_params())
+        )
 
-    def blocked_callers(self, **params: Any) -> Any:
-        return self._request("GET", "/siptrunk/blockedcallers", params)
+    def blocked_callers(
+        self, request: Optional[sip_models.BlockedCallersRequest] = None
+    ) -> Union[sip_models.BlockedCallersResponse, WarningResponse]:
+        request = request or sip_models.BlockedCallersRequest()
+        return sip_models.parse_sip_response(
+            sip_models.BlockedCallersResponse,
+            self._request("GET", "/siptrunk/blockedcallers", request.to_request_params()),
+        )
+
+
+class AsyncSIPTrunks(Resource):
+    async def list(
+        self, request: Optional[sip_models.SIPTrunkListRequest] = None
+    ) -> Union[sip_models.SIPTrunkInventoryResponse, WarningResponse]:
+        request = request or sip_models.SIPTrunkListRequest()
+        return sip_models.parse_sip_response(
+            sip_models.SIPTrunkInventoryResponse,
+            await self._request("GET", "/siptrunk", request.to_request_params()),
+        )
+
+    async def create(self, request: sip_models.SIPTrunkCreateRequest) -> Optional[WarningResponse]:
+        return sip_models.parse_empty_sip_response(
+            await self._request("POST", "/siptrunk", request.to_request_params())
+        )
+
+    async def update(self, request: sip_models.SIPTrunkUpdateRequest) -> Optional[WarningResponse]:
+        return sip_models.parse_empty_sip_response(
+            await self._request("PUT", "/siptrunk", request.to_request_params())
+        )
+
+    async def delete(self, trunk: str) -> Optional[WarningResponse]:
+        request = sip_models.SIPTrunkDeleteRequest(trunk=trunk)
+        return sip_models.parse_empty_sip_response(
+            await self._request("DELETE", "/siptrunk", request.to_request_params())
+        )
+
+    async def status(self, trunk: str) -> Union[sip_models.SIPTrunkStatusResponse, WarningResponse]:
+        request = sip_models.SIPTrunkStatusRequest(trunk=trunk)
+        return sip_models.parse_sip_response(
+            sip_models.SIPTrunkStatusResponse,
+            await self._request("GET", "/siptrunk/statuschecker", request.to_request_params()),
+        )
+
+    async def block_caller(
+        self, request: sip_models.BlockCallerRequest
+    ) -> Optional[WarningResponse]:
+        return sip_models.parse_empty_sip_response(
+            await self._request("POST", "/siptrunk/blockcaller", request.to_request_params())
+        )
+
+    async def blocked_callers(
+        self, request: Optional[sip_models.BlockedCallersRequest] = None
+    ) -> Union[sip_models.BlockedCallersResponse, WarningResponse]:
+        request = request or sip_models.BlockedCallersRequest()
+        return sip_models.parse_sip_response(
+            sip_models.BlockedCallersResponse,
+            await self._request("GET", "/siptrunk/blockedcallers", request.to_request_params()),
+        )
 
 
 class SMS(Resource):
@@ -743,11 +819,12 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.account = AsyncAccount(client)
         client.dids = AsyncDIDs(client)
         client.international_dids = AsyncInternationalDIDs(client)
+        client.sip_trunks = AsyncSIPTrunks(client)
     else:
         client.account = Account(client)
         client.dids = DIDs(client)
         client.international_dids = InternationalDIDs(client)
-    client.sip_trunks = SIPTrunks(client)
+        client.sip_trunks = SIPTrunks(client)
     client.sms = SMS(client)
     client.dlc = DLC(client)
     client.fax = Fax(client)

@@ -108,6 +108,9 @@ pagination, fraud validation, and destructive-operation safeguards.
 See [`docs/international-dids.md`](docs/international-dids.md) for country/city discovery,
 international inventory pagination, ordering, routing updates, and release safeguards.
 
+See [`docs/sip-trunks.md`](docs/sip-trunks.md) for registration/static trunks, routing controls,
+status troubleshooting, channel options, and blocked callers.
+
 Every resource method accepts the parameter names from QuestBlue's API documentation. List values
 are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API
 addition that has not yet received a convenience method, the authenticated transport remains usable:
