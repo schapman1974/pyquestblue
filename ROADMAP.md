@@ -31,7 +31,7 @@ production hardening.
 
 ### QB-002: Build the shared model, validation, and pagination layer
 
-- Select and document the public modeling strategy with Python 3.9 compatibility.
+- Select and document the public modeling strategy with Python 3.10 compatibility.
 - Implement reusable response envelopes, warnings, pagination metadata, enums, dates, and binary data.
 - Add auto-pagination without hiding raw page access.
 - Preserve unknown fields for forward compatibility and provide raw-response escape hatches.
@@ -173,4 +173,3 @@ production hardening.
 - Branding, pricing, invoicing, payment, tax, and user-auth APIs absent from version 2.3.2
 - SMS consent/compliance workflow and 10DLC lifecycle edge cases
 - Whether HTTP 202 and 206 semantics are consistent across all endpoint families
-

@@ -1,5 +1,22 @@
 # Migration guides
 
+## Upgrading to 1.0
+
+pyquestblue 1.0 requires CPython 3.10 or newer. Python 3.9 reached end of life and was removed so
+the supported build and optional-integration dependency graph can receive current security fixes.
+
+The synchronous `QuestBlue` and asynchronous `AsyncQuestBlue` clients expose matching typed
+resource methods. Requests and responses use `QuestBlueModel`, which accepts provider-added fields
+and preserves unknown response data in `extra_fields`. Safe reads use bounded retries for transport
+errors, HTTP 408/409/429, and server errors; mutating or billable requests are not retried
+automatically.
+
+Inbound and status callbacks are parsed by the webhook helpers. QuestBlue's public 2.3.2 contract
+does not specify a callback signature, retry schedule, ordering guarantee, or unique event ID, so
+applications must authenticate callback ingress at their own edge and implement idempotency using
+their own durable identifiers. QuestBlue does not document a sandbox; use recorded fixtures for
+ordinary development and a dedicated approved subaccount for opt-in live tests.
+
 ## From raw `requests` or `httpx`
 
 Replace hand-built authentication headers and query serialization with one `QuestBlue` client.
@@ -34,4 +51,3 @@ Resource nesting maps directly: the Node reports/fax/SMS/DID areas become `qb.re
 
 Node array query values and pyquestblue list fields use the same comma-separated encoding. Python
 enums are string enums, so stored literal values remain portable between implementations.
-
