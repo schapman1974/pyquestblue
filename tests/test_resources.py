@@ -34,6 +34,8 @@ class Recorder:
             return {"data": [], "total": 0, "total_pages": 0, "current_page": 1}
         if path == "/lnp/check":
             return {"data": {"foc_days": 3}}
+        if path == "/server/listbackups":
+            return {"data": [], "total": 0}
         return {}
 
 
@@ -60,6 +62,8 @@ def test_resource_groups_route_to_expected_endpoints(
     resource = resource_type(recorder)
     if resource_type is LNP:
         getattr(resource, method_name)(LNPCheckRequest(number2port=[15551234567]))
+    elif resource_type is Servers:
+        getattr(resource, method_name)(1)
     else:
         getattr(resource, method_name)()
     assert recorder.calls[0][:2] == expected

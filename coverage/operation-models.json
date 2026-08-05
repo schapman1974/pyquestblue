@@ -263,6 +263,46 @@
     "request_model": "LNPUpdateRequest",
     "response_model": "None | WarningResponse"
   },
+  "DELETE /server": {
+    "request_model": "ServerIDRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "GET /server": {
+    "request_model": "ServerListRequest",
+    "response_model": "ServerListResponse | WarningResponse"
+  },
+  "POST /server": {
+    "request_model": "ServerOrderRequest",
+    "response_model": "ServerOrderResponse | WarningResponse"
+  },
+  "PUT /server/addip": {
+    "request_model": "ServerIPRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "DELETE /server/deleip": {
+    "request_model": "ServerIDRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "GET /server/listbackups": {
+    "request_model": "ServerIDRequest",
+    "response_model": "BackupListResponse | WarningResponse"
+  },
+  "POST /server/managebackupschedule": {
+    "request_model": "BackupScheduleRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "DELETE /server/removebackup": {
+    "request_model": "BackupRequest",
+    "response_model": "ServerMessageResponse | WarningResponse"
+  },
+  "POST /server/restorebackup": {
+    "request_model": "BackupRequest",
+    "response_model": "ServerMessageResponse | WarningResponse"
+  },
+  "POST /server/upgrade": {
+    "request_model": "ServerUpgradeRequest",
+    "response_model": "None | WarningResponse"
+  },
   "DELETE /fax2": {
     "request_model": "EnterpriseFaxDeleteRequest",
     "response_model": "None | WarningResponse"

@@ -208,6 +208,12 @@ def test_repository_coverage_maps_every_pinned_operation() -> None:
     assert len(lnp_operations) == 5
     assert all(operation["response_model"] for operation in lnp_operations)
     assert all(operation["unit_tested"] for operation in lnp_operations)
+    server_operations = [
+        operation for operation in report["operations"] if operation["path"].startswith("/server")
+    ]
+    assert len(server_operations) == 10
+    assert all(operation["response_model"] for operation in server_operations)
+    assert all(operation["unit_tested"] for operation in server_operations)
     assert render(report).endswith("\n")
 
 

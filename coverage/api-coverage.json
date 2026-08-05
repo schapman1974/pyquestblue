@@ -861,114 +861,114 @@
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": null,
       "path": "/server",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "ServerIDRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "servers.delete",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/server",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "ServerListRequest",
+      "response_model": "ServerListResponse | WarningResponse",
       "sdk_method": "servers.list",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/server",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "ServerOrderRequest",
+      "response_model": "ServerOrderResponse | WarningResponse",
       "sdk_method": "servers.create",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": null,
       "path": "/server/addip",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "ServerIPRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "servers.add_ip",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": null,
       "path": "/server/deleip",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "ServerIDRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "servers.remove_ip",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/server/listbackups",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "ServerIDRequest",
+      "response_model": "BackupListResponse | WarningResponse",
       "sdk_method": "servers.list_backups",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/server/managebackupschedule",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "BackupScheduleRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "servers.manage_backup_schedule",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": null,
       "path": "/server/removebackup",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "BackupRequest",
+      "response_model": "ServerMessageResponse | WarningResponse",
       "sdk_method": "servers.remove_backup",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/server/restorebackup",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "BackupRequest",
+      "response_model": "ServerMessageResponse | WarningResponse",
       "sdk_method": "servers.restore_backup",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/server/upgrade",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "ServerUpgradeRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "servers.upgrade",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": true,
