@@ -67,6 +67,30 @@
     "request_model": "DIDMoveToFaxRequest",
     "response_model": "None"
   },
+  "DELETE /didinter": {
+    "request_model": "InternationalDIDDeleteRequest",
+    "response_model": "None"
+  },
+  "GET /didinter": {
+    "request_model": "InternationalDIDListRequest",
+    "response_model": "InternationalDIDInventoryResponse | WarningResponse"
+  },
+  "GET /didinter/citylist": {
+    "request_model": "InternationalCitiesRequest",
+    "response_model": "InternationalCitiesResponse | WarningResponse"
+  },
+  "GET /didinter/countrylist": {
+    "request_model": "InternationalCountriesRequest",
+    "response_model": "InternationalCountriesResponse | WarningResponse"
+  },
+  "POST /didinter": {
+    "request_model": "InternationalDIDOrderRequest",
+    "response_model": "InternationalDIDOrderResponse | WarningResponse"
+  },
+  "PUT /didinter": {
+    "request_model": "InternationalDIDUpdateRequest",
+    "response_model": "None | WarningResponse"
+  },
   "POST /account/callbackconfig": {
     "request_model": "CallbackConfigRequest",
     "response_model": "None | WarningResponse"

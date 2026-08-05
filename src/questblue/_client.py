@@ -35,6 +35,7 @@ if TYPE_CHECKING:
         Account,
         AsyncAccount,
         AsyncDIDs,
+        AsyncInternationalDIDs,
         DIDs,
         EnterpriseFax,
         Fax,
@@ -457,7 +458,7 @@ class AsyncQuestBlue:
 
     account: AsyncAccount
     dids: AsyncDIDs
-    international_dids: InternationalDIDs
+    international_dids: AsyncInternationalDIDs
     sip_trunks: SIPTrunks
     sms: SMS
     dlc: DLC

@@ -7,6 +7,7 @@ from typing import Any, AsyncIterator, Iterator, List, Mapping, Optional, Union
 
 from . import account as account_models
 from . import did as did_models
+from . import international_did as international_did_models
 from .models import WarningResponse
 
 
@@ -368,23 +369,133 @@ class AsyncDIDs(Resource):
 
 
 class InternationalDIDs(Resource):
-    def countries(self) -> Any:
-        return self._request("GET", "/didinter/countrylist")
+    def countries(
+        self, request: Optional[international_did_models.InternationalCountriesRequest] = None
+    ) -> Union[international_did_models.InternationalCountriesResponse, WarningResponse]:
+        request = request or international_did_models.InternationalCountriesRequest()
+        payload = self._request("GET", "/didinter/countrylist", request.to_request_params())
+        return international_did_models.parse_international_did_response(
+            international_did_models.InternationalCountriesResponse, payload
+        )
 
-    def cities(self, **params: Any) -> Any:
-        return self._request("GET", "/didinter/citylist", params)
+    def cities(
+        self, country_code: str
+    ) -> Union[international_did_models.InternationalCitiesResponse, WarningResponse]:
+        request = international_did_models.InternationalCitiesRequest(country_code=country_code)
+        payload = self._request("GET", "/didinter/citylist", request.to_request_params())
+        return international_did_models.parse_international_did_response(
+            international_did_models.InternationalCitiesResponse, payload
+        )
 
-    def list(self, **params: Any) -> Any:
-        return self._request("GET", "/didinter", params)
+    def list(
+        self, request: Optional[international_did_models.InternationalDIDListRequest] = None
+    ) -> Union[international_did_models.InternationalDIDInventoryResponse, WarningResponse]:
+        request = request or international_did_models.InternationalDIDListRequest()
+        payload = self._request("GET", "/didinter", request.to_request_params())
+        return international_did_models.parse_international_did_response(
+            international_did_models.InternationalDIDInventoryResponse, payload
+        )
 
-    def order(self, **params: Any) -> Any:
-        return self._request("POST", "/didinter", params)
+    def pages(
+        self, request: Optional[international_did_models.InternationalDIDListRequest] = None
+    ) -> Iterator[
+        Union[international_did_models.InternationalDIDInventoryResponse, WarningResponse]
+    ]:
+        request = request or international_did_models.InternationalDIDListRequest()
+        page = request.page
+        while True:
+            result = self.list(request.model_copy(update={"page": page}))
+            yield result
+            if isinstance(result, WarningResponse):
+                return
+            next_page = result.next_page()
+            if next_page is None:
+                return
+            page = next_page
 
-    def update(self, **params: Any) -> Any:
-        return self._request("PUT", "/didinter", params)
+    def order(
+        self, request: international_did_models.InternationalDIDOrderRequest
+    ) -> Union[international_did_models.InternationalDIDOrderResponse, WarningResponse]:
+        payload = self._request("POST", "/didinter", request.to_request_params())
+        return international_did_models.parse_international_did_response(
+            international_did_models.InternationalDIDOrderResponse, payload
+        )
 
-    def delete(self, **params: Any) -> Any:
-        return self._request("DELETE", "/didinter", params)
+    def update(
+        self, request: international_did_models.InternationalDIDUpdateRequest
+    ) -> Optional[WarningResponse]:
+        payload = self._request("PUT", "/didinter", request.to_request_params())
+        return international_did_models.parse_empty_international_did_response(payload)
+
+    def delete(self, did: int) -> Optional[WarningResponse]:
+        request = international_did_models.InternationalDIDDeleteRequest(did=did)
+        payload = self._request("DELETE", "/didinter", request.to_request_params())
+        return international_did_models.parse_empty_international_did_response(payload)
+
+
+class AsyncInternationalDIDs(Resource):
+    async def countries(
+        self, request: Optional[international_did_models.InternationalCountriesRequest] = None
+    ) -> Union[international_did_models.InternationalCountriesResponse, WarningResponse]:
+        request = request or international_did_models.InternationalCountriesRequest()
+        payload = await self._request("GET", "/didinter/countrylist", request.to_request_params())
+        return international_did_models.parse_international_did_response(
+            international_did_models.InternationalCountriesResponse, payload
+        )
+
+    async def cities(
+        self, country_code: str
+    ) -> Union[international_did_models.InternationalCitiesResponse, WarningResponse]:
+        request = international_did_models.InternationalCitiesRequest(country_code=country_code)
+        payload = await self._request("GET", "/didinter/citylist", request.to_request_params())
+        return international_did_models.parse_international_did_response(
+            international_did_models.InternationalCitiesResponse, payload
+        )
+
+    async def list(
+        self, request: Optional[international_did_models.InternationalDIDListRequest] = None
+    ) -> Union[international_did_models.InternationalDIDInventoryResponse, WarningResponse]:
+        request = request or international_did_models.InternationalDIDListRequest()
+        payload = await self._request("GET", "/didinter", request.to_request_params())
+        return international_did_models.parse_international_did_response(
+            international_did_models.InternationalDIDInventoryResponse, payload
+        )
+
+    async def pages(
+        self, request: Optional[international_did_models.InternationalDIDListRequest] = None
+    ) -> AsyncIterator[
+        Union[international_did_models.InternationalDIDInventoryResponse, WarningResponse]
+    ]:
+        request = request or international_did_models.InternationalDIDListRequest()
+        page = request.page
+        while True:
+            result = await self.list(request.model_copy(update={"page": page}))
+            yield result
+            if isinstance(result, WarningResponse):
+                return
+            next_page = result.next_page()
+            if next_page is None:
+                return
+            page = next_page
+
+    async def order(
+        self, request: international_did_models.InternationalDIDOrderRequest
+    ) -> Union[international_did_models.InternationalDIDOrderResponse, WarningResponse]:
+        payload = await self._request("POST", "/didinter", request.to_request_params())
+        return international_did_models.parse_international_did_response(
+            international_did_models.InternationalDIDOrderResponse, payload
+        )
+
+    async def update(
+        self, request: international_did_models.InternationalDIDUpdateRequest
+    ) -> Optional[WarningResponse]:
+        payload = await self._request("PUT", "/didinter", request.to_request_params())
+        return international_did_models.parse_empty_international_did_response(payload)
+
+    async def delete(self, did: int) -> Optional[WarningResponse]:
+        request = international_did_models.InternationalDIDDeleteRequest(did=did)
+        payload = await self._request("DELETE", "/didinter", request.to_request_params())
+        return international_did_models.parse_empty_international_did_response(payload)
 
 
 class SIPTrunks(Resource):
@@ -631,10 +742,11 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
     if async_client:
         client.account = AsyncAccount(client)
         client.dids = AsyncDIDs(client)
+        client.international_dids = AsyncInternationalDIDs(client)
     else:
         client.account = Account(client)
         client.dids = DIDs(client)
-    client.international_dids = InternationalDIDs(client)
+        client.international_dids = InternationalDIDs(client)
     client.sip_trunks = SIPTrunks(client)
     client.sms = SMS(client)
     client.dlc = DLC(client)
