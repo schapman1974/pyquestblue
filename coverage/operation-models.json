@@ -231,6 +231,90 @@
     "request_model": "FaxPauseRequest",
     "response_model": "None | WarningResponse"
   },
+  "DELETE /fax2": {
+    "request_model": "EnterpriseFaxDeleteRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "GET /fax2": {
+    "request_model": "EnterpriseFaxListRequest",
+    "response_model": "EnterpriseFaxInventoryResponse | WarningResponse"
+  },
+  "POST /fax2": {
+    "request_model": "EnterpriseFaxOrderRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /fax2": {
+    "request_model": "EnterpriseFaxUpdateRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "DELETE /fax2/email": {
+    "request_model": "EnterpriseFaxEmailPermissionDeleteRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "GET /fax2/email": {
+    "request_model": "EnterpriseFaxEmailListRequest",
+    "response_model": "EnterpriseFaxEmailListResponse | WarningResponse"
+  },
+  "POST /fax2/email": {
+    "request_model": "EnterpriseFaxEmailPermissionRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "DELETE /fax2/group": {
+    "request_model": "EnterpriseFaxGroupDeleteRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "GET /fax2/group": {
+    "request_model": "EnterpriseFaxGroupListRequest",
+    "response_model": "EnterpriseFaxGroupListResponse | WarningResponse"
+  },
+  "POST /fax2/group": {
+    "request_model": "EnterpriseFaxGroupCreateRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /fax2/group": {
+    "request_model": "EnterpriseFaxGroupUpdateRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /fax2/pause": {
+    "request_model": "EnterpriseFaxPauseRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "DELETE /fax2/permit": {
+    "request_model": "EnterpriseFaxPermissionDeleteRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "GET /fax2/permit": {
+    "request_model": "EnterpriseFaxPermissionListRequest",
+    "response_model": "EnterpriseFaxPermissionListResponse | WarningResponse"
+  },
+  "POST /fax2/permit": {
+    "request_model": "EnterpriseFaxPermissionRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "POST /fax2/send": {
+    "request_model": "EnterpriseFaxSendRequest",
+    "response_model": "EnterpriseFaxSendResponse | WarningResponse"
+  },
+  "POST /fax2/upload": {
+    "request_model": "EnterpriseFaxUploadRequest",
+    "response_model": "EnterpriseFaxUploadResponse | WarningResponse"
+  },
+  "DELETE /fax2/user": {
+    "request_model": "EnterpriseFaxUserDeleteRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "GET /fax2/user": {
+    "request_model": "EnterpriseFaxUserListRequest",
+    "response_model": "EnterpriseFaxUserListResponse | WarningResponse"
+  },
+  "POST /fax2/user": {
+    "request_model": "EnterpriseFaxUserCreateRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /fax2/user": {
+    "request_model": "EnterpriseFaxUserUpdateRequest",
+    "response_model": "None | WarningResponse"
+  },
   "POST /account/callbackconfig": {
     "request_model": "CallbackConfigRequest",
     "response_model": "None | WarningResponse"

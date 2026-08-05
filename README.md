@@ -120,6 +120,9 @@ upstream rejection detail, protected registration data, and compliance safeguard
 See [`docs/fax.md`](docs/fax.md) for Fax.Pro discovery, inventory lifecycle, validated document
 sending, email permissions, migration safeguards, and executable examples.
 
+See [`docs/enterprise-fax.md`](docs/enterprise-fax.md) for typed iFax Enterprise account, group,
+user, permission, upload, multi-file send, and lifecycle workflows.
+
 Every resource method accepts the parameter names from QuestBlue's API documentation. List values
 are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API
 addition that has not yet received a convenience method, the authenticated transport remains usable:
