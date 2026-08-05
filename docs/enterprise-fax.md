@@ -14,7 +14,8 @@ create a user with `qb.enterprise_fax.create_user`, order a DID with
 
 Upload each attachment with `qb.enterprise_fax.upload`, retain every returned `file_id`, then pass
 the complete list to `qb.enterprise_fax.send`. The executable
-[`examples/enterprise_fax.py`](../examples/enterprise_fax.py) demonstrates the full flow and makes
+[`examples/enterprise_fax.py`](https://github.com/schapman1974/pyquestblue/blob/main/examples/enterprise_fax.py)
+demonstrates the full flow and makes
 both billable provisioning and the final destination explicit.
 
 ```python
@@ -64,4 +65,3 @@ file IDs are hidden from model representations and validation errors.
   `delete_email_permission` are destructive. Confirm the target and dependencies first.
 - Use `update_group` and `update_user` for lifecycle changes, and `pause` when service should be
   suspended without deleting the DID.
-
