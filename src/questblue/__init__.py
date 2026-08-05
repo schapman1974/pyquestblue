@@ -9,7 +9,9 @@ from ._exceptions import (
     QuestBlueError,
     QuestBluePaginationError,
     QuestBlueRateLimitError,
+    QuestBlueResponseError,
     QuestBlueServerError,
+    QuestBlueTimeoutError,
 )
 from .models import (
     BinaryResponse,
@@ -28,6 +30,7 @@ from .models import (
     parse_model,
 )
 from .pagination import AsyncPaginator, Page, SyncPaginator, parse_page
+from .transport import TransportEvent, TransportHook
 
 __all__ = [
     "DEFAULT_BASE_URL",
@@ -51,10 +54,14 @@ __all__ = [
     "QuestBlueModel",
     "QuestBluePaginationError",
     "QuestBlueRateLimitError",
+    "QuestBlueResponseError",
     "QuestBlueServerError",
+    "QuestBlueTimeoutError",
     "ResponseEnvelope",
     "SyncPaginator",
     "TimestampRange",
+    "TransportEvent",
+    "TransportHook",
     "WarningResponse",
     "YesNo",
     "model_parser",

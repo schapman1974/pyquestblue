@@ -39,3 +39,9 @@ operation/schema diff as part of the pull request.
 Public models inherit from `QuestBlueModel`, preserve unknown response fields, and use open enums
 where QuestBlue may introduce values. Resource-specific models and pagination helpers follow the
 design and test checklist in [`docs/modeling.md`](docs/modeling.md).
+
+## HTTP transport
+
+Read [`docs/transport.md`](docs/transport.md) before changing retries, error mapping, request
+overrides, decoding, or telemetry. Mutating operations must remain single-attempt unless QuestBlue
+publishes and we verify an idempotency guarantee.

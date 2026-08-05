@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import asyncio
+import logging
 import os
 import time
 from datetime import date, datetime
 from email.utils import parsedate_to_datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Callable, Dict, Mapping, Optional, Tuple, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, Dict, Mapping, Optional, Tuple, TypeVar, Union
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -18,9 +20,12 @@ from ._exceptions import (
     QuestBlueConfigurationError,
     QuestBlueConnectionError,
     QuestBlueRateLimitError,
+    QuestBlueResponseError,
     QuestBlueServerError,
+    QuestBlueTimeoutError,
 )
 from .pagination import AsyncPaginator, ItemSelector, SyncPaginator
+from .transport import TransportEvent, TransportHook
 
 if TYPE_CHECKING:
     from ._resources import (
@@ -41,8 +46,14 @@ DEFAULT_BASE_URL = "https://api.questblue.com"
 SECONDARY_BASE_URL = "https://api2.questblue.com"
 DEFAULT_TIMEOUT = 60.0
 _RETRY_STATUSES = frozenset((408, 409, 429))
-_SENSITIVE_HEADERS = frozenset(("authorization", "security-key"))
+_SAFE_LOG_HEADERS = frozenset(
+    ("accept", "content-type", "traceparent", "tracestate", "user-agent", "x-request-id")
+)
+_PROTECTED_HEADERS = frozenset(("authorization", "security-key"))
+_RETRY_METHODS = frozenset(("GET", "HEAD", "OPTIONS"))
+_logger = logging.getLogger("questblue.transport")
 PageItemT = TypeVar("PageItemT")
+TimeoutValue = Union[float, httpx.Timeout]
 
 
 def _credentials(
@@ -93,8 +104,10 @@ def _retry_delay(response: Optional[httpx.Response], attempt: int) -> float:
     return float(min(0.5 * (2**attempt), 8.0))
 
 
-def _should_retry(response: httpx.Response) -> bool:
-    return response.status_code in _RETRY_STATUSES or response.status_code >= 500
+def _should_retry(method: str, response: httpx.Response) -> bool:
+    return method.upper() in _RETRY_METHODS and (
+        response.status_code in _RETRY_STATUSES or response.status_code >= 500
+    )
 
 
 def _parse(response: httpx.Response) -> Any:
@@ -102,7 +115,12 @@ def _parse(response: httpx.Response) -> Any:
         return None
     content_type = response.headers.get("content-type", "").lower()
     if "json" in content_type:
-        return response.json()
+        try:
+            return response.json()
+        except ValueError as exc:
+            raise QuestBlueResponseError(
+                "QuestBlue returned malformed JSON",
+            ) from exc
     try:
         return response.json()
     except ValueError:
@@ -112,7 +130,10 @@ def _parse(response: httpx.Response) -> Any:
 
 
 def _error(response: httpx.Response) -> QuestBlueAPIError:
-    body = _parse(response)
+    try:
+        body = _parse(response)
+    except QuestBlueResponseError:
+        body = response.text
     message = f"QuestBlue API request failed with HTTP {response.status_code}"
     if isinstance(body, Mapping):
         detail = body.get("error") or body.get("message") or body.get("detail")
@@ -132,6 +153,58 @@ def _error(response: httpx.Response) -> QuestBlueAPIError:
     if response.status_code >= 500:
         return QuestBlueServerError(message, **kwargs)
     return QuestBlueAPIError(message, **kwargs)
+
+
+def _request_headers(
+    credentials: Mapping[str, str], overrides: Optional[Mapping[str, str]]
+) -> Dict[str, str]:
+    for key in overrides or ():
+        if key.lower() in _PROTECTED_HEADERS:
+            raise QuestBlueConfigurationError(
+                f"{key} is managed by the client and cannot be overridden per request"
+            )
+    return {**credentials, **(overrides or {})}
+
+
+def _safe_path(path: str) -> str:
+    return urlsplit(path).path
+
+
+def _emit(
+    hook: Optional[TransportHook],
+    *,
+    name: str,
+    method: str,
+    path: str,
+    attempt: int,
+    max_attempts: int,
+    headers: Mapping[str, str],
+    response: Optional[httpx.Response] = None,
+    retry_delay: Optional[float] = None,
+    error_type: Optional[str] = None,
+) -> None:
+    event = TransportEvent(
+        name=name,
+        method=method.upper(),
+        path=_safe_path(path),
+        attempt=attempt,
+        max_attempts=max_attempts,
+        headers=redact_headers(headers),
+        status_code=response.status_code if response is not None else None,
+        request_id=(
+            response.headers.get("x-request-id") or response.headers.get("request-id")
+            if response is not None
+            else None
+        ),
+        retry_delay=retry_delay,
+        error_type=error_type,
+    )
+    _logger.debug("QuestBlue transport event", extra={"questblue": event.as_dict()})
+    if hook is not None:
+        try:
+            hook(event)
+        except Exception:
+            _logger.exception("QuestBlue transport hook failed")
 
 
 class QuestBlue:
@@ -159,6 +232,7 @@ class QuestBlue:
         timeout: float = DEFAULT_TIMEOUT,
         max_retries: int = 2,
         http_client: Optional[httpx.Client] = None,
+        transport_hook: Optional[TransportHook] = None,
     ) -> None:
         username, password, security_key = _credentials(username, password, security_key)
         if max_retries < 0:
@@ -167,6 +241,7 @@ class QuestBlue:
         self.max_retries = max_retries
         self._auth = httpx.BasicAuth(username, password)
         self._headers = {"Accept": "application/json", "Security-Key": security_key}
+        self._transport_hook = transport_hook
         self._owns_client = http_client is None
         self._http = http_client or httpx.Client(
             base_url=self.base_url,
@@ -186,41 +261,154 @@ class QuestBlue:
         *,
         params: Optional[Mapping[str, Any]] = None,
         json: Any = None,
+        headers: Optional[Mapping[str, str]] = None,
+        timeout: Optional[TimeoutValue] = None,
+        max_retries: Optional[int] = None,
+        raw_response: bool = False,
     ) -> Any:
-        """Issue an authenticated API request and return its decoded body."""
-        for attempt in range(self.max_retries + 1):
+        """Issue an authenticated request with safe, request-level overrides.
+
+        Retries apply only to GET, HEAD, and OPTIONS. Mutating methods are always
+        attempted once because QuestBlue does not document idempotency guarantees.
+        """
+        retries = self.max_retries if max_retries is None else max_retries
+        if retries < 0:
+            raise QuestBlueConfigurationError("max_retries must be zero or greater")
+        retryable = method.upper() in _RETRY_METHODS
+        max_attempts = retries + 1 if retryable else 1
+        request_headers = _request_headers(self._headers, headers)
+        request_kwargs: Dict[str, Any] = {
+            "params": _query(params),
+            "auth": self._auth,
+            "headers": request_headers,
+        }
+        if json is not None:
+            request_kwargs["json"] = json
+        if timeout is not None:
+            request_kwargs["timeout"] = timeout
+
+        for attempt in range(1, max_attempts + 1):
+            _emit(
+                self._transport_hook,
+                name="request",
+                method=method,
+                path=path,
+                attempt=attempt,
+                max_attempts=max_attempts,
+                headers=request_headers,
+            )
             try:
-                if json is not None:
-                    response = self._http.request(
-                        method,
-                        path,
-                        params=_query(params),
-                        auth=self._auth,
-                        headers=self._headers,
-                        json=json,
+                response = self._http.request(method, path, **request_kwargs)
+            except httpx.TimeoutException as exc:
+                if attempt < max_attempts:
+                    delay = _retry_delay(None, attempt - 1)
+                    _emit(
+                        self._transport_hook,
+                        name="retry",
+                        method=method,
+                        path=path,
+                        attempt=attempt,
+                        max_attempts=max_attempts,
+                        headers=request_headers,
+                        retry_delay=delay,
+                        error_type=type(exc).__name__,
                     )
-                else:
-                    response = self._http.request(
-                        method,
-                        path,
-                        params=_query(params),
-                        auth=self._auth,
-                        headers=self._headers,
-                    )
+                    time.sleep(delay)
+                    continue
+                _emit(
+                    self._transport_hook,
+                    name="error",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    error_type=type(exc).__name__,
+                )
+                raise QuestBlueTimeoutError("QuestBlue request timed out") from exc
             except httpx.RequestError as exc:
-                if attempt >= self.max_retries:
-                    raise QuestBlueConnectionError(f"Unable to reach QuestBlue: {exc}") from exc
-                time.sleep(_retry_delay(None, attempt))
-                continue
-            if _should_retry(response) and attempt < self.max_retries:
-                delay = _retry_delay(response, attempt)
+                if attempt < max_attempts:
+                    delay = _retry_delay(None, attempt - 1)
+                    _emit(
+                        self._transport_hook,
+                        name="retry",
+                        method=method,
+                        path=path,
+                        attempt=attempt,
+                        max_attempts=max_attempts,
+                        headers=request_headers,
+                        retry_delay=delay,
+                        error_type=type(exc).__name__,
+                    )
+                    time.sleep(delay)
+                    continue
+                _emit(
+                    self._transport_hook,
+                    name="error",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    error_type=type(exc).__name__,
+                )
+                raise QuestBlueConnectionError("Unable to reach QuestBlue") from exc
+            if _should_retry(method, response) and attempt < max_attempts:
+                delay = _retry_delay(response, attempt - 1)
+                _emit(
+                    self._transport_hook,
+                    name="retry",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    response=response,
+                    retry_delay=delay,
+                )
                 response.close()
                 time.sleep(delay)
                 continue
             # QuestBlue documents 206 as an application-level error response.
             if response.status_code == 206 or response.is_error:
+                _emit(
+                    self._transport_hook,
+                    name="error",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    response=response,
+                )
                 raise _error(response)
-            return _parse(response)
+            _emit(
+                self._transport_hook,
+                name="response",
+                method=method,
+                path=path,
+                attempt=attempt,
+                max_attempts=max_attempts,
+                headers=request_headers,
+                response=response,
+            )
+            if raw_response:
+                return response
+            try:
+                return _parse(response)
+            except QuestBlueResponseError:
+                _emit(
+                    self._transport_hook,
+                    name="error",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    response=response,
+                    error_type="QuestBlueResponseError",
+                )
+                raise
         raise AssertionError("unreachable")
 
     def close(self) -> None:
@@ -287,6 +475,7 @@ class AsyncQuestBlue:
         timeout: float = DEFAULT_TIMEOUT,
         max_retries: int = 2,
         http_client: Optional[httpx.AsyncClient] = None,
+        transport_hook: Optional[TransportHook] = None,
     ) -> None:
         username, password, security_key = _credentials(username, password, security_key)
         if max_retries < 0:
@@ -295,6 +484,7 @@ class AsyncQuestBlue:
         self.max_retries = max_retries
         self._auth = httpx.BasicAuth(username, password)
         self._headers = {"Accept": "application/json", "Security-Key": security_key}
+        self._transport_hook = transport_hook
         self._owns_client = http_client is None
         self._http = http_client or httpx.AsyncClient(
             base_url=self.base_url,
@@ -314,40 +504,161 @@ class AsyncQuestBlue:
         *,
         params: Optional[Mapping[str, Any]] = None,
         json: Any = None,
+        headers: Optional[Mapping[str, str]] = None,
+        timeout: Optional[TimeoutValue] = None,
+        max_retries: Optional[int] = None,
+        raw_response: bool = False,
     ) -> Any:
-        """Issue an authenticated API request and return its decoded body."""
-        for attempt in range(self.max_retries + 1):
+        """Issue an authenticated request with sync-client-equivalent behavior."""
+        retries = self.max_retries if max_retries is None else max_retries
+        if retries < 0:
+            raise QuestBlueConfigurationError("max_retries must be zero or greater")
+        retryable = method.upper() in _RETRY_METHODS
+        max_attempts = retries + 1 if retryable else 1
+        request_headers = _request_headers(self._headers, headers)
+        request_kwargs: Dict[str, Any] = {
+            "params": _query(params),
+            "auth": self._auth,
+            "headers": request_headers,
+        }
+        if json is not None:
+            request_kwargs["json"] = json
+        if timeout is not None:
+            request_kwargs["timeout"] = timeout
+
+        for attempt in range(1, max_attempts + 1):
+            _emit(
+                self._transport_hook,
+                name="request",
+                method=method,
+                path=path,
+                attempt=attempt,
+                max_attempts=max_attempts,
+                headers=request_headers,
+            )
             try:
-                if json is not None:
-                    response = await self._http.request(
-                        method,
-                        path,
-                        params=_query(params),
-                        auth=self._auth,
-                        headers=self._headers,
-                        json=json,
+                response = await self._http.request(method, path, **request_kwargs)
+            except asyncio.CancelledError:
+                _emit(
+                    self._transport_hook,
+                    name="cancelled",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    error_type="CancelledError",
+                )
+                raise
+            except httpx.TimeoutException as exc:
+                if attempt < max_attempts:
+                    delay = _retry_delay(None, attempt - 1)
+                    _emit(
+                        self._transport_hook,
+                        name="retry",
+                        method=method,
+                        path=path,
+                        attempt=attempt,
+                        max_attempts=max_attempts,
+                        headers=request_headers,
+                        retry_delay=delay,
+                        error_type=type(exc).__name__,
                     )
-                else:
-                    response = await self._http.request(
-                        method,
-                        path,
-                        params=_query(params),
-                        auth=self._auth,
-                        headers=self._headers,
-                    )
+                    await asyncio.sleep(delay)
+                    continue
+                _emit(
+                    self._transport_hook,
+                    name="error",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    error_type=type(exc).__name__,
+                )
+                raise QuestBlueTimeoutError("QuestBlue request timed out") from exc
             except httpx.RequestError as exc:
-                if attempt >= self.max_retries:
-                    raise QuestBlueConnectionError(f"Unable to reach QuestBlue: {exc}") from exc
-                await asyncio.sleep(_retry_delay(None, attempt))
-                continue
-            if _should_retry(response) and attempt < self.max_retries:
-                delay = _retry_delay(response, attempt)
+                if attempt < max_attempts:
+                    delay = _retry_delay(None, attempt - 1)
+                    _emit(
+                        self._transport_hook,
+                        name="retry",
+                        method=method,
+                        path=path,
+                        attempt=attempt,
+                        max_attempts=max_attempts,
+                        headers=request_headers,
+                        retry_delay=delay,
+                        error_type=type(exc).__name__,
+                    )
+                    await asyncio.sleep(delay)
+                    continue
+                _emit(
+                    self._transport_hook,
+                    name="error",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    error_type=type(exc).__name__,
+                )
+                raise QuestBlueConnectionError("Unable to reach QuestBlue") from exc
+            if _should_retry(method, response) and attempt < max_attempts:
+                delay = _retry_delay(response, attempt - 1)
+                _emit(
+                    self._transport_hook,
+                    name="retry",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    response=response,
+                    retry_delay=delay,
+                )
                 await response.aclose()
                 await asyncio.sleep(delay)
                 continue
             if response.status_code == 206 or response.is_error:
+                _emit(
+                    self._transport_hook,
+                    name="error",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    response=response,
+                )
                 raise _error(response)
-            return _parse(response)
+            _emit(
+                self._transport_hook,
+                name="response",
+                method=method,
+                path=path,
+                attempt=attempt,
+                max_attempts=max_attempts,
+                headers=request_headers,
+                response=response,
+            )
+            if raw_response:
+                return response
+            try:
+                return _parse(response)
+            except QuestBlueResponseError:
+                _emit(
+                    self._transport_hook,
+                    name="error",
+                    method=method,
+                    path=path,
+                    attempt=attempt,
+                    max_attempts=max_attempts,
+                    headers=request_headers,
+                    response=response,
+                    error_type="QuestBlueResponseError",
+                )
+                raise
         raise AssertionError("unreachable")
 
     async def close(self) -> None:
@@ -392,6 +703,6 @@ class AsyncQuestBlue:
 def redact_headers(headers: Mapping[str, str]) -> Dict[str, str]:
     """Return headers safe for debug logging."""
     return {
-        key: "[REDACTED]" if key.lower() in _SENSITIVE_HEADERS else value
+        key: value if key.lower() in _SAFE_LOG_HEADERS else "[REDACTED]"
         for key, value in headers.items()
     }
