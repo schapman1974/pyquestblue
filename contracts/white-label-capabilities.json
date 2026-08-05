@@ -1,0 +1,115 @@
+{
+  "source": {
+    "api_version": "2.3.2",
+    "checked_at": "2026-08-05",
+    "operation_count": 103,
+    "sha256": "87e02b1dae4e32ad4b1eb24f2e3c64fa84feb81dd5c394d66094870f9a05ce89",
+    "url": "https://docs.questblue.com/openapispec.json"
+  },
+  "capabilities": [
+    {
+      "id": "account_hierarchy",
+      "status": "absent",
+      "summary": "No reseller, subaccount, tenant, or parent-child account operations are published.",
+      "evidence": ["GET /account/getaccoundetails", "GET /account/getbalance"]
+    },
+    {
+      "id": "customer_identity",
+      "status": "absent",
+      "summary": "Service contacts exist, but there is no general end-customer identity or organization model.",
+      "evidence": ["POST /did", "POST /lnp", "POST /dlc/brand"]
+    },
+    {
+      "id": "roles_and_permissions",
+      "status": "partial",
+      "summary": "iFax Enterprise has fax-only users and DID permissions; no account-wide RBAC is published.",
+      "evidence": ["GET /fax2/user", "GET /fax2/permit", "POST /fax2/permit"]
+    },
+    {
+      "id": "resource_ownership",
+      "status": "absent",
+      "summary": "Inventory is implicitly scoped to the authenticated account and exposes no tenant owner identifier or cross-account transfer.",
+      "evidence": ["GET /did", "GET /siptrunk", "GET /server"]
+    },
+    {
+      "id": "delegated_credentials",
+      "status": "absent",
+      "summary": "The contract defines HTTP Basic authentication plus one Security-Key, with no token, scope, service-account, or credential-lifecycle API.",
+      "evidence": ["contract-security:basicAuth", "contract-security:apiKeyAuth"]
+    },
+    {
+      "id": "branding",
+      "status": "absent",
+      "summary": "No brand, theme, domain, email-template, or customer-facing portal configuration is published.",
+      "evidence": ["contract-search:brand-is-only-10dlc-regulatory-brand"]
+    },
+    {
+      "id": "provider_rates",
+      "status": "supported",
+      "summary": "The authenticated account can read service, country, Zone 2, and international toll-free rates.",
+      "evidence": ["GET /account/rates", "GET /account/countryrate", "GET /account/ratezone2", "GET /account/nonusintfrate"]
+    },
+    {
+      "id": "customer_pricing_and_margins",
+      "status": "absent",
+      "summary": "No customer catalog, price book, markup, margin, discount, or quote API is published.",
+      "evidence": ["GET /account/rates"]
+    },
+    {
+      "id": "invoices_and_tax",
+      "status": "absent",
+      "summary": "No invoice, line-item, taxation, exemption, refund, or credit-note API is published; 10DLC tax_number is regulatory identity data only.",
+      "evidence": ["POST /dlc/brand"]
+    },
+    {
+      "id": "account_credit",
+      "status": "partial",
+      "summary": "Balance and allowed credit are readable, but no credit ledger, adjustment, allocation, or customer-credit API is published.",
+      "evidence": ["GET /account/getbalance"]
+    },
+    {
+      "id": "payments",
+      "status": "partial",
+      "summary": "The current provider account can be refilled and its payment-method type read; payment-method CRUD and customer payment flows are absent.",
+      "evidence": ["GET /account/getaccoundetails", "PUT /account/refillbalance"]
+    },
+    {
+      "id": "usage_and_billing_inputs",
+      "status": "partial",
+      "summary": "Voice, fax, and SMS activity are available, but no rated usage ledger or invoice linkage is published.",
+      "evidence": ["GET /callhistory", "GET /faxhistory", "GET /sms/history"]
+    },
+    {
+      "id": "events",
+      "status": "partial",
+      "summary": "Inventory and messaging callbacks exist, but billing, account, hierarchy, and credential events do not; authentication and retry semantics are unspecified.",
+      "evidence": ["POST /account/callbackconfig", "webhook:inboundMessageCallback", "webhook:statusMessageCallback"]
+    },
+    {
+      "id": "support_cases",
+      "status": "absent",
+      "summary": "No ticket, case, note, SLA, or help-desk operation is published.",
+      "evidence": ["contract-search:no-support-resource"]
+    },
+    {
+      "id": "sandbox",
+      "status": "unknown",
+      "summary": "The public contract publishes production endpoints only and no sandbox or test-account lifecycle.",
+      "evidence": ["contract-servers:api.questblue.com", "contract-servers:api2.questblue.com"]
+    }
+  ],
+  "provider_questions": [
+    {"id": "Q1", "capability": "account_hierarchy", "question": "Is there a reseller or subaccount API outside the public 2.3.2 contract, and what identifiers and lifecycle states does it expose?"},
+    {"id": "Q2", "capability": "resource_ownership", "question": "Can inventory be assigned or transferred between subaccounts without delete/reorder operations?"},
+    {"id": "Q3", "capability": "delegated_credentials", "question": "Can each subaccount receive scoped, revocable credentials or tokens with read/write and product-level permissions?"},
+    {"id": "Q4", "capability": "roles_and_permissions", "question": "Are there account-wide users, roles, SSO, MFA, or delegated-administrator APIs beyond iFax Enterprise permissions?"},
+    {"id": "Q5", "capability": "branding", "question": "Are portal branding, custom domain, email/SMS template, and legal-document settings available by API?"},
+    {"id": "Q6", "capability": "customer_pricing_and_margins", "question": "Can resellers create customer price books, markups, discounts, quotes, or committed-rate plans through an API?"},
+    {"id": "Q7", "capability": "invoices_and_tax", "question": "Are rated line items, invoices, tax calculations, exemptions, refunds, and credit notes available by API or export?"},
+    {"id": "Q8", "capability": "payments", "question": "Are tokenized payment methods, ACH mandates, payment intents, receipts, failures, and chargebacks available without handling card data?"},
+    {"id": "Q9", "capability": "usage_and_billing_inputs", "question": "Which timestamps, IDs, rates, surcharges, taxes, and adjustments form the authoritative billable usage ledger?"},
+    {"id": "Q10", "capability": "events", "question": "Are account, billing, payment, inventory, and credential events available, and what are their signature, retry, ordering, and deduplication contracts?"},
+    {"id": "Q11", "capability": "sandbox", "question": "Can QuestBlue provision a non-production reseller hierarchy with non-billable fixtures and reversible lifecycle operations?"},
+    {"id": "Q12", "capability": "support_cases", "question": "Is there a partner support or escalation API with customer-safe case identifiers and status events?"}
+  ]
+}

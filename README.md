@@ -211,7 +211,11 @@ The SDK is intentionally UI-framework neutral so it can power a fully rebranded 
 That portal should sit behind your own backend rather than exposing QuestBlue credentials in a
 browser. The major platform layers will be tenant/customer mapping, roles and permissions, branded
 catalog and pricing, ordering/provisioning workflows, usage and billing, audit logs, webhook/event
-processing, and support tooling. See [`ROADMAP.md`](ROADMAP.md) for the staged build-out.
+processing, and support tooling. The evidence-backed
+[`white-label capability analysis`](docs/white-label.md),
+[`tenant-isolation ADR`](docs/adr/0001-tenant-isolation.md), and
+[`follow-on backlog`](docs/white-label-backlog.md) define what belongs in the SDK, an optional
+control plane, or the application. See [`ROADMAP.md`](ROADMAP.md) for the staged build-out.
 
 ## Security
 
