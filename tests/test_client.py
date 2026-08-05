@@ -110,13 +110,13 @@ def test_retry_recovers_from_server_error(monkeypatch: pytest.MonkeyPatch) -> No
         attempts += 1
         if attempts == 1:
             return httpx.Response(503, json={"error": "busy"}, headers={"retry-after": "0"})
-        return httpx.Response(200, json={"ok": True})
+        return httpx.Response(200, json={"data": [], "total": 0})
 
     monkeypatch.setattr("questblue._client.time.sleep", lambda _: None)
     http = httpx.Client(base_url="https://example.test", transport=httpx.MockTransport(handler))
     client = QuestBlue("user", "password", "key", max_retries=1, http_client=http)
 
-    assert client.dids.states() == {"ok": True}
+    assert client.dids.states().total == 0  # type: ignore[union-attr]
     assert attempts == 2
 
 
@@ -152,12 +152,15 @@ def test_sensitive_headers_are_redacted() -> None:
 async def test_async_client() -> None:
     async def handler(request: httpx.Request) -> httpx.Response:
         assert request.url.path == "/did/available"
-        return httpx.Response(200, json={"data": ["15551234567"]})
+        return httpx.Response(200, json={"data": ["15551234567"], "total": 1})
 
     http = httpx.AsyncClient(
         base_url="https://example.test", transport=httpx.MockTransport(handler)
     )
     client = AsyncQuestBlue("user", "password", "key", http_client=http)
 
-    assert await client.dids.available(npa=919) == {"data": ["15551234567"]}
+    from questblue import DIDAvailabilityRequest, DIDType
+
+    result = await client.dids.available(DIDAvailabilityRequest(did_type=DIDType.LOCAL, zip=27513))
+    assert result.data == ["15551234567"]  # type: ignore[union-attr]
     await http.aclose()

@@ -25,6 +25,8 @@ class Recorder:
 
     def request(self, method: str, path: str, *, params: Any = None, json: Any = None) -> dict:
         self.calls.append((method, path, params, json))
+        if path == "/did/states":
+            return {"data": [], "total": 0}
         return {}
 
 

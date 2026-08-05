@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import base64
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, AsyncIterator, Iterator, List, Mapping, Optional, Union
 
 from . import account as account_models
+from . import did as did_models
 from .models import WarningResponse
 
 
@@ -235,32 +236,135 @@ class AsyncAccount(Resource):
 
 
 class DIDs(Resource):
-    def list(self, **params: Any) -> Any:
-        return self._request("GET", "/did", params)
+    def list(
+        self, request: Optional[did_models.DIDListRequest] = None
+    ) -> Union[did_models.DIDInventoryResponse, WarningResponse]:
+        request = request or did_models.DIDListRequest()
+        payload = self._request("GET", "/did", request.to_request_params())
+        return did_models.parse_did_response(did_models.DIDInventoryResponse, payload)
 
-    def order(self, did: Union[int, List[int]], **params: Any) -> Any:
-        return self._request("POST", "/did", {"did": did, **params})
+    def pages(
+        self, request: Optional[did_models.DIDListRequest] = None
+    ) -> Iterator[Union[did_models.DIDInventoryResponse, WarningResponse]]:
+        request = request or did_models.DIDListRequest()
+        page = request.page
+        while True:
+            result = self.list(request.model_copy(update={"page": page}))
+            yield result
+            if isinstance(result, WarningResponse):
+                return
+            next_page = result.next_page()
+            if next_page is None:
+                return
+            page = next_page
 
-    def update(self, did: int, **params: Any) -> Any:
-        return self._request("PUT", "/did", {"did": did, **params})
+    def order(self, request: did_models.DIDOrderRequest) -> Optional[WarningResponse]:
+        payload = self._request("POST", "/did", request.to_request_params())
+        return did_models.parse_empty_did_response(payload)
 
-    def delete(self, did: int) -> Any:
-        return self._request("DELETE", "/did", {"did": did})
+    def update(self, request: did_models.DIDUpdateRequest) -> Optional[WarningResponse]:
+        payload = self._request("PUT", "/did", request.to_request_params())
+        return did_models.parse_empty_did_response(payload)
 
-    def states(self) -> Any:
-        return self._request("GET", "/did/states")
+    def delete(self, did: int) -> Optional[WarningResponse]:
+        request = did_models.DIDDeleteRequest(did=did)
+        payload = self._request("DELETE", "/did", request.to_request_params())
+        return did_models.parse_empty_did_response(payload)
 
-    def rate_centers(self, **params: Any) -> Any:
-        return self._request("GET", "/did/ratecenters", params)
+    def states(self) -> Union[did_models.DIDStatesResponse, WarningResponse]:
+        payload = self._request("GET", "/did/states")
+        return did_models.parse_did_response(did_models.DIDStatesResponse, payload)
 
-    def available(self, **params: Any) -> Any:
-        return self._request("GET", "/did/available", params)
+    def rate_centers(
+        self, state: str, tier: did_models.DIDTier
+    ) -> Union[did_models.DIDRateCentersResponse, WarningResponse]:
+        request = did_models.DIDRateCentersRequest(state=state, tier=tier)
+        payload = self._request("GET", "/did/ratecenters", request.to_request_params())
+        return did_models.parse_did_response(did_models.DIDRateCentersResponse, payload)
 
-    def move_to_fax(self, did: int) -> Any:
-        return self._request("PUT", "/did/move2fax", {"did": did})
+    def available(
+        self, request: did_models.DIDAvailabilityRequest
+    ) -> Union[did_models.AvailableDIDsResponse, WarningResponse]:
+        payload = self._request("GET", "/did/available", request.to_request_params())
+        return did_models.parse_did_response(did_models.AvailableDIDsResponse, payload)
 
-    def validate_fraud(self, tn: Union[int, List[int]]) -> Any:
-        return self._request("POST", "/did/fraudvalidate", {"tn": tn})
+    def move_to_fax(self, did: int) -> Optional[WarningResponse]:
+        request = did_models.DIDMoveToFaxRequest(did=did)
+        payload = self._request("PUT", "/did/move2fax", request.to_request_params())
+        return did_models.parse_empty_did_response(payload)
+
+    def validate_fraud(
+        self, tn: Union[int, List[int]]
+    ) -> Union[did_models.FraudValidationResponse, WarningResponse]:
+        request = did_models.DIDFraudValidationRequest(tn=tn)
+        payload = self._request("POST", "/did/fraudvalidate", request.to_request_params())
+        return did_models.parse_did_response(did_models.FraudValidationResponse, payload)
+
+
+class AsyncDIDs(Resource):
+    async def list(
+        self, request: Optional[did_models.DIDListRequest] = None
+    ) -> Union[did_models.DIDInventoryResponse, WarningResponse]:
+        request = request or did_models.DIDListRequest()
+        payload = await self._request("GET", "/did", request.to_request_params())
+        return did_models.parse_did_response(did_models.DIDInventoryResponse, payload)
+
+    async def pages(
+        self, request: Optional[did_models.DIDListRequest] = None
+    ) -> AsyncIterator[Union[did_models.DIDInventoryResponse, WarningResponse]]:
+        request = request or did_models.DIDListRequest()
+        page = request.page
+        while True:
+            result = await self.list(request.model_copy(update={"page": page}))
+            yield result
+            if isinstance(result, WarningResponse):
+                return
+            next_page = result.next_page()
+            if next_page is None:
+                return
+            page = next_page
+
+    async def order(self, request: did_models.DIDOrderRequest) -> Optional[WarningResponse]:
+        payload = await self._request("POST", "/did", request.to_request_params())
+        return did_models.parse_empty_did_response(payload)
+
+    async def update(self, request: did_models.DIDUpdateRequest) -> Optional[WarningResponse]:
+        payload = await self._request("PUT", "/did", request.to_request_params())
+        return did_models.parse_empty_did_response(payload)
+
+    async def delete(self, did: int) -> Optional[WarningResponse]:
+        request = did_models.DIDDeleteRequest(did=did)
+        payload = await self._request("DELETE", "/did", request.to_request_params())
+        return did_models.parse_empty_did_response(payload)
+
+    async def states(self) -> Union[did_models.DIDStatesResponse, WarningResponse]:
+        payload = await self._request("GET", "/did/states")
+        return did_models.parse_did_response(did_models.DIDStatesResponse, payload)
+
+    async def rate_centers(
+        self, state: str, tier: did_models.DIDTier
+    ) -> Union[did_models.DIDRateCentersResponse, WarningResponse]:
+        request = did_models.DIDRateCentersRequest(state=state, tier=tier)
+        payload = await self._request("GET", "/did/ratecenters", request.to_request_params())
+        return did_models.parse_did_response(did_models.DIDRateCentersResponse, payload)
+
+    async def available(
+        self, request: did_models.DIDAvailabilityRequest
+    ) -> Union[did_models.AvailableDIDsResponse, WarningResponse]:
+        payload = await self._request("GET", "/did/available", request.to_request_params())
+        return did_models.parse_did_response(did_models.AvailableDIDsResponse, payload)
+
+    async def move_to_fax(self, did: int) -> Optional[WarningResponse]:
+        request = did_models.DIDMoveToFaxRequest(did=did)
+        payload = await self._request("PUT", "/did/move2fax", request.to_request_params())
+        return did_models.parse_empty_did_response(payload)
+
+    async def validate_fraud(
+        self, tn: Union[int, List[int]]
+    ) -> Union[did_models.FraudValidationResponse, WarningResponse]:
+        request = did_models.DIDFraudValidationRequest(tn=tn)
+        payload = await self._request("POST", "/did/fraudvalidate", request.to_request_params())
+        return did_models.parse_did_response(did_models.FraudValidationResponse, payload)
 
 
 class InternationalDIDs(Resource):
@@ -526,9 +630,10 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
     """Attach the complete resource tree to a sync or async client."""
     if async_client:
         client.account = AsyncAccount(client)
+        client.dids = AsyncDIDs(client)
     else:
         client.account = Account(client)
-    client.dids = DIDs(client)
+        client.dids = DIDs(client)
     client.international_dids = InternationalDIDs(client)
     client.sip_trunks = SIPTrunks(client)
     client.sms = SMS(client)

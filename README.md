@@ -32,11 +32,13 @@ directly or loaded from `QUESTBLUE_USERNAME`, `QUESTBLUE_PASSWORD`, and
 `QUESTBLUE_SECURITY_KEY`.
 
 ```python
-from questblue import QuestBlue
+from questblue import DIDAvailabilityRequest, DIDType, QuestBlue
 
 with QuestBlue("username", "password", "security-key") as qb:
     balance = qb.account.balance()
-    available = qb.dids.available(npa=919, total_list=10)
+    available = qb.dids.available(
+        DIDAvailabilityRequest(did_type=DIDType.LOCAL, zip=27513, total_list=10)
+    )
     trunks = qb.sip_trunks.list(per_page=100)
 ```
 
@@ -65,10 +67,10 @@ calls = qb.reports.call_history(
 Async applications use the same resource layout:
 
 ```python
-from questblue import AsyncQuestBlue
+from questblue import AsyncQuestBlue, DIDListRequest
 
 async with AsyncQuestBlue() as qb:
-    inventory = await qb.dids.list(per_page=200)
+    inventory = await qb.dids.list(DIDListRequest(per_page=200))
 ```
 
 Typed models preserve new upstream fields instead of dropping them, and paginators offer both item
@@ -99,6 +101,9 @@ transport errors, structured logging, and OpenTelemetry hooks.
 
 See [`docs/account.md`](docs/account.md) for typed balance, rates, refill, alert, and callback
 operations, including explicit safeguards around billable balance changes.
+
+See [`docs/dids.md`](docs/dids.md) for typed Voice DID discovery, ordering, E911/DLDA configuration,
+pagination, fraud validation, and destructive-operation safeguards.
 
 Every resource method accepts the parameter names from QuestBlue's API documentation. List values
 are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API
