@@ -12,6 +12,7 @@ from . import fax as fax_models
 from . import international_did as international_did_models
 from . import lnp as lnp_models
 from . import reports as report_models
+from . import servers as server_models
 from . import sip_trunk as sip_models
 from . import sms as sms_models
 from .models import WarningResponse
@@ -1543,35 +1544,161 @@ class AsyncLNP(Resource):
 
 
 class Servers(Resource):
-    def create(self, **params: Any) -> Any:
-        return self._request("POST", "/server", params)
+    def create(
+        self, request: server_models.ServerOrderRequest
+    ) -> Union[server_models.ServerOrderResponse, WarningResponse]:
+        return server_models.parse_server_response(
+            server_models.ServerOrderResponse,
+            self._request(
+                "POST",
+                "/server",
+                {"server_type": request.server_type},
+                json=request.params.to_request_params(),
+            ),
+        )
 
-    def list(self, **params: Any) -> Any:
-        return self._request("GET", "/server", params)
+    def list(
+        self, request: Optional[server_models.ServerListRequest] = None
+    ) -> Union[server_models.ServerListResponse, WarningResponse]:
+        request = request or server_models.ServerListRequest()
+        return server_models.parse_server_response(
+            server_models.ServerListResponse,
+            self._request("GET", "/server", request.to_request_params()),
+        )
 
-    def delete(self, **params: Any) -> Any:
-        return self._request("DELETE", "/server", params)
+    def delete(self, server_id: int) -> Optional[WarningResponse]:
+        request = server_models.ServerIDRequest(server_id=server_id)
+        return server_models.parse_empty_server_response(
+            self._request("DELETE", "/server", request.to_request_params())
+        )
 
-    def add_ip(self, **params: Any) -> Any:
-        return self._request("PUT", "/server/addip", params)
+    def add_ip(self, request: server_models.ServerIPRequest) -> Optional[WarningResponse]:
+        return server_models.parse_empty_server_response(
+            self._request("PUT", "/server/addip", request.to_request_params())
+        )
 
-    def remove_ip(self, **params: Any) -> Any:
-        return self._request("DELETE", "/server/deleip", params)
+    def remove_ip(self, server_id: int) -> Optional[WarningResponse]:
+        request = server_models.ServerIDRequest(server_id=server_id)
+        return server_models.parse_empty_server_response(
+            self._request("DELETE", "/server/deleip", request.to_request_params())
+        )
 
-    def upgrade(self, **params: Any) -> Any:
-        return self._request("POST", "/server/upgrade", params)
+    def upgrade(self, request: server_models.ServerUpgradeRequest) -> Optional[WarningResponse]:
+        return server_models.parse_empty_server_response(
+            self._request("POST", "/server/upgrade", request.to_request_params())
+        )
 
-    def manage_backup_schedule(self, **params: Any) -> Any:
-        return self._request("POST", "/server/managebackupschedule", params)
+    def manage_backup_schedule(
+        self, request: server_models.BackupScheduleRequest
+    ) -> Optional[WarningResponse]:
+        return server_models.parse_empty_server_response(
+            self._request("POST", "/server/managebackupschedule", request.to_request_params())
+        )
 
-    def list_backups(self, **params: Any) -> Any:
-        return self._request("GET", "/server/listbackups", params)
+    def list_backups(
+        self, server_id: int
+    ) -> Union[server_models.BackupListResponse, WarningResponse]:
+        request = server_models.ServerIDRequest(server_id=server_id)
+        return server_models.parse_server_response(
+            server_models.BackupListResponse,
+            self._request("GET", "/server/listbackups", request.to_request_params()),
+        )
 
-    def restore_backup(self, **params: Any) -> Any:
-        return self._request("POST", "/server/restorebackup", params)
+    def restore_backup(
+        self, request: server_models.BackupRequest
+    ) -> Union[server_models.ServerMessageResponse, WarningResponse]:
+        return server_models.parse_server_response(
+            server_models.ServerMessageResponse,
+            self._request("POST", "/server/restorebackup", request.to_request_params()),
+        )
 
-    def remove_backup(self, **params: Any) -> Any:
-        return self._request("DELETE", "/server/removebackup", params)
+    def remove_backup(
+        self, request: server_models.BackupRequest
+    ) -> Union[server_models.ServerMessageResponse, WarningResponse]:
+        return server_models.parse_server_response(
+            server_models.ServerMessageResponse,
+            self._request("DELETE", "/server/removebackup", request.to_request_params()),
+        )
+
+
+class AsyncServers(Resource):
+    async def create(
+        self, request: server_models.ServerOrderRequest
+    ) -> Union[server_models.ServerOrderResponse, WarningResponse]:
+        return server_models.parse_server_response(
+            server_models.ServerOrderResponse,
+            await self._request(
+                "POST",
+                "/server",
+                {"server_type": request.server_type},
+                json=request.params.to_request_params(),
+            ),
+        )
+
+    async def list(
+        self, request: Optional[server_models.ServerListRequest] = None
+    ) -> Union[server_models.ServerListResponse, WarningResponse]:
+        request = request or server_models.ServerListRequest()
+        return server_models.parse_server_response(
+            server_models.ServerListResponse,
+            await self._request("GET", "/server", request.to_request_params()),
+        )
+
+    async def delete(self, server_id: int) -> Optional[WarningResponse]:
+        request = server_models.ServerIDRequest(server_id=server_id)
+        return server_models.parse_empty_server_response(
+            await self._request("DELETE", "/server", request.to_request_params())
+        )
+
+    async def add_ip(self, request: server_models.ServerIPRequest) -> Optional[WarningResponse]:
+        return server_models.parse_empty_server_response(
+            await self._request("PUT", "/server/addip", request.to_request_params())
+        )
+
+    async def remove_ip(self, server_id: int) -> Optional[WarningResponse]:
+        request = server_models.ServerIDRequest(server_id=server_id)
+        return server_models.parse_empty_server_response(
+            await self._request("DELETE", "/server/deleip", request.to_request_params())
+        )
+
+    async def upgrade(
+        self, request: server_models.ServerUpgradeRequest
+    ) -> Optional[WarningResponse]:
+        return server_models.parse_empty_server_response(
+            await self._request("POST", "/server/upgrade", request.to_request_params())
+        )
+
+    async def manage_backup_schedule(
+        self, request: server_models.BackupScheduleRequest
+    ) -> Optional[WarningResponse]:
+        return server_models.parse_empty_server_response(
+            await self._request("POST", "/server/managebackupschedule", request.to_request_params())
+        )
+
+    async def list_backups(
+        self, server_id: int
+    ) -> Union[server_models.BackupListResponse, WarningResponse]:
+        request = server_models.ServerIDRequest(server_id=server_id)
+        return server_models.parse_server_response(
+            server_models.BackupListResponse,
+            await self._request("GET", "/server/listbackups", request.to_request_params()),
+        )
+
+    async def restore_backup(
+        self, request: server_models.BackupRequest
+    ) -> Union[server_models.ServerMessageResponse, WarningResponse]:
+        return server_models.parse_server_response(
+            server_models.ServerMessageResponse,
+            await self._request("POST", "/server/restorebackup", request.to_request_params()),
+        )
+
+    async def remove_backup(
+        self, request: server_models.BackupRequest
+    ) -> Union[server_models.ServerMessageResponse, WarningResponse]:
+        return server_models.parse_server_response(
+            server_models.ServerMessageResponse,
+            await self._request("DELETE", "/server/removebackup", request.to_request_params()),
+        )
 
 
 def install_resources(client: Any, *, async_client: bool = False) -> None:
@@ -1587,6 +1714,7 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.enterprise_fax = AsyncEnterpriseFax(client)
         client.reports = AsyncReports(client)
         client.lnp = AsyncLNP(client)
+        client.servers = AsyncServers(client)
     else:
         client.account = Account(client)
         client.dids = DIDs(client)
@@ -1598,4 +1726,4 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.enterprise_fax = EnterpriseFax(client)
         client.reports = Reports(client)
         client.lnp = LNP(client)
-    client.servers = Servers(client)
+        client.servers = Servers(client)
