@@ -151,6 +151,38 @@
     "request_model": "SMSSettingsUpdateRequest",
     "response_model": "SMSSettingsUpdateResponse | WarningResponse"
   },
+  "DELETE /dlc/brand": {
+    "request_model": "BrandDeleteRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "DELETE /dlc/campaign": {
+    "request_model": "CampaignDeleteRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "GET /dlc/brand": {
+    "request_model": "BrandListRequest",
+    "response_model": "BrandListResponse | WarningResponse"
+  },
+  "GET /dlc/campaign": {
+    "request_model": "CampaignListRequest",
+    "response_model": "CampaignListResponse | WarningResponse"
+  },
+  "POST /dlc/brand": {
+    "request_model": "BrandCreateRequest",
+    "response_model": "BrandCreateResponse | WarningResponse"
+  },
+  "POST /dlc/campaign": {
+    "request_model": "CampaignCreateRequest",
+    "response_model": "CampaignCreateResponse | WarningResponse"
+  },
+  "PUT /dlc/brand": {
+    "request_model": "BrandUpdateRequest",
+    "response_model": "BrandUpdateResponse | WarningResponse"
+  },
+  "PUT /dlc/campaign": {
+    "request_model": "CampaignUpdateRequest",
+    "response_model": "None | WarningResponse"
+  },
   "POST /account/callbackconfig": {
     "request_model": "CallbackConfigRequest",
     "response_model": "None | WarningResponse"

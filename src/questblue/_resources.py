@@ -7,6 +7,7 @@ from typing import Any, AsyncIterator, Iterator, List, Mapping, Optional, Union
 
 from . import account as account_models
 from . import did as did_models
+from . import dlc as dlc_models
 from . import international_did as international_did_models
 from . import sip_trunk as sip_models
 from . import sms as sms_models
@@ -731,29 +732,129 @@ class AsyncSMS(Resource):
 
 
 class DLC(Resource):
-    def list_brands(self, **params: Any) -> Any:
-        return self._request("GET", "/dlc/brand", params)
+    def list_brands(
+        self, request: Optional[dlc_models.BrandListRequest] = None
+    ) -> Union[dlc_models.BrandListResponse, WarningResponse]:
+        request = request or dlc_models.BrandListRequest()
+        return dlc_models.parse_dlc_response(
+            dlc_models.BrandListResponse,
+            self._request("GET", "/dlc/brand", request.to_request_params()),
+        )
 
-    def create_brand(self, **params: Any) -> Any:
-        return self._request("POST", "/dlc/brand", params)
+    def create_brand(
+        self, request: dlc_models.BrandCreateRequest
+    ) -> Union[dlc_models.BrandCreateResponse, WarningResponse]:
+        return dlc_models.parse_dlc_response(
+            dlc_models.BrandCreateResponse,
+            self._request("POST", "/dlc/brand", request.to_request_params()),
+        )
 
-    def update_brand(self, **params: Any) -> Any:
-        return self._request("PUT", "/dlc/brand", params)
+    def update_brand(
+        self, request: dlc_models.BrandUpdateRequest
+    ) -> Union[dlc_models.BrandUpdateResponse, WarningResponse]:
+        return dlc_models.parse_dlc_response(
+            dlc_models.BrandUpdateResponse,
+            self._request("PUT", "/dlc/brand", request.to_request_params()),
+        )
 
-    def delete_brand(self, **params: Any) -> Any:
-        return self._request("DELETE", "/dlc/brand", params)
+    def delete_brand(self, brand_id: int) -> Optional[WarningResponse]:
+        request = dlc_models.BrandDeleteRequest(id=brand_id)
+        return dlc_models.parse_empty_dlc_response(
+            self._request("DELETE", "/dlc/brand", request.to_request_params())
+        )
 
-    def list_campaigns(self, **params: Any) -> Any:
-        return self._request("GET", "/dlc/campaign", params)
+    def list_campaigns(
+        self, request: Optional[dlc_models.CampaignListRequest] = None
+    ) -> Union[dlc_models.CampaignListResponse, WarningResponse]:
+        request = request or dlc_models.CampaignListRequest()
+        return dlc_models.parse_dlc_response(
+            dlc_models.CampaignListResponse,
+            self._request("GET", "/dlc/campaign", request.to_request_params()),
+        )
 
-    def create_campaign(self, **params: Any) -> Any:
-        return self._request("POST", "/dlc/campaign", params)
+    def create_campaign(
+        self, request: dlc_models.CampaignCreateRequest
+    ) -> Union[dlc_models.CampaignCreateResponse, WarningResponse]:
+        return dlc_models.parse_dlc_response(
+            dlc_models.CampaignCreateResponse,
+            self._request("POST", "/dlc/campaign", request.to_request_params()),
+        )
 
-    def update_campaign(self, **params: Any) -> Any:
-        return self._request("PUT", "/dlc/campaign", params)
+    def update_campaign(
+        self, request: dlc_models.CampaignUpdateRequest
+    ) -> Optional[WarningResponse]:
+        return dlc_models.parse_empty_dlc_response(
+            self._request("PUT", "/dlc/campaign", request.to_request_params())
+        )
 
-    def delete_campaign(self, **params: Any) -> Any:
-        return self._request("DELETE", "/dlc/campaign", params)
+    def delete_campaign(self, campaign_id: int) -> Optional[WarningResponse]:
+        request = dlc_models.CampaignDeleteRequest(id=campaign_id)
+        return dlc_models.parse_empty_dlc_response(
+            self._request("DELETE", "/dlc/campaign", request.to_request_params())
+        )
+
+
+class AsyncDLC(Resource):
+    async def list_brands(
+        self, request: Optional[dlc_models.BrandListRequest] = None
+    ) -> Union[dlc_models.BrandListResponse, WarningResponse]:
+        request = request or dlc_models.BrandListRequest()
+        return dlc_models.parse_dlc_response(
+            dlc_models.BrandListResponse,
+            await self._request("GET", "/dlc/brand", request.to_request_params()),
+        )
+
+    async def create_brand(
+        self, request: dlc_models.BrandCreateRequest
+    ) -> Union[dlc_models.BrandCreateResponse, WarningResponse]:
+        return dlc_models.parse_dlc_response(
+            dlc_models.BrandCreateResponse,
+            await self._request("POST", "/dlc/brand", request.to_request_params()),
+        )
+
+    async def update_brand(
+        self, request: dlc_models.BrandUpdateRequest
+    ) -> Union[dlc_models.BrandUpdateResponse, WarningResponse]:
+        return dlc_models.parse_dlc_response(
+            dlc_models.BrandUpdateResponse,
+            await self._request("PUT", "/dlc/brand", request.to_request_params()),
+        )
+
+    async def delete_brand(self, brand_id: int) -> Optional[WarningResponse]:
+        request = dlc_models.BrandDeleteRequest(id=brand_id)
+        return dlc_models.parse_empty_dlc_response(
+            await self._request("DELETE", "/dlc/brand", request.to_request_params())
+        )
+
+    async def list_campaigns(
+        self, request: Optional[dlc_models.CampaignListRequest] = None
+    ) -> Union[dlc_models.CampaignListResponse, WarningResponse]:
+        request = request or dlc_models.CampaignListRequest()
+        return dlc_models.parse_dlc_response(
+            dlc_models.CampaignListResponse,
+            await self._request("GET", "/dlc/campaign", request.to_request_params()),
+        )
+
+    async def create_campaign(
+        self, request: dlc_models.CampaignCreateRequest
+    ) -> Union[dlc_models.CampaignCreateResponse, WarningResponse]:
+        return dlc_models.parse_dlc_response(
+            dlc_models.CampaignCreateResponse,
+            await self._request("POST", "/dlc/campaign", request.to_request_params()),
+        )
+
+    async def update_campaign(
+        self, request: dlc_models.CampaignUpdateRequest
+    ) -> Optional[WarningResponse]:
+        return dlc_models.parse_empty_dlc_response(
+            await self._request("PUT", "/dlc/campaign", request.to_request_params())
+        )
+
+    async def delete_campaign(self, campaign_id: int) -> Optional[WarningResponse]:
+        request = dlc_models.CampaignDeleteRequest(id=campaign_id)
+        return dlc_models.parse_empty_dlc_response(
+            await self._request("DELETE", "/dlc/campaign", request.to_request_params())
+        )
 
 
 class Fax(Resource):
@@ -928,13 +1029,14 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.international_dids = AsyncInternationalDIDs(client)
         client.sip_trunks = AsyncSIPTrunks(client)
         client.sms = AsyncSMS(client)
+        client.dlc = AsyncDLC(client)
     else:
         client.account = Account(client)
         client.dids = DIDs(client)
         client.international_dids = InternationalDIDs(client)
         client.sip_trunks = SIPTrunks(client)
         client.sms = SMS(client)
-    client.dlc = DLC(client)
+        client.dlc = DLC(client)
     client.fax = Fax(client)
     client.enterprise_fax = EnterpriseFax(client)
     client.reports = Reports(client)
