@@ -333,92 +333,92 @@
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": "deleteBrand",
       "path": "/dlc/brand",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "BrandDeleteRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "dlc.delete_brand",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getBrandsList",
       "path": "/dlc/brand",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "BrandListRequest",
+      "response_model": "BrandListResponse | WarningResponse",
       "sdk_method": "dlc.list_brands",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "createBrand",
       "path": "/dlc/brand",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "BrandCreateRequest",
+      "response_model": "BrandCreateResponse | WarningResponse",
       "sdk_method": "dlc.create_brand",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "updateBrand",
       "path": "/dlc/brand",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "BrandUpdateRequest",
+      "response_model": "BrandUpdateResponse | WarningResponse",
       "sdk_method": "dlc.update_brand",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": "deleteCampaign",
       "path": "/dlc/campaign",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "CampaignDeleteRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "dlc.delete_campaign",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getCampaigns",
       "path": "/dlc/campaign",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "CampaignListRequest",
+      "response_model": "CampaignListResponse | WarningResponse",
       "sdk_method": "dlc.list_campaigns",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "createCampaign",
       "path": "/dlc/campaign",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "CampaignCreateRequest",
+      "response_model": "CampaignCreateResponse | WarningResponse",
       "sdk_method": "dlc.create_campaign",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "updateCampaign",
       "path": "/dlc/campaign",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "CampaignUpdateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "dlc.update_campaign",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": false,
