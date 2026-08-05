@@ -23,8 +23,10 @@ must keep provider credentials server-side and enforce tenant authorization befo
   audit events, and isolation tests for any rebranded control plane.
 - CI enforces strict typing, linting, at least 90% branch coverage, sanitized recorded contracts,
   reproducible artifacts, dependency auditing, CodeQL, and cross-platform tests.
-- Releases use GitHub OIDC Trusted Publishing and build-provenance attestations. No package-index API
-  token is stored in the repository.
+- Releases use separate encrypted API-token secrets in protected TestPyPI and PyPI GitHub
+  environments. Tokens are never stored in the repository, and GitHub OIDC produces
+  build-provenance attestations for each artifact. Tokens should be project-scoped after the initial
+  package creation and rotated on suspected disclosure.
 - Repository secret scanning, push protection, private vulnerability reporting, Dependabot security
   updates, and automated security fixes are enabled.
 

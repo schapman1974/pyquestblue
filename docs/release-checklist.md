@@ -7,7 +7,7 @@
   90% branch coverage, reproducible builds, dependency audit, and CodeQL.
 - [ ] Test CPython 3.10–3.14 on Linux, macOS, and Windows.
 - [x] Complete the migration guide, API reference, changelog, security review, and support policy.
-- [ ] Publish `1.0.0rc1` to TestPyPI with Trusted Publishing and a GitHub build attestation.
+- [ ] Publish `1.0.0rc1` from the protected TestPyPI environment with a GitHub build attestation.
 - [ ] Verify a clean installation from TestPyPI.
 - [ ] Run the approved live read-only suite when the dedicated subaccount secrets are configured.
 

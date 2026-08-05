@@ -30,8 +30,9 @@ Every release is made from a reviewed, green commit on `main`:
    Python versions, cross-platform compatibility, dependency audit, and CodeQL.
 3. Build twice with a fixed `SOURCE_DATE_EPOCH` and compare artifact digests.
 4. Update the version, changelog, and migration guidance; publish a signed GitHub release tag.
-5. Trusted Publishing sends the artifacts to PyPI. GitHub records build-provenance attestations, and
-   the versioned documentation workflow publishes the matching docs.
+5. The protected `pypi` environment sends the artifacts to PyPI using its encrypted, scoped API
+   token. GitHub OIDC records build-provenance attestations, and the versioned documentation workflow
+   publishes the matching docs.
 6. Verify installation from PyPI and the GitHub attestation, then announce the release.
 
 TestPyPI is available through a manually approved workflow for release candidates. A failed or
