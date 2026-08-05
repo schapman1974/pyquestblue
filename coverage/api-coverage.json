@@ -806,59 +806,59 @@
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": null,
       "path": "/lnp",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "LNPDeleteRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "lnp.delete",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/lnp",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "LNPListRequest",
+      "response_model": "LNPListResponse | WarningResponse",
       "sdk_method": "lnp.list",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/lnp",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "LNPCreateRequest",
+      "response_model": "LNPCreateResponse | WarningResponse",
       "sdk_method": "lnp.create",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": null,
       "path": "/lnp",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "LNPUpdateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "lnp.update",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/lnp/check",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "LNPCheckRequest",
+      "response_model": "LNPCheckResponse | WarningResponse",
       "sdk_method": "lnp.check",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": false,

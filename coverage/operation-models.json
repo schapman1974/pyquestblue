@@ -243,6 +243,26 @@
     "request_model": "FaxHistoryRequest",
     "response_model": "FaxHistoryResponse | WarningResponse"
   },
+  "DELETE /lnp": {
+    "request_model": "LNPDeleteRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "GET /lnp": {
+    "request_model": "LNPListRequest",
+    "response_model": "LNPListResponse | WarningResponse"
+  },
+  "GET /lnp/check": {
+    "request_model": "LNPCheckRequest",
+    "response_model": "LNPCheckResponse | WarningResponse"
+  },
+  "POST /lnp": {
+    "request_model": "LNPCreateRequest",
+    "response_model": "LNPCreateResponse | WarningResponse"
+  },
+  "PUT /lnp": {
+    "request_model": "LNPUpdateRequest",
+    "response_model": "None | WarningResponse"
+  },
   "DELETE /fax2": {
     "request_model": "EnterpriseFaxDeleteRequest",
     "response_model": "None | WarningResponse"
