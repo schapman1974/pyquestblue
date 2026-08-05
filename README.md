@@ -117,6 +117,9 @@ off-net service, carrier lookup, PII-safe diagnostics, and compliance safeguards
 See [`docs/dlc.md`](docs/dlc.md) for 10DLC brand and campaign registration, lifecycle states,
 upstream rejection detail, protected registration data, and compliance safeguards.
 
+See [`docs/fax.md`](docs/fax.md) for Fax.Pro discovery, inventory lifecycle, validated document
+sending, email permissions, migration safeguards, and executable examples.
+
 Every resource method accepts the parameter names from QuestBlue's API documentation. List values
 are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API
 addition that has not yet received a convenience method, the authenticated transport remains usable:
