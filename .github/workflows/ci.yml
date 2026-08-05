@@ -27,6 +27,7 @@ jobs:
       - run: ruff format --check .
       - run: mypy
       - run: python scripts/check_contract_fixtures.py
+      - run: python scripts/check_white_label_matrix.py
       - run: python scripts/check_docs.py
       - run: python scripts/api_coverage.py --check
       - run: mkdocs build --strict

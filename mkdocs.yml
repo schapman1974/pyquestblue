@@ -48,6 +48,10 @@ nav:
       - Webhooks and integrations: integrations.md
       - Migration guides: migrations.md
       - Compatibility and releases: compatibility.md
+      - White-label architecture:
+          - Capability gaps: white-label.md
+          - Follow-on backlog: white-label-backlog.md
+          - ADR 0001 — Tenant isolation: adr/0001-tenant-isolation.md
   - Resources:
       - Account: account.md
       - Voice DIDs: dids.md
