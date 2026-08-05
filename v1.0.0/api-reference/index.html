@@ -1,0 +1,6720 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Typed sync and async Python SDK for the QuestBlue telecommunications API">
+      
+      
+      
+        <link rel="canonical" href="https://schapman1974.github.io/pyquestblue/latest/api-reference/">
+      
+      
+        <link rel="prev" href="../servers/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>API reference - pyquestblue</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="pyquestblue" class="md-header__button md-logo" aria-label="pyquestblue" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pyquestblue
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/schapman1974/pyquestblue" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    schapman1974/pyquestblue
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="pyquestblue" class="md-nav__button md-logo" aria-label="pyquestblue" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    pyquestblue
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/schapman1974/pyquestblue" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    schapman1974/pyquestblue
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transport/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transport and retries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models and pagination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contract-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contract testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../framework-recipes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Framework recipes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Webhooks and integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration guides
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compatibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compatibility and releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.0 release checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security-review-1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.0 security review
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    White-label architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    White-label architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../white-label/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability gaps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../white-label-backlog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow-on backlog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/0001-tenant-isolation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR 0001 — Tenant isolation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../account/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Account
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Voice DIDs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../international-dids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    International DIDs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sip-trunks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SIP trunks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SMS and MMS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dlc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10DLC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fax.Pro
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../enterprise-fax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    iFax Enterprise
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lnp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Number portability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../servers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VoIP servers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#clients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clients
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.QuestBlue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QuestBlue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="QuestBlue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.QuestBlue.paginate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        paginate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.QuestBlue.request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.AsyncQuestBlue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncQuestBlue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AsyncQuestBlue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.AsyncQuestBlue.paginate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        paginate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.AsyncQuestBlue.request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resource-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource operations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.Account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Account
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncAccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncAccount
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.DIDs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DIDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncDIDs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncDIDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.InternationalDIDs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InternationalDIDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncInternationalDIDs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncInternationalDIDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.SIPTrunks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SIPTrunks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncSIPTrunks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncSIPTrunks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.SMS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncSMS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncSMS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.DLC" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncDLC" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncDLC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.Fax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncFax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncFax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.EnterpriseFax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EnterpriseFax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncEnterpriseFax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncEnterpriseFax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.Reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncReports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncReports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.LNP" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LNP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncLNP" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncLNP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.Servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Servers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncServers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncServers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.BinaryResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BinaryResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.ErrorResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ErrorResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.OpenStringEnum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenStringEnum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.PageMetadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PageMetadata
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PageMetadata">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.PageMetadata.next_page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        next_page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.ParsedResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParsedResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.QuestBlueModel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QuestBlueModel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="QuestBlueModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.QuestBlueModel.extra_fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extra_fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.QuestBlueModel.to_request_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_request_params
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.ResponseEnvelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ResponseEnvelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.TimestampRange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TimestampRange
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.WarningResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WarningResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.model_parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        model_parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.parse_model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        account
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="account">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.AccountActionResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AccountActionResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.AccountToggle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AccountToggle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.CallbackSection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CallbackSection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.PaymentMethod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaymentMethod
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.PaymentMode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaymentMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.parse_account_response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_account_response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.parse_empty_account_response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_empty_account_response
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.did" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        did
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.international_did" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        international_did
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="international_did">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.international_did.InternationalCountriesRequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InternationalCountriesRequest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.international_did.InternationalDIDInventoryResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InternationalDIDInventoryResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.international_did.InternationalDIDListRequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InternationalDIDListRequest
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.sip_trunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sip_trunk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.sms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="sms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.sms.SMSModel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMSModel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.dlc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dlc
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="dlc">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.dlc.DLCModel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLCModel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.fax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fax
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="fax">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.fax.FaxModel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FaxModel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.enterprise_fax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enterprise_fax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reports
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="reports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.reports.FaxDownloadData" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FaxDownloadData
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FaxDownloadData">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.reports.FaxDownloadData.iter_bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter_bytes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.reports.export_rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        export_rows
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.lnp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lnp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        servers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.webhooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        webhooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="webhooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.InboundMessageEvent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InboundMessageEvent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.MessageStatusEvent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MessageStatusEvent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.UnknownWebhookEvent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UnknownWebhookEvent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookEnvelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookEnvelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookEvent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookEvent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookKind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookKind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookMessageType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookMessageType
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookVerificationRequired" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookVerificationRequired
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookVerifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookVerifier
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WebhookVerifier">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookVerifier.__call__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __call__
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.parse_webhook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_webhook
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#clients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clients
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.QuestBlue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QuestBlue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="QuestBlue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.QuestBlue.paginate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        paginate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.QuestBlue.request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.AsyncQuestBlue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncQuestBlue
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AsyncQuestBlue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.AsyncQuestBlue.paginate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        paginate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.AsyncQuestBlue.request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resource-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource operations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.Account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Account
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncAccount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncAccount
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.DIDs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DIDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncDIDs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncDIDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.InternationalDIDs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InternationalDIDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncInternationalDIDs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncInternationalDIDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.SIPTrunks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SIPTrunks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncSIPTrunks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncSIPTrunks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.SMS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncSMS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncSMS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.DLC" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncDLC" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncDLC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.Fax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncFax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncFax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.EnterpriseFax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EnterpriseFax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncEnterpriseFax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncEnterpriseFax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.Reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncReports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncReports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.LNP" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LNP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncLNP" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncLNP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.Servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Servers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue._resources.AsyncServers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncServers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.BinaryResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BinaryResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.ErrorResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ErrorResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.OpenStringEnum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenStringEnum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.PageMetadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PageMetadata
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PageMetadata">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.PageMetadata.next_page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        next_page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.ParsedResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParsedResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.QuestBlueModel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QuestBlueModel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="QuestBlueModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.QuestBlueModel.extra_fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extra_fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.QuestBlueModel.to_request_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_request_params
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.ResponseEnvelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ResponseEnvelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.TimestampRange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TimestampRange
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.WarningResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WarningResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.model_parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        model_parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.models.parse_model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        account
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="account">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.AccountActionResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AccountActionResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.AccountToggle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AccountToggle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.CallbackSection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CallbackSection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.PaymentMethod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaymentMethod
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.PaymentMode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaymentMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.parse_account_response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_account_response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.account.parse_empty_account_response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_empty_account_response
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.did" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        did
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.international_did" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        international_did
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="international_did">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.international_did.InternationalCountriesRequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InternationalCountriesRequest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.international_did.InternationalDIDInventoryResponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InternationalDIDInventoryResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.international_did.InternationalDIDListRequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InternationalDIDListRequest
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.sip_trunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sip_trunk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.sms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="sms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.sms.SMSModel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMSModel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.dlc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dlc
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="dlc">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.dlc.DLCModel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLCModel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.fax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fax
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="fax">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.fax.FaxModel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FaxModel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.enterprise_fax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enterprise_fax
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reports
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="reports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.reports.FaxDownloadData" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FaxDownloadData
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FaxDownloadData">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.reports.FaxDownloadData.iter_bytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter_bytes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.reports.export_rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        export_rows
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.lnp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lnp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        servers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questblue.webhooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        webhooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="webhooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.InboundMessageEvent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InboundMessageEvent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.MessageStatusEvent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MessageStatusEvent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.UnknownWebhookEvent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UnknownWebhookEvent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookEnvelope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookEnvelope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookEvent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookEvent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookKind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookKind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookMessageType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookMessageType
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookVerificationRequired" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookVerificationRequired
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookVerifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WebhookVerifier
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WebhookVerifier">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.WebhookVerifier.__call__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __call__
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questblue.webhooks.parse_webhook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_webhook
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="api-reference">API reference</h1>
+<p>Every public resource operation is listed below with its typed signature. Request and response models
+are exported from the top-level <code>questblue</code> package and documented in their resource modules.</p>
+<h2 id="clients">Clients</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue.QuestBlue" class="doc doc-heading">
+            <code>questblue.QuestBlue</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Synchronous client for the QuestBlue API.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="questblue.QuestBlue.paginate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">paginate</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_pages</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">item_parser</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Lazily iterate a paginated endpoint while retaining raw page access.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="questblue.QuestBlue.request" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raw_response</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Issue an authenticated request with safe, request-level overrides.</p>
+<p>Retries apply only to GET, HEAD, and OPTIONS. Mutating methods are always
+attempted once because QuestBlue does not document idempotency guarantees.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue.AsyncQuestBlue" class="doc doc-heading">
+            <code>questblue.AsyncQuestBlue</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Asynchronous client for the QuestBlue API.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="questblue.AsyncQuestBlue.paginate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">paginate</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_pages</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">item_parser</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">item_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Lazily iterate a paginated endpoint while retaining raw page access.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="questblue.AsyncQuestBlue.request" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raw_response</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Issue an authenticated request with sync-client-equivalent behavior.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="resource-operations">Resource operations</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.Account" class="doc doc-heading">
+            <code>questblue._resources.Account</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncAccount" class="doc doc-heading">
+            <code>questblue._resources.AsyncAccount</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.DIDs" class="doc doc-heading">
+            <code>questblue._resources.DIDs</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncDIDs" class="doc doc-heading">
+            <code>questblue._resources.AsyncDIDs</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.InternationalDIDs" class="doc doc-heading">
+            <code>questblue._resources.InternationalDIDs</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncInternationalDIDs" class="doc doc-heading">
+            <code>questblue._resources.AsyncInternationalDIDs</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.SIPTrunks" class="doc doc-heading">
+            <code>questblue._resources.SIPTrunks</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncSIPTrunks" class="doc doc-heading">
+            <code>questblue._resources.AsyncSIPTrunks</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.SMS" class="doc doc-heading">
+            <code>questblue._resources.SMS</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncSMS" class="doc doc-heading">
+            <code>questblue._resources.AsyncSMS</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.DLC" class="doc doc-heading">
+            <code>questblue._resources.DLC</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncDLC" class="doc doc-heading">
+            <code>questblue._resources.AsyncDLC</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.Fax" class="doc doc-heading">
+            <code>questblue._resources.Fax</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncFax" class="doc doc-heading">
+            <code>questblue._resources.AsyncFax</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.EnterpriseFax" class="doc doc-heading">
+            <code>questblue._resources.EnterpriseFax</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncEnterpriseFax" class="doc doc-heading">
+            <code>questblue._resources.AsyncEnterpriseFax</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.Reports" class="doc doc-heading">
+            <code>questblue._resources.Reports</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncReports" class="doc doc-heading">
+            <code>questblue._resources.AsyncReports</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.LNP" class="doc doc-heading">
+            <code>questblue._resources.LNP</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncLNP" class="doc doc-heading">
+            <code>questblue._resources.AsyncLNP</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.Servers" class="doc doc-heading">
+            <code>questblue._resources.Servers</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="questblue._resources.AsyncServers" class="doc doc-heading">
+            <code>questblue._resources.AsyncServers</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue._resources.Resource">Resource</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="models">Models</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.models" class="doc doc-heading">
+            <code>questblue.models</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Shared public models and validation primitives for QuestBlue resources.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.models.BinaryResponse" class="doc doc-heading">
+            <code>BinaryResponse</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>Binary response content plus useful transport metadata.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.models.ErrorResponse" class="doc doc-heading">
+            <code>ErrorResponse</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="QuestBlueModel (questblue.models.QuestBlueModel)" href="#questblue.models.QuestBlueModel">QuestBlueModel</a></code></p>
+
+
+
+        <p>Common application-error body, including QuestBlue HTTP 206 responses.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.models.OpenStringEnum" class="doc doc-heading">
+            <code>OpenStringEnum</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="str">str</span></code>, <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>String enum that preserves unknown values introduced by QuestBlue.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.models.PageMetadata" class="doc doc-heading">
+            <code>PageMetadata</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="QuestBlueModel (questblue.models.QuestBlueModel)" href="#questblue.models.QuestBlueModel">QuestBlueModel</a></code></p>
+
+
+
+        <p>Pagination metadata shared by collection endpoints.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="questblue.models.PageMetadata.next_page" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">next_page</span><span class="p">(</span><span class="n">item_count</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the next page number, or None when this is the final page.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.models.ParsedResponse" class="doc doc-heading">
+            <code>ParsedResponse</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Generic">Generic</span>[<span title="questblue.models.DataT">DataT</span>]</code></p>
+
+
+
+        <p>Validated data paired with the exact decoded upstream payload.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.models.QuestBlueModel" class="doc doc-heading">
+            <code>QuestBlueModel</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+
+
+        <p>Base model that remains compatible with fields QuestBlue adds later.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="questblue.models.QuestBlueModel.extra_fields" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">extra_fields</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Fields not yet known to this SDK release.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="questblue.models.QuestBlueModel.to_request_params" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_request_params</span><span class="p">()</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Serialize a request model using API aliases and JSON-compatible values.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.models.ResponseEnvelope" class="doc doc-heading">
+            <code>ResponseEnvelope</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="QuestBlueModel (questblue.models.QuestBlueModel)" href="#questblue.models.QuestBlueModel">QuestBlueModel</a></code>, <code><span title="typing.Generic">Generic</span>[<span title="questblue.models.DataT">DataT</span>]</code></p>
+
+
+
+        <p>Common QuestBlue response shape containing a data field.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.models.TimestampRange" class="doc doc-heading">
+            <code>TimestampRange</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="QuestBlueModel (questblue.models.QuestBlueModel)" href="#questblue.models.QuestBlueModel">QuestBlueModel</a></code></p>
+
+
+
+        <p>Inclusive Unix timestamp range used by reporting endpoints.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.models.WarningResponse" class="doc doc-heading">
+            <code>WarningResponse</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="QuestBlueModel (questblue.models.QuestBlueModel)" href="#questblue.models.QuestBlueModel">QuestBlueModel</a></code></p>
+
+
+
+        <p>QuestBlue's non-fatal HTTP 202 warning shape.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="questblue.models.model_parser" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">model_parser</span><span class="p">(</span><span class="n">model</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Create an item parser suitable for a paginator.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="questblue.models.parse_model" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parse_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Validate a payload while retaining the exact decoded response.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.account" class="doc doc-heading">
+            <code>questblue.account</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models and validation for QuestBlue User Account operations.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.account.AccountActionResponse" class="doc doc-heading">
+            <code>AccountActionResponse</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="ResponseEnvelope (questblue.models.ResponseEnvelope)" href="#questblue.models.ResponseEnvelope">ResponseEnvelope</a>[<span title="str">str</span>]</code></p>
+
+
+
+        <p>Success envelope returned by account alert mutations.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.account.AccountToggle" class="doc doc-heading">
+            <code>AccountToggle</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="str">str</span></code>, <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>Validated on/off value accepted by account mutations.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.account.CallbackSection" class="doc doc-heading">
+            <code>CallbackSection</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="str">str</span></code>, <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>Inventory area accepted by account callback configuration.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.account.PaymentMethod" class="doc doc-heading">
+            <code>PaymentMethod</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="OpenStringEnum (questblue.models.OpenStringEnum)" href="#questblue.models.OpenStringEnum">OpenStringEnum</a></code></p>
+
+
+
+        <p>Payment method reported by QuestBlue.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.account.PaymentMode" class="doc doc-heading">
+            <code>PaymentMode</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="str">str</span></code>, <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>Legacy refill payment mode retained by the upstream contract.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="questblue.account.parse_account_response" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parse_account_response</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Validate an account response while retaining upstream warning semantics.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="questblue.account.parse_empty_account_response" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parse_empty_account_response</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Validate an operation documented to return an empty success body.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.did" class="doc doc-heading">
+            <code>questblue.did</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models and validation for QuestBlue Voice DID operations.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.international_did" class="doc doc-heading">
+            <code>questblue.international_did</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models for QuestBlue International DID operations.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.international_did.InternationalCountriesRequest" class="doc doc-heading">
+            <code>InternationalCountriesRequest</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="QuestBlueModel (questblue.models.QuestBlueModel)" href="#questblue.models.QuestBlueModel">QuestBlueModel</a></code></p>
+
+
+
+        <p>Country discovery parameters.</p>
+<p>The upstream contract marks <code>did</code> required but describes it as a DID to move,
+which is inconsistent with a country-list operation. It remains optional until
+QuestBlue confirms that behavior.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.international_did.InternationalDIDInventoryResponse" class="doc doc-heading">
+            <code>InternationalDIDInventoryResponse</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue.did.DIDInventoryResponse">DIDInventoryResponse</span></code></p>
+
+
+
+        <p>Paged international DID inventory and configuration values.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.international_did.InternationalDIDListRequest" class="doc doc-heading">
+            <code>InternationalDIDListRequest</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue.did.DIDListRequest">DIDListRequest</span></code></p>
+
+
+
+        <p>Wildcard and page controls for international DID inventory.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.sip_trunk" class="doc doc-heading">
+            <code>questblue.sip_trunk</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models for QuestBlue SIP Trunk operations.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.sms" class="doc doc-heading">
+            <code>questblue.sms</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models and validation for QuestBlue SMS, MMS, and carrier operations.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.sms.SMSModel" class="doc doc-heading">
+            <code>SMSModel</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="QuestBlueModel (questblue.models.QuestBlueModel)" href="#questblue.models.QuestBlueModel">QuestBlueModel</a></code></p>
+
+
+
+        <p>Messaging model that suppresses PII values in validation diagnostics.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.dlc" class="doc doc-heading">
+            <code>questblue.dlc</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models and validation for QuestBlue 10DLC brand and campaign operations.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.dlc.DLCModel" class="doc doc-heading">
+            <code>DLCModel</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="QuestBlueModel (questblue.models.QuestBlueModel)" href="#questblue.models.QuestBlueModel">QuestBlueModel</a></code></p>
+
+
+
+        <p>10DLC model that suppresses registration data in validation diagnostics.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.fax" class="doc doc-heading">
+            <code>questblue.fax</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models, file helpers, and validation for QuestBlue Fax.Pro operations.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.fax.FaxModel" class="doc doc-heading">
+            <code>FaxModel</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="QuestBlueModel (questblue.models.QuestBlueModel)" href="#questblue.models.QuestBlueModel">QuestBlueModel</a></code></p>
+
+
+
+        <p>Fax model that suppresses document and account values in validation errors.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.enterprise_fax" class="doc doc-heading">
+            <code>questblue.enterprise_fax</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models and file helpers for QuestBlue iFax Enterprise operations.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.reports" class="doc doc-heading">
+            <code>questblue.reports</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models and export helpers for QuestBlue reporting operations.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.reports.FaxDownloadData" class="doc doc-heading">
+            <code>FaxDownloadData</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="questblue.reports.ReportModel">ReportModel</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="questblue.reports.FaxDownloadData.iter_bytes" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">iter_bytes</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">64</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Incrementally decode base64 without duplicating it as one bytes object.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="questblue.reports.export_rows" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">export_rows</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return standard dictionaries suitable for csv.DictWriter or pandas.DataFrame.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.lnp" class="doc doc-heading">
+            <code>questblue.lnp</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models and bill helpers for QuestBlue number portability.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.servers" class="doc doc-heading">
+            <code>questblue.servers</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Typed models for QuestBlue VoIP server operations.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="questblue.webhooks" class="doc doc-heading">
+            <code>questblue.webhooks</code>
+
+
+</h2>
+
+    <div class="doc doc-contents first">
+
+        <p>Framework-neutral models and parsing for QuestBlue messaging webhooks.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.webhooks.InboundMessageEvent" class="doc doc-heading">
+            <code>InboundMessageEvent</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="WebhookEvent (questblue.webhooks.WebhookEvent)" href="#questblue.webhooks.WebhookEvent">WebhookEvent</a></code></p>
+
+
+
+        <p>An inbound SMS or MMS callback.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.webhooks.MessageStatusEvent" class="doc doc-heading">
+            <code>MessageStatusEvent</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="WebhookEvent (questblue.webhooks.WebhookEvent)" href="#questblue.webhooks.WebhookEvent">WebhookEvent</a></code></p>
+
+
+
+        <p>An outbound message delivery-status callback.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.webhooks.UnknownWebhookEvent" class="doc doc-heading">
+            <code>UnknownWebhookEvent</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="WebhookEvent (questblue.webhooks.WebhookEvent)" href="#questblue.webhooks.WebhookEvent">WebhookEvent</a></code></p>
+
+
+
+        <p>A forward-compatible callback whose shape is not yet published.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.webhooks.WebhookEnvelope" class="doc doc-heading">
+            <code>WebhookEnvelope</code>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+
+
+        <p>A parsed event plus content-free processing metadata.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.webhooks.WebhookEvent" class="doc doc-heading">
+            <code>WebhookEvent</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="QuestBlueModel (questblue.models.QuestBlueModel)" href="#questblue.models.QuestBlueModel">QuestBlueModel</a></code></p>
+
+
+
+        <p>Base callback model that preserves fields added by QuestBlue.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.webhooks.WebhookKind" class="doc doc-heading">
+            <code>WebhookKind</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="str">str</span></code>, <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>Webhook shapes published in the QuestBlue 2.3.2 contract.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.webhooks.WebhookMessageType" class="doc doc-heading">
+            <code>WebhookMessageType</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="OpenStringEnum (questblue.models.OpenStringEnum)" href="#questblue.models.OpenStringEnum">OpenStringEnum</a></code></p>
+
+
+
+        <p>Published inbound message types, open to future provider values.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.webhooks.WebhookVerificationRequired" class="doc doc-heading">
+            <code>WebhookVerificationRequired</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="ValueError">ValueError</span></code></p>
+
+
+
+        <p>Raised when a framework helper is used without an explicit verifier.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="questblue.webhooks.WebhookVerifier" class="doc doc-heading">
+            <code>WebhookVerifier</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Protocol">Protocol</span></code></p>
+
+
+
+        <p>Application-defined callback verifier.</p>
+<p>QuestBlue does not publish a callback signature scheme. Implementations can
+enforce a reverse-proxy secret, mTLS identity, IP policy, or another control
+owned by the receiving application. They must raise on verification failure.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="questblue.webhooks.WebhookVerifier.__call__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__call__</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Verify the exact request bytes or raise an exception.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="questblue.webhooks.parse_webhook" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">parse_webhook</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verifier</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Verify and parse a QuestBlue callback without discarding unknown fields.</p>
+<p>The returned <code>verified</code> flag is true only when the supplied verifier
+completes successfully. Parsing alone makes no authenticity claim.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.indexes", "navigation.instant", "navigation.sections", "navigation.top", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
