@@ -1,0 +1,60 @@
+{
+  "classes": [
+    {
+      "evidence": ["coverage/api-coverage.json", "tests/"],
+      "name": "unit",
+      "risk": "offline",
+      "scope": "All 103 pinned OpenAPI operations, sync/async routing, models, validation, errors",
+      "status": "verified"
+    },
+    {
+      "evidence": [
+        "tests/fixtures/contracts/account_balance.json",
+        "tests/fixtures/contracts/call_history_detail.json",
+        "tests/fixtures/contracts/server_inventory.json",
+        "tests/test_recorded_contracts.py"
+      ],
+      "name": "recorded",
+      "risk": "offline",
+      "scope": "Representative account, detailed CDR, and server response compatibility",
+      "status": "verified"
+    },
+    {
+      "evidence": ["tests/live/test_read_only.py", ".github/workflows/live-read-only.yml"],
+      "name": "live-read-only",
+      "risk": "production-read",
+      "scope": "Account balance/details plus DID and server inventory on a dedicated subaccount",
+      "status": "unverified-pending-credentials"
+    },
+    {
+      "evidence": [],
+      "name": "live-reversible",
+      "risk": "production-write",
+      "scope": "Non-billable settings changes with captured before-state and mandatory rollback",
+      "status": "unverified-not-automated"
+    },
+    {
+      "evidence": ["tests/live/test_did_lifecycle.py"],
+      "name": "live-billable",
+      "risk": "production-billable",
+      "scope": "DID order, inventory, update, and release lifecycle",
+      "status": "unverified-manual-only"
+    },
+    {
+      "evidence": [],
+      "name": "live-compliance-sensitive",
+      "risk": "regulated-production-write",
+      "scope": "10DLC and LNP submissions",
+      "status": "unverified-manual-only"
+    },
+    {
+      "evidence": [],
+      "name": "live-destructive",
+      "risk": "destructive-production-write",
+      "scope": "Server deletion/restore, backup removal, and active service deletion",
+      "status": "unverified-manual-only"
+    }
+  ],
+  "contract_version": 1,
+  "generated_for": "QuestBlue OpenAPI 2.3.2"
+}

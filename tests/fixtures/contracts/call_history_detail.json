@@ -1,0 +1,19 @@
+{
+  "current_page": 1,
+  "data": [
+    {
+      "billed_min": "2",
+      "call_duration_min": "1.25",
+      "call_id": 1001,
+      "call_status": "ok",
+      "call_type": "Inbound Call",
+      "cost": "0.02",
+      "did": "12025550100",
+      "did_to": "12025550101",
+      "start_time": "2026-01-15T12:00:00Z",
+      "trunk": "fixture-primary"
+    }
+  ],
+  "total": 1,
+  "total_pages": 1
+}

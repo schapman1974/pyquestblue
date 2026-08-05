@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "allowed_ip": [
+        "192.0.2.10",
+        "2001:db8::10"
+      ],
+      "ordered_by": "2026-01-15",
+      "server_id": 1001,
+      "status": "active",
+      "type": "small"
+    }
+  ],
+  "total": 1
+}

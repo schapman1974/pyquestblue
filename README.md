@@ -136,6 +136,9 @@ bill uploads, sensitive-data handling, and production-only safeguards.
 See [`docs/servers.md`](docs/servers.md) for typed server provisioning, IP allowlists, upgrades,
 backup schedules, restoration, and destructive/billable safeguards.
 
+See [`docs/contract-testing.md`](docs/contract-testing.md) for sanitized recorded fixtures,
+production risk classes, explicit live-test gates, and the verification matrix.
+
 Every resource method accepts the parameter names from QuestBlue's API documentation. List values
 are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API
 addition that has not yet received a convenience method, the authenticated transport remains usable:

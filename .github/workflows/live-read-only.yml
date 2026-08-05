@@ -1,0 +1,34 @@
+name: Live read-only contracts
+
+on:
+  schedule:
+    - cron: "17 10 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: questblue-live-read-only
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    environment: questblue-live-readonly
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: python -m pip install -e '.[dev]'
+      - name: Run production read-only smoke tests
+        env:
+          QUESTBLUE_LIVE_BASE_URL: ${{ secrets.QUESTBLUE_LIVE_BASE_URL }}
+          QUESTBLUE_LIVE_PASSWORD: ${{ secrets.QUESTBLUE_LIVE_PASSWORD }}
+          QUESTBLUE_LIVE_SECURITY_KEY: ${{ secrets.QUESTBLUE_LIVE_SECURITY_KEY }}
+          QUESTBLUE_LIVE_USERNAME: ${{ secrets.QUESTBLUE_LIVE_USERNAME }}
+          QUESTBLUE_RUN_LIVE_READ_ONLY: YES_I_ACCEPT_PRODUCTION_READS
+        run: pytest -q tests/live/test_read_only.py --no-cov

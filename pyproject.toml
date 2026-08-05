@@ -49,7 +49,15 @@ addopts = "--strict-markers --cov=questblue --cov-report=term-missing"
 testpaths = ["tests"]
 asyncio_mode = "auto"
 pythonpath = ["."]
-markers = ["live: opt-in tests that can contact a real provider sandbox"]
+markers = [
+  "recorded: deterministic tests using sanitized offline contract fixtures",
+  "live: opt-in tests that can contact a real provider account",
+  "live_read_only: production reads against a dedicated subaccount",
+  "live_reversible: production writes that capture and restore prior state",
+  "live_billable: explicitly acknowledged operations that may create charges",
+  "live_compliance_sensitive: regulated registration or portability operations",
+  "live_destructive: operations that delete or replace production state",
+]
 
 [tool.coverage.run]
 branch = true
