@@ -53,14 +53,18 @@ result = qb.sms.send(
 )
 ```
 
-Retrieve call history:
+Retrieve typed call history:
 
 ```python
+from questblue import CallHistoryRequest, Period
+
 calls = qb.reports.call_history(
-    period="thismonth",
-    trunk=["primary", "backup"],
-    timezone="America/New_York",
-    per_page=5000,
+    CallHistoryRequest(
+        period=Period.THIS_MONTH,
+        trunk=["primary", "backup"],
+        timezone="America/New_York",
+        per_page=5000,
+    )
 )
 ```
 
@@ -122,6 +126,9 @@ sending, email permissions, migration safeguards, and executable examples.
 
 See [`docs/enterprise-fax.md`](docs/enterprise-fax.md) for typed iFax Enterprise account, group,
 user, permission, upload, multi-file send, and lifecycle workflows.
+
+See [`docs/reports.md`](docs/reports.md) for typed voice and fax history, large-result iteration,
+incremental fax downloads, and CSV/pandas-friendly exports.
 
 Every resource method accepts the parameter names from QuestBlue's API documentation. List values
 are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API

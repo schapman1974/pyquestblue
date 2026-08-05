@@ -161,8 +161,8 @@
       "method": "GET",
       "operation_id": null,
       "path": "/callhistory",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "CallHistoryRequest",
+      "response_model": "CallHistoryResponse | WarningResponse",
       "sdk_method": "reports.call_history",
       "sync_async": true,
       "unit_tested": true
@@ -784,26 +784,26 @@
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/faxdownload",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxDownloadRequest",
+      "response_model": "FaxDownloadResponse | WarningResponse",
       "sdk_method": "reports.download_fax",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/faxhistory",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxHistoryRequest",
+      "response_model": "FaxHistoryResponse | WarningResponse",
       "sdk_method": "reports.fax_history",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": false,
