@@ -181,6 +181,14 @@ def test_repository_coverage_maps_every_pinned_operation() -> None:
     assert len(dlc_operations) == 8
     assert all(operation["response_model"] for operation in dlc_operations)
     assert all(operation["unit_tested"] for operation in dlc_operations)
+    fax_operations = [
+        operation
+        for operation in report["operations"]
+        if operation["path"] == "/fax" or operation["path"].startswith("/fax/")
+    ]
+    assert len(fax_operations) == 12
+    assert all(operation["response_model"] for operation in fax_operations)
+    assert all(operation["unit_tested"] for operation in fax_operations)
     assert render(report).endswith("\n")
 
 

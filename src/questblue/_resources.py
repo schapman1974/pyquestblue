@@ -8,6 +8,7 @@ from typing import Any, AsyncIterator, Iterator, List, Mapping, Optional, Union
 from . import account as account_models
 from . import did as did_models
 from . import dlc as dlc_models
+from . import fax as fax_models
 from . import international_did as international_did_models
 from . import sip_trunk as sip_models
 from . import sms as sms_models
@@ -858,41 +859,165 @@ class AsyncDLC(Resource):
 
 
 class Fax(Resource):
-    def states(self) -> Any:
-        return self._request("GET", "/fax/states")
+    def states(self) -> Union[fax_models.FaxStatesResponse, WarningResponse]:
+        return fax_models.parse_fax_response(
+            fax_models.FaxStatesResponse, self._request("GET", "/fax/states")
+        )
 
-    def rate_centers(self, **params: Any) -> Any:
-        return self._request("GET", "/fax/ratecenters", params)
+    def rate_centers(self, state: str) -> Union[fax_models.FaxRateCentersResponse, WarningResponse]:
+        request = fax_models.FaxRateCentersRequest(state=state)
+        return fax_models.parse_fax_response(
+            fax_models.FaxRateCentersResponse,
+            self._request("GET", "/fax/ratecenters", request.to_request_params()),
+        )
 
-    def available(self, **params: Any) -> Any:
-        return self._request("GET", "/fax/available", params)
+    def available(
+        self, request: fax_models.FaxAvailabilityRequest
+    ) -> Union[fax_models.AvailableFaxDIDsResponse, WarningResponse]:
+        return fax_models.parse_fax_response(
+            fax_models.AvailableFaxDIDsResponse,
+            self._request("GET", "/fax/available", request.to_request_params()),
+        )
 
-    def create(self, **params: Any) -> Any:
-        return self._request("POST", "/fax", params)
+    def create(self, request: fax_models.FaxOrderRequest) -> Optional[WarningResponse]:
+        return fax_models.parse_empty_fax_response(
+            self._request("POST", "/fax", request.to_request_params())
+        )
 
-    def list(self, **params: Any) -> Any:
-        return self._request("GET", "/fax", params)
+    def list(
+        self, request: Optional[fax_models.FaxListRequest] = None
+    ) -> Union[fax_models.FaxInventoryResponse, WarningResponse]:
+        request = request or fax_models.FaxListRequest()
+        return fax_models.parse_fax_response(
+            fax_models.FaxInventoryResponse,
+            self._request("GET", "/fax", request.to_request_params()),
+        )
 
-    def update(self, **params: Any) -> Any:
-        return self._request("PUT", "/fax", params)
+    def update(self, request: fax_models.FaxUpdateRequest) -> Optional[WarningResponse]:
+        return fax_models.parse_empty_fax_response(
+            self._request("PUT", "/fax", request.to_request_params())
+        )
 
-    def delete(self, **params: Any) -> Any:
-        return self._request("DELETE", "/fax", params)
+    def delete(self, did: int) -> Optional[WarningResponse]:
+        request = fax_models.FaxDeleteRequest(did=did)
+        return fax_models.parse_empty_fax_response(
+            self._request("DELETE", "/fax", request.to_request_params())
+        )
 
-    def send(self, **params: Any) -> Any:
-        return self._request("POST", "/fax/send", params)
+    def send(
+        self, request: fax_models.FaxSendRequest
+    ) -> Union[fax_models.FaxSendResponse, WarningResponse]:
+        return fax_models.parse_fax_response(
+            fax_models.FaxSendResponse,
+            self._request("POST", "/fax/send", request.to_request_params()),
+        )
 
-    def move_to_voice(self, **params: Any) -> Any:
-        return self._request("PUT", "/fax/move2voice", params)
+    def move_to_voice(self, did: int) -> Optional[WarningResponse]:
+        request = fax_models.FaxMoveToVoiceRequest(did=did)
+        return fax_models.parse_empty_fax_response(
+            self._request("PUT", "/fax/move2voice", request.to_request_params())
+        )
 
-    def pause(self, **params: Any) -> Any:
-        return self._request("PUT", "/fax/pause", params)
+    def pause(self, request: fax_models.FaxPauseRequest) -> Optional[WarningResponse]:
+        return fax_models.parse_empty_fax_response(
+            self._request("PUT", "/fax/pause", request.to_request_params())
+        )
 
-    def set_email_permission(self, **params: Any) -> Any:
-        return self._request("POST", "/fax/email", params)
+    def set_email_permission(
+        self, request: fax_models.FaxEmailPermissionRequest
+    ) -> Optional[WarningResponse]:
+        return fax_models.parse_empty_fax_response(
+            self._request("POST", "/fax/email", request.to_request_params())
+        )
 
-    def delete_email_permission(self, **params: Any) -> Any:
-        return self._request("DELETE", "/fax/email", params)
+    def delete_email_permission(
+        self, request: fax_models.FaxEmailPermissionDeleteRequest
+    ) -> Optional[WarningResponse]:
+        return fax_models.parse_empty_fax_response(
+            self._request("DELETE", "/fax/email", request.to_request_params())
+        )
+
+
+class AsyncFax(Resource):
+    async def states(self) -> Union[fax_models.FaxStatesResponse, WarningResponse]:
+        return fax_models.parse_fax_response(
+            fax_models.FaxStatesResponse, await self._request("GET", "/fax/states")
+        )
+
+    async def rate_centers(
+        self, state: str
+    ) -> Union[fax_models.FaxRateCentersResponse, WarningResponse]:
+        request = fax_models.FaxRateCentersRequest(state=state)
+        return fax_models.parse_fax_response(
+            fax_models.FaxRateCentersResponse,
+            await self._request("GET", "/fax/ratecenters", request.to_request_params()),
+        )
+
+    async def available(
+        self, request: fax_models.FaxAvailabilityRequest
+    ) -> Union[fax_models.AvailableFaxDIDsResponse, WarningResponse]:
+        return fax_models.parse_fax_response(
+            fax_models.AvailableFaxDIDsResponse,
+            await self._request("GET", "/fax/available", request.to_request_params()),
+        )
+
+    async def create(self, request: fax_models.FaxOrderRequest) -> Optional[WarningResponse]:
+        return fax_models.parse_empty_fax_response(
+            await self._request("POST", "/fax", request.to_request_params())
+        )
+
+    async def list(
+        self, request: Optional[fax_models.FaxListRequest] = None
+    ) -> Union[fax_models.FaxInventoryResponse, WarningResponse]:
+        request = request or fax_models.FaxListRequest()
+        return fax_models.parse_fax_response(
+            fax_models.FaxInventoryResponse,
+            await self._request("GET", "/fax", request.to_request_params()),
+        )
+
+    async def update(self, request: fax_models.FaxUpdateRequest) -> Optional[WarningResponse]:
+        return fax_models.parse_empty_fax_response(
+            await self._request("PUT", "/fax", request.to_request_params())
+        )
+
+    async def delete(self, did: int) -> Optional[WarningResponse]:
+        request = fax_models.FaxDeleteRequest(did=did)
+        return fax_models.parse_empty_fax_response(
+            await self._request("DELETE", "/fax", request.to_request_params())
+        )
+
+    async def send(
+        self, request: fax_models.FaxSendRequest
+    ) -> Union[fax_models.FaxSendResponse, WarningResponse]:
+        return fax_models.parse_fax_response(
+            fax_models.FaxSendResponse,
+            await self._request("POST", "/fax/send", request.to_request_params()),
+        )
+
+    async def move_to_voice(self, did: int) -> Optional[WarningResponse]:
+        request = fax_models.FaxMoveToVoiceRequest(did=did)
+        return fax_models.parse_empty_fax_response(
+            await self._request("PUT", "/fax/move2voice", request.to_request_params())
+        )
+
+    async def pause(self, request: fax_models.FaxPauseRequest) -> Optional[WarningResponse]:
+        return fax_models.parse_empty_fax_response(
+            await self._request("PUT", "/fax/pause", request.to_request_params())
+        )
+
+    async def set_email_permission(
+        self, request: fax_models.FaxEmailPermissionRequest
+    ) -> Optional[WarningResponse]:
+        return fax_models.parse_empty_fax_response(
+            await self._request("POST", "/fax/email", request.to_request_params())
+        )
+
+    async def delete_email_permission(
+        self, request: fax_models.FaxEmailPermissionDeleteRequest
+    ) -> Optional[WarningResponse]:
+        return fax_models.parse_empty_fax_response(
+            await self._request("DELETE", "/fax/email", request.to_request_params())
+        )
 
 
 class EnterpriseFax(Resource):
@@ -1030,6 +1155,7 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.sip_trunks = AsyncSIPTrunks(client)
         client.sms = AsyncSMS(client)
         client.dlc = AsyncDLC(client)
+        client.fax = AsyncFax(client)
     else:
         client.account = Account(client)
         client.dids = DIDs(client)
@@ -1037,7 +1163,7 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.sip_trunks = SIPTrunks(client)
         client.sms = SMS(client)
         client.dlc = DLC(client)
-    client.fax = Fax(client)
+        client.fax = Fax(client)
     client.enterprise_fax = EnterpriseFax(client)
     client.reports = Reports(client)
     client.lnp = LNP(client)

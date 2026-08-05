@@ -421,136 +421,136 @@
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": "deleteFaxDID",
       "path": "/fax",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxDeleteRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "fax.delete",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getFaxDIDs",
       "path": "/fax",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxListRequest",
+      "response_model": "FaxInventoryResponse | WarningResponse",
       "sdk_method": "fax.list",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "orderFaxDID",
       "path": "/fax",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxOrderRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "fax.create",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "updateFaxDID",
       "path": "/fax",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxUpdateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "fax.update",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getAvailableFaxDIDs",
       "path": "/fax/available",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxAvailabilityRequest",
+      "response_model": "AvailableFaxDIDsResponse | WarningResponse",
       "sdk_method": "fax.available",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": null,
       "path": "/fax/email",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxEmailPermissionDeleteRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "fax.delete_email_permission",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/fax/email",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxEmailPermissionRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "fax.set_email_permission",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": null,
       "path": "/fax/move2voice",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxMoveToVoiceRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "fax.move_to_voice",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": null,
       "path": "/fax/pause",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxPauseRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "fax.pause",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getFaxRatecenters",
       "path": "/fax/ratecenters",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxRateCentersRequest",
+      "response_model": "FaxRateCentersResponse | WarningResponse",
       "sdk_method": "fax.rate_centers",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "",
       "path": "/fax/send",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "FaxSendRequest",
+      "response_model": "FaxSendResponse | WarningResponse",
       "sdk_method": "fax.send",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getFaxStates",
       "path": "/fax/states",
       "request_model": null,
-      "response_model": null,
+      "response_model": "FaxStatesResponse | WarningResponse",
       "sdk_method": "fax.states",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": false,

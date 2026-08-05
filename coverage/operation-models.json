@@ -183,6 +183,54 @@
     "request_model": "CampaignUpdateRequest",
     "response_model": "None | WarningResponse"
   },
+  "DELETE /fax": {
+    "request_model": "FaxDeleteRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "DELETE /fax/email": {
+    "request_model": "FaxEmailPermissionDeleteRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "GET /fax": {
+    "request_model": "FaxListRequest",
+    "response_model": "FaxInventoryResponse | WarningResponse"
+  },
+  "GET /fax/available": {
+    "request_model": "FaxAvailabilityRequest",
+    "response_model": "AvailableFaxDIDsResponse | WarningResponse"
+  },
+  "GET /fax/ratecenters": {
+    "request_model": "FaxRateCentersRequest",
+    "response_model": "FaxRateCentersResponse | WarningResponse"
+  },
+  "GET /fax/states": {
+    "request_model": null,
+    "response_model": "FaxStatesResponse | WarningResponse"
+  },
+  "POST /fax": {
+    "request_model": "FaxOrderRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "POST /fax/email": {
+    "request_model": "FaxEmailPermissionRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "POST /fax/send": {
+    "request_model": "FaxSendRequest",
+    "response_model": "FaxSendResponse | WarningResponse"
+  },
+  "PUT /fax": {
+    "request_model": "FaxUpdateRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /fax/move2voice": {
+    "request_model": "FaxMoveToVoiceRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /fax/pause": {
+    "request_model": "FaxPauseRequest",
+    "response_model": "None | WarningResponse"
+  },
   "POST /account/callbackconfig": {
     "request_model": "CallbackConfigRequest",
     "response_model": "None | WarningResponse"
