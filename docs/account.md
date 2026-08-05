@@ -74,8 +74,10 @@ status = qb.account.callback_status()
 
 Pass `"", ""` to `qb.account.configure_callback()` to unset the callback, matching the upstream
 contract. Callback URLs must otherwise be absolute HTTP(S) URLs. The SDK configures the destination
-only; callback payload authentication and delivery semantics still require confirmation from
-QuestBlue before a public webhook verifier can be added.
+only. QuestBlue's public 2.3.2 contract does not specify callback authentication, retries, ordering,
+or duplicate-delivery behavior. The webhook helpers therefore make no authenticity claim and expose
+a stable fingerprint for application-level deduplication. See
+[Webhooks and integrations](integrations.md) for the explicit trust boundary.
 
 ## Async usage
 
