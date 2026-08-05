@@ -2219,6 +2219,7 @@ source = { editable = "." }
 dependencies = [
     { name = "httpx" },
     { name = "pydantic" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
 
 [package.optional-dependencies]
@@ -2267,6 +2268,7 @@ requires-dist = [
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=5.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.9" },
     { name = "twine", marker = "extra == 'dev'", specifier = ">=5.1" },
+    { name = "tzdata", marker = "sys_platform == 'win32'", specifier = ">=2024.1" },
 ]
 provides-extras = ["django", "fastapi", "dev"]
 

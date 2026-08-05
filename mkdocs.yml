@@ -47,6 +47,7 @@ nav:
       - Framework recipes: framework-recipes.md
       - Webhooks and integrations: integrations.md
       - Migration guides: migrations.md
+      - Compatibility and releases: compatibility.md
   - Resources:
       - Account: account.md
       - Voice DIDs: dids.md

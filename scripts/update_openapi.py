@@ -28,15 +28,21 @@ class ContractError(RuntimeError):
 
 def load_source(source: str) -> Dict[str, Any]:
     """Load JSON from an HTTPS URL or local path."""
-    parsed = urlparse(source)
-    if parsed.scheme == "https":
-        request = urllib.request.Request(source, headers={"User-Agent": "pyquestblue-spec-tool"})
-        with urllib.request.urlopen(request, timeout=30) as response:
-            payload = response.read()
-    elif parsed.scheme:
-        raise ContractError("Remote OpenAPI sources must use HTTPS")
+    local_path = Path(source)
+    if local_path.exists():
+        payload = local_path.read_bytes()
     else:
-        payload = Path(source).read_bytes()
+        parsed = urlparse(source)
+        if parsed.scheme == "https":
+            request = urllib.request.Request(
+                source, headers={"User-Agent": "pyquestblue-spec-tool"}
+            )
+            with urllib.request.urlopen(request, timeout=30) as response:
+                payload = response.read()
+        elif parsed.scheme:
+            raise ContractError("Remote OpenAPI sources must use HTTPS")
+        else:
+            payload = local_path.read_bytes()
     try:
         document = json.loads(payload)
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
