@@ -17,6 +17,10 @@ class QuestBlueConnectionError(QuestBlueError):
     """The QuestBlue API could not be reached."""
 
 
+class QuestBluePaginationError(QuestBlueError):
+    """QuestBlue returned unsafe or inconsistent pagination metadata."""
+
+
 class QuestBlueAPIError(QuestBlueError):
     """QuestBlue returned an unsuccessful API response."""
 

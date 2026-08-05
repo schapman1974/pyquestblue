@@ -33,3 +33,9 @@ The pinned upstream contract lives in [`spec/`](spec/). Check for upstream chang
 `python scripts/update_openapi.py --check`. When it changes, update it with
 `python scripts/update_openapi.py`, regenerate `coverage/api-coverage.json`, and review the semantic
 operation/schema diff as part of the pull request.
+
+## Models and pagination
+
+Public models inherit from `QuestBlueModel`, preserve unknown response fields, and use open enums
+where QuestBlue may introduce values. Resource-specific models and pagination helpers follow the
+design and test checklist in [`docs/modeling.md`](docs/modeling.md).
