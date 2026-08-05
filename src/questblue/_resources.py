@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-import base64
 from typing import Any, AsyncIterator, Iterator, List, Mapping, Optional, Union
 
 from . import account as account_models
 from . import did as did_models
 from . import dlc as dlc_models
+from . import enterprise_fax as enterprise_fax_models
 from . import fax as fax_models
 from . import international_did as international_did_models
 from . import sip_trunk as sip_models
@@ -1021,69 +1021,319 @@ class AsyncFax(Resource):
 
 
 class EnterpriseFax(Resource):
-    def list(self, **params: Any) -> Any:
-        return self._request("GET", "/fax2", params)
+    def list(
+        self, request: Optional[enterprise_fax_models.EnterpriseFaxListRequest] = None
+    ) -> Union[enterprise_fax_models.EnterpriseFaxInventoryResponse, WarningResponse]:
+        request = request or enterprise_fax_models.EnterpriseFaxListRequest()
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxInventoryResponse,
+            self._request("GET", "/fax2", request.to_request_params()),
+        )
 
-    def create(self, **params: Any) -> Any:
-        return self._request("POST", "/fax2", params)
+    def create(
+        self, request: enterprise_fax_models.EnterpriseFaxOrderRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("POST", "/fax2", request.to_request_params())
+        )
 
-    def update(self, **params: Any) -> Any:
-        return self._request("PUT", "/fax2", params)
+    def update(
+        self, request: enterprise_fax_models.EnterpriseFaxUpdateRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("PUT", "/fax2", request.to_request_params())
+        )
 
-    def delete(self, **params: Any) -> Any:
-        return self._request("DELETE", "/fax2", params)
+    def delete(self, did: int) -> Optional[WarningResponse]:
+        request = enterprise_fax_models.EnterpriseFaxDeleteRequest(did=did)
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("DELETE", "/fax2", request.to_request_params())
+        )
 
-    def list_emails(self, **params: Any) -> Any:
-        return self._request("GET", "/fax2/email", params)
+    def list_emails(
+        self, request: Optional[enterprise_fax_models.EnterpriseFaxEmailListRequest] = None
+    ) -> Union[enterprise_fax_models.EnterpriseFaxEmailListResponse, WarningResponse]:
+        request = request or enterprise_fax_models.EnterpriseFaxEmailListRequest()
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxEmailListResponse,
+            self._request("GET", "/fax2/email", request.to_request_params()),
+        )
 
-    def set_email_permission(self, **params: Any) -> Any:
-        return self._request("POST", "/fax2/email", params)
+    def set_email_permission(
+        self, request: enterprise_fax_models.EnterpriseFaxEmailPermissionRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("POST", "/fax2/email", request.to_request_params())
+        )
 
-    def delete_email_permission(self, **params: Any) -> Any:
-        return self._request("DELETE", "/fax2/email", params)
+    def delete_email_permission(
+        self, request: enterprise_fax_models.EnterpriseFaxEmailPermissionDeleteRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("DELETE", "/fax2/email", request.to_request_params())
+        )
 
-    def list_groups(self, **params: Any) -> Any:
-        return self._request("GET", "/fax2/group", params)
+    def list_groups(
+        self, request: Optional[enterprise_fax_models.EnterpriseFaxGroupListRequest] = None
+    ) -> Union[enterprise_fax_models.EnterpriseFaxGroupListResponse, WarningResponse]:
+        request = request or enterprise_fax_models.EnterpriseFaxGroupListRequest()
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxGroupListResponse,
+            self._request("GET", "/fax2/group", request.to_request_params()),
+        )
 
-    def create_group(self, **params: Any) -> Any:
-        return self._request("POST", "/fax2/group", params)
+    def create_group(
+        self, request: enterprise_fax_models.EnterpriseFaxGroupCreateRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("POST", "/fax2/group", request.to_request_params())
+        )
 
-    def update_group(self, **params: Any) -> Any:
-        return self._request("PUT", "/fax2/group", params)
+    def update_group(
+        self, request: enterprise_fax_models.EnterpriseFaxGroupUpdateRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("PUT", "/fax2/group", request.to_request_params())
+        )
 
-    def delete_group(self, **params: Any) -> Any:
-        return self._request("DELETE", "/fax2/group", params)
+    def delete_group(self, sname: str) -> Optional[WarningResponse]:
+        request = enterprise_fax_models.EnterpriseFaxGroupDeleteRequest(sname=sname)
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("DELETE", "/fax2/group", request.to_request_params())
+        )
 
-    def list_users(self, **params: Any) -> Any:
-        return self._request("GET", "/fax2/user", params)
+    def list_users(
+        self, request: Optional[enterprise_fax_models.EnterpriseFaxUserListRequest] = None
+    ) -> Union[enterprise_fax_models.EnterpriseFaxUserListResponse, WarningResponse]:
+        request = request or enterprise_fax_models.EnterpriseFaxUserListRequest()
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxUserListResponse,
+            self._request("GET", "/fax2/user", request.to_request_params()),
+        )
 
-    def create_user(self, **params: Any) -> Any:
-        return self._request("POST", "/fax2/user", params)
+    def create_user(
+        self, request: enterprise_fax_models.EnterpriseFaxUserCreateRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("POST", "/fax2/user", request.to_request_params())
+        )
 
-    def update_user(self, **params: Any) -> Any:
-        return self._request("PUT", "/fax2/user", params)
+    def update_user(
+        self, request: enterprise_fax_models.EnterpriseFaxUserUpdateRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("PUT", "/fax2/user", request.to_request_params())
+        )
 
-    def delete_user(self, **params: Any) -> Any:
-        return self._request("DELETE", "/fax2/user", params)
+    def delete_user(self, fax_login: str) -> Optional[WarningResponse]:
+        request = enterprise_fax_models.EnterpriseFaxUserDeleteRequest(fax_login=fax_login)
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("DELETE", "/fax2/user", request.to_request_params())
+        )
 
-    def list_permissions(self, **params: Any) -> Any:
-        return self._request("GET", "/fax2/permit", params)
+    def list_permissions(
+        self, request: Optional[enterprise_fax_models.EnterpriseFaxPermissionListRequest] = None
+    ) -> Union[enterprise_fax_models.EnterpriseFaxPermissionListResponse, WarningResponse]:
+        request = request or enterprise_fax_models.EnterpriseFaxPermissionListRequest()
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxPermissionListResponse,
+            self._request("GET", "/fax2/permit", request.to_request_params()),
+        )
 
-    def set_permission(self, **params: Any) -> Any:
-        return self._request("POST", "/fax2/permit", params)
+    def set_permission(
+        self, request: enterprise_fax_models.EnterpriseFaxPermissionRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("POST", "/fax2/permit", request.to_request_params())
+        )
 
-    def delete_permission(self, **params: Any) -> Any:
-        return self._request("DELETE", "/fax2/permit", params)
+    def delete_permission(
+        self, request: enterprise_fax_models.EnterpriseFaxPermissionDeleteRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("DELETE", "/fax2/permit", request.to_request_params())
+        )
 
-    def upload(self, file: bytes, filename: str) -> Any:
-        payload = {"file": base64.b64encode(file).decode("ascii"), "filename": filename}
-        return self._request("POST", "/fax2/upload", json=payload)
+    def upload(
+        self, request: enterprise_fax_models.EnterpriseFaxUploadRequest
+    ) -> Union[enterprise_fax_models.EnterpriseFaxUploadResponse, WarningResponse]:
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxUploadResponse,
+            self._request("POST", "/fax2/upload", json=request.to_request_params()),
+        )
 
-    def send(self, **params: Any) -> Any:
-        return self._request("POST", "/fax2/send", params)
+    def send(
+        self, request: enterprise_fax_models.EnterpriseFaxSendRequest
+    ) -> Union[enterprise_fax_models.EnterpriseFaxSendResponse, WarningResponse]:
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxSendResponse,
+            self._request("POST", "/fax2/send", request.to_request_params()),
+        )
 
-    def pause(self, **params: Any) -> Any:
-        return self._request("PUT", "/fax2/pause", params)
+    def pause(
+        self, request: enterprise_fax_models.EnterpriseFaxPauseRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            self._request("PUT", "/fax2/pause", request.to_request_params())
+        )
+
+
+class AsyncEnterpriseFax(Resource):
+    async def list(
+        self, request: Optional[enterprise_fax_models.EnterpriseFaxListRequest] = None
+    ) -> Union[enterprise_fax_models.EnterpriseFaxInventoryResponse, WarningResponse]:
+        request = request or enterprise_fax_models.EnterpriseFaxListRequest()
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxInventoryResponse,
+            await self._request("GET", "/fax2", request.to_request_params()),
+        )
+
+    async def create(
+        self, request: enterprise_fax_models.EnterpriseFaxOrderRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("POST", "/fax2", request.to_request_params())
+        )
+
+    async def update(
+        self, request: enterprise_fax_models.EnterpriseFaxUpdateRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("PUT", "/fax2", request.to_request_params())
+        )
+
+    async def delete(self, did: int) -> Optional[WarningResponse]:
+        request = enterprise_fax_models.EnterpriseFaxDeleteRequest(did=did)
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("DELETE", "/fax2", request.to_request_params())
+        )
+
+    async def list_emails(
+        self, request: Optional[enterprise_fax_models.EnterpriseFaxEmailListRequest] = None
+    ) -> Union[enterprise_fax_models.EnterpriseFaxEmailListResponse, WarningResponse]:
+        request = request or enterprise_fax_models.EnterpriseFaxEmailListRequest()
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxEmailListResponse,
+            await self._request("GET", "/fax2/email", request.to_request_params()),
+        )
+
+    async def set_email_permission(
+        self, request: enterprise_fax_models.EnterpriseFaxEmailPermissionRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("POST", "/fax2/email", request.to_request_params())
+        )
+
+    async def delete_email_permission(
+        self, request: enterprise_fax_models.EnterpriseFaxEmailPermissionDeleteRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("DELETE", "/fax2/email", request.to_request_params())
+        )
+
+    async def list_groups(
+        self, request: Optional[enterprise_fax_models.EnterpriseFaxGroupListRequest] = None
+    ) -> Union[enterprise_fax_models.EnterpriseFaxGroupListResponse, WarningResponse]:
+        request = request or enterprise_fax_models.EnterpriseFaxGroupListRequest()
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxGroupListResponse,
+            await self._request("GET", "/fax2/group", request.to_request_params()),
+        )
+
+    async def create_group(
+        self, request: enterprise_fax_models.EnterpriseFaxGroupCreateRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("POST", "/fax2/group", request.to_request_params())
+        )
+
+    async def update_group(
+        self, request: enterprise_fax_models.EnterpriseFaxGroupUpdateRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("PUT", "/fax2/group", request.to_request_params())
+        )
+
+    async def delete_group(self, sname: str) -> Optional[WarningResponse]:
+        request = enterprise_fax_models.EnterpriseFaxGroupDeleteRequest(sname=sname)
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("DELETE", "/fax2/group", request.to_request_params())
+        )
+
+    async def list_users(
+        self, request: Optional[enterprise_fax_models.EnterpriseFaxUserListRequest] = None
+    ) -> Union[enterprise_fax_models.EnterpriseFaxUserListResponse, WarningResponse]:
+        request = request or enterprise_fax_models.EnterpriseFaxUserListRequest()
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxUserListResponse,
+            await self._request("GET", "/fax2/user", request.to_request_params()),
+        )
+
+    async def create_user(
+        self, request: enterprise_fax_models.EnterpriseFaxUserCreateRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("POST", "/fax2/user", request.to_request_params())
+        )
+
+    async def update_user(
+        self, request: enterprise_fax_models.EnterpriseFaxUserUpdateRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("PUT", "/fax2/user", request.to_request_params())
+        )
+
+    async def delete_user(self, fax_login: str) -> Optional[WarningResponse]:
+        request = enterprise_fax_models.EnterpriseFaxUserDeleteRequest(fax_login=fax_login)
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("DELETE", "/fax2/user", request.to_request_params())
+        )
+
+    async def list_permissions(
+        self, request: Optional[enterprise_fax_models.EnterpriseFaxPermissionListRequest] = None
+    ) -> Union[enterprise_fax_models.EnterpriseFaxPermissionListResponse, WarningResponse]:
+        request = request or enterprise_fax_models.EnterpriseFaxPermissionListRequest()
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxPermissionListResponse,
+            await self._request("GET", "/fax2/permit", request.to_request_params()),
+        )
+
+    async def set_permission(
+        self, request: enterprise_fax_models.EnterpriseFaxPermissionRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("POST", "/fax2/permit", request.to_request_params())
+        )
+
+    async def delete_permission(
+        self, request: enterprise_fax_models.EnterpriseFaxPermissionDeleteRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("DELETE", "/fax2/permit", request.to_request_params())
+        )
+
+    async def upload(
+        self, request: enterprise_fax_models.EnterpriseFaxUploadRequest
+    ) -> Union[enterprise_fax_models.EnterpriseFaxUploadResponse, WarningResponse]:
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxUploadResponse,
+            await self._request("POST", "/fax2/upload", json=request.to_request_params()),
+        )
+
+    async def send(
+        self, request: enterprise_fax_models.EnterpriseFaxSendRequest
+    ) -> Union[enterprise_fax_models.EnterpriseFaxSendResponse, WarningResponse]:
+        return enterprise_fax_models.parse_enterprise_fax_response(
+            enterprise_fax_models.EnterpriseFaxSendResponse,
+            await self._request("POST", "/fax2/send", request.to_request_params()),
+        )
+
+    async def pause(
+        self, request: enterprise_fax_models.EnterpriseFaxPauseRequest
+    ) -> Optional[WarningResponse]:
+        return enterprise_fax_models.parse_empty_enterprise_fax_response(
+            await self._request("PUT", "/fax2/pause", request.to_request_params())
+        )
 
 
 class Reports(Resource):
@@ -1156,6 +1406,7 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.sms = AsyncSMS(client)
         client.dlc = AsyncDLC(client)
         client.fax = AsyncFax(client)
+        client.enterprise_fax = AsyncEnterpriseFax(client)
     else:
         client.account = Account(client)
         client.dids = DIDs(client)
@@ -1164,7 +1415,7 @@ def install_resources(client: Any, *, async_client: bool = False) -> None:
         client.sms = SMS(client)
         client.dlc = DLC(client)
         client.fax = Fax(client)
-    client.enterprise_fax = EnterpriseFax(client)
+        client.enterprise_fax = EnterpriseFax(client)
     client.reports = Reports(client)
     client.lnp = LNP(client)
     client.servers = Servers(client)

@@ -553,235 +553,235 @@
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": null,
       "path": "/fax2",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxDeleteRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.delete",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/fax2",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxListRequest",
+      "response_model": "EnterpriseFaxInventoryResponse | WarningResponse",
       "sdk_method": "enterprise_fax.list",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/fax2",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxOrderRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.create",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": null,
       "path": "/fax2",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxUpdateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.update",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": null,
       "path": "/fax2/email",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxEmailPermissionDeleteRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.delete_email_permission",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/fax2/email",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxEmailListRequest",
+      "response_model": "EnterpriseFaxEmailListResponse | WarningResponse",
       "sdk_method": "enterprise_fax.list_emails",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/fax2/email",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxEmailPermissionRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.set_email_permission",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": null,
       "path": "/fax2/group",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxGroupDeleteRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.delete_group",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/fax2/group",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxGroupListRequest",
+      "response_model": "EnterpriseFaxGroupListResponse | WarningResponse",
       "sdk_method": "enterprise_fax.list_groups",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/fax2/group",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxGroupCreateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.create_group",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": null,
       "path": "/fax2/group",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxGroupUpdateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.update_group",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": null,
       "path": "/fax2/pause",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxPauseRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.pause",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": null,
       "path": "/fax2/permit",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxPermissionDeleteRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.delete_permission",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/fax2/permit",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxPermissionListRequest",
+      "response_model": "EnterpriseFaxPermissionListResponse | WarningResponse",
       "sdk_method": "enterprise_fax.list_permissions",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/fax2/permit",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxPermissionRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.set_permission",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/fax2/send",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxSendRequest",
+      "response_model": "EnterpriseFaxSendResponse | WarningResponse",
       "sdk_method": "enterprise_fax.send",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/fax2/upload",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxUploadRequest",
+      "response_model": "EnterpriseFaxUploadResponse | WarningResponse",
       "sdk_method": "enterprise_fax.upload",
       "sync_async": true,
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "DELETE",
       "operation_id": null,
       "path": "/fax2/user",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxUserDeleteRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.delete_user",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": null,
       "path": "/fax2/user",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxUserListRequest",
+      "response_model": "EnterpriseFaxUserListResponse | WarningResponse",
       "sdk_method": "enterprise_fax.list_users",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": null,
       "path": "/fax2/user",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxUserCreateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.create_user",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": null,
       "path": "/fax2/user",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "EnterpriseFaxUserUpdateRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "enterprise_fax.update_user",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": false,

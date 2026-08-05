@@ -8,6 +8,8 @@ import pytest
 
 from questblue import (
     AsyncQuestBlue,
+    EnterpriseFaxUploadRequest,
+    EnterpriseFaxUploadResponse,
     QuestBlue,
     QuestBlueAPIError,
     QuestBlueAuthenticationError,
@@ -87,7 +89,11 @@ def test_enterprise_fax_upload_is_json_with_base64_data() -> None:
     http = httpx.Client(base_url="https://example.test", transport=httpx.MockTransport(handler))
     client = QuestBlue("user", "password", "key", http_client=http)
 
-    assert client.enterprise_fax.upload(b"hello", "hello.txt") == {"file_id": "file-1"}
+    result = client.enterprise_fax.upload(
+        EnterpriseFaxUploadRequest.from_bytes(b"hello", "hello.txt")
+    )
+    assert isinstance(result, EnterpriseFaxUploadResponse)
+    assert result.file_id == "file-1"
 
 
 @pytest.mark.parametrize(
