@@ -71,6 +71,29 @@ async with AsyncQuestBlue() as qb:
     inventory = await qb.dids.list(per_page=200)
 ```
 
+Typed models preserve new upstream fields instead of dropping them, and paginators offer both item
+iteration and raw page access:
+
+```python
+from questblue import QuestBlueModel, model_parser
+
+
+class CallRecord(QuestBlueModel):
+    call_id: str
+
+
+records = qb.paginate(
+    "/callhistory",
+    params={"period": "today", "per_page": 500},
+    item_parser=model_parser(CallRecord),
+)
+for record in records:
+    print(record.call_id)
+```
+
+See [`docs/modeling.md`](docs/modeling.md) for validation, forward compatibility, raw payloads, and
+custom pagination selectors.
+
 Every resource method accepts the parameter names from QuestBlue's API documentation. List values
 are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API
 addition that has not yet received a convenience method, the authenticated transport remains usable:

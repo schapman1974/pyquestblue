@@ -8,7 +8,7 @@ import time
 from datetime import date, datetime
 from email.utils import parsedate_to_datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, Mapping, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Callable, Dict, Mapping, Optional, Tuple, TypeVar
 
 import httpx
 
@@ -20,6 +20,7 @@ from ._exceptions import (
     QuestBlueRateLimitError,
     QuestBlueServerError,
 )
+from .pagination import AsyncPaginator, ItemSelector, SyncPaginator
 
 if TYPE_CHECKING:
     from ._resources import (
@@ -41,6 +42,7 @@ SECONDARY_BASE_URL = "https://api2.questblue.com"
 DEFAULT_TIMEOUT = 60.0
 _RETRY_STATUSES = frozenset((408, 409, 429))
 _SENSITIVE_HEADERS = frozenset(("authorization", "security-key"))
+PageItemT = TypeVar("PageItemT")
 
 
 def _credentials(
@@ -225,6 +227,34 @@ class QuestBlue:
         if self._owns_client:
             self._http.close()
 
+    def paginate(
+        self,
+        path: str,
+        *,
+        method: str = "GET",
+        params: Optional[Mapping[str, Any]] = None,
+        start_page: int = 1,
+        max_pages: int = 10_000,
+        item_parser: Optional[Callable[[Any], PageItemT]] = None,
+        item_selector: Optional[ItemSelector] = None,
+    ) -> SyncPaginator[PageItemT]:
+        """Lazily iterate a paginated endpoint while retaining raw page access."""
+        base_params = dict(params or {})
+
+        def fetch_page(page: int) -> Mapping[str, Any]:
+            payload = self.request(method, path, params={**base_params, "page": page})
+            if not isinstance(payload, Mapping):
+                raise TypeError("Paginated QuestBlue response must be a JSON object")
+            return payload
+
+        return SyncPaginator(
+            fetch_page,
+            start_page=start_page,
+            max_pages=max_pages,
+            item_parser=item_parser,
+            item_selector=item_selector,
+        )
+
     def __enter__(self) -> "QuestBlue":
         return self
 
@@ -323,6 +353,34 @@ class AsyncQuestBlue:
     async def close(self) -> None:
         if self._owns_client:
             await self._http.aclose()
+
+    def paginate(
+        self,
+        path: str,
+        *,
+        method: str = "GET",
+        params: Optional[Mapping[str, Any]] = None,
+        start_page: int = 1,
+        max_pages: int = 10_000,
+        item_parser: Optional[Callable[[Any], PageItemT]] = None,
+        item_selector: Optional[ItemSelector] = None,
+    ) -> AsyncPaginator[PageItemT]:
+        """Lazily iterate a paginated endpoint while retaining raw page access."""
+        base_params = dict(params or {})
+
+        async def fetch_page(page: int) -> Mapping[str, Any]:
+            payload = await self.request(method, path, params={**base_params, "page": page})
+            if not isinstance(payload, Mapping):
+                raise TypeError("Paginated QuestBlue response must be a JSON object")
+            return payload
+
+        return AsyncPaginator(
+            fetch_page,
+            start_page=start_page,
+            max_pages=max_pages,
+            item_parser=item_parser,
+            item_selector=item_selector,
+        )
 
     async def __aenter__(self) -> "AsyncQuestBlue":
         return self
