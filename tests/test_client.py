@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from decimal import Decimal
 
 import httpx
 import pytest
@@ -21,7 +22,7 @@ def test_client_sends_both_authentication_layers_and_decodes_json() -> None:
         assert request.headers["security-key"] == "key"
         assert request.headers["authorization"].startswith("Basic ")
         assert request.url.path == "/account/getbalance"
-        return httpx.Response(200, json={"data": {"balance": "12.50"}})
+        return httpx.Response(200, json={"data": {"balance": "12.50", "allowed_credit": "5.00"}})
 
     http = httpx.Client(
         base_url="https://api.questblue.test",
@@ -29,7 +30,8 @@ def test_client_sends_both_authentication_layers_and_decodes_json() -> None:
     )
     client = QuestBlue("user", "password", "key", http_client=http)
 
-    assert client.account.balance() == {"data": {"balance": "12.50"}}
+    balance = client.account.balance()
+    assert balance.data.balance == Decimal("12.50")  # type: ignore[union-attr]
 
 
 def test_resource_encodes_lists_boole_and_omits_none() -> None:
@@ -124,10 +126,10 @@ def test_credentials_can_come_from_environment(monkeypatch: pytest.MonkeyPatch) 
     monkeypatch.setenv("QUESTBLUE_SECURITY_KEY", "key")
     http = httpx.Client(
         base_url="https://example.test",
-        transport=httpx.MockTransport(lambda _: httpx.Response(200, json={})),
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, json={"data": []})),
     )
     client = QuestBlue(http_client=http)
-    assert client.account.details() == {}
+    assert client.account.details().data == []  # type: ignore[union-attr]
 
 
 def test_missing_credentials_are_rejected(monkeypatch: pytest.MonkeyPatch) -> None:

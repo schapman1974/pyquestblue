@@ -3,56 +3,56 @@
   "generated_from": "spec/questblue-openapi-2.3.2.json",
   "operations": [
     {
-      "documented": false,
+      "documented": true,
       "method": "POST",
       "operation_id": "callbackConfig",
       "path": "/account/callbackconfig",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "CallbackConfigRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "account.configure_callback",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "callbackStatus",
       "path": "/account/callbackstatus",
       "request_model": null,
-      "response_model": null,
+      "response_model": "CallbackStatusResponse | WarningResponse",
       "sdk_method": "account.callback_status",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getAccountCountryList",
       "path": "/account/countrylist",
       "request_model": null,
-      "response_model": null,
+      "response_model": "CountryListResponse | WarningResponse",
       "sdk_method": "account.countries",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getInternationalCallRates",
       "path": "/account/countryrate",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "CountryRateRequest",
+      "response_model": "InternationalRatesResponse | WarningResponse",
       "sdk_method": "account.country_rate",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getAccountDetails",
       "path": "/account/getaccoundetails",
       "request_model": null,
-      "response_model": null,
+      "response_model": "AccountDetailsResponse | WarningResponse",
       "sdk_method": "account.details",
       "sync_async": true,
       "unit_tested": true
@@ -63,98 +63,98 @@
       "operation_id": "getAccountBalance",
       "path": "/account/getbalance",
       "request_model": null,
-      "response_model": null,
+      "response_model": "AccountBalanceResponse | WarningResponse",
       "sdk_method": "account.balance",
       "sync_async": true,
       "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getInternationalTollFreeRates",
       "path": "/account/nonusintfrate",
       "request_model": null,
-      "response_model": null,
+      "response_model": "InternationalTollFreeRatesResponse | WarningResponse",
       "sdk_method": "account.international_toll_free_rates",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getRates",
       "path": "/account/rates",
       "request_model": null,
-      "response_model": null,
+      "response_model": "ServiceRates | WarningResponse",
       "sdk_method": "account.rates",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "GET",
       "operation_id": "getZone2Rates",
       "path": "/account/ratezone2",
       "request_model": null,
-      "response_model": null,
+      "response_model": "InternationalRatesResponse | WarningResponse",
       "sdk_method": "account.zone_2_rates",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "refillBalance",
       "path": "/account/refillbalance",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "RefillBalanceRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "account.refill_balance",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "setAutorefill",
       "path": "/account/setautorefill",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SetAutorefillRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "account.set_auto_refill",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "setBalanceReload",
       "path": "/account/setbalancereload",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SetBalanceReloadRequest",
+      "response_model": "None | WarningResponse",
       "sdk_method": "account.set_balance_reload",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "setDailyBalanceAlert",
       "path": "/account/setdailybalancealert",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SetDailyBalanceAlertRequest",
+      "response_model": "AccountActionResponse | WarningResponse",
       "sdk_method": "account.set_daily_balance_alert",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
-      "documented": false,
+      "documented": true,
       "method": "PUT",
       "operation_id": "setLowBalanceAlert",
       "path": "/account/setlowbalancealert",
-      "request_model": null,
-      "response_model": null,
+      "request_model": "SetLowBalanceAlertRequest",
+      "response_model": "AccountActionResponse | WarningResponse",
       "sdk_method": "account.set_low_balance_alert",
       "sync_async": true,
-      "unit_tested": false
+      "unit_tested": true
     },
     {
       "documented": true,

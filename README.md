@@ -97,6 +97,9 @@ custom pagination selectors.
 See [`docs/transport.md`](docs/transport.md) for retry safety, per-request controls, raw responses,
 transport errors, structured logging, and OpenTelemetry hooks.
 
+See [`docs/account.md`](docs/account.md) for typed balance, rates, refill, alert, and callback
+operations, including explicit safeguards around billable balance changes.
+
 Every resource method accepts the parameter names from QuestBlue's API documentation. List values
 are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API
 addition that has not yet received a convenience method, the authenticated transport remains usable:

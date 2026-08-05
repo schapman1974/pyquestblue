@@ -16,7 +16,8 @@ DEFAULT_SPEC = ROOT / "spec" / "questblue-openapi-2.3.2.json"
 DEFAULT_RESOURCES = ROOT / "src" / "questblue" / "_resources.py"
 DEFAULT_CLIENT = ROOT / "src" / "questblue" / "_client.py"
 DEFAULT_TESTS = ROOT / "tests"
-DEFAULT_DOCS = (ROOT / "README.md", ROOT / "ROADMAP.md")
+DEFAULT_DOCS = (ROOT / "README.md", ROOT / "ROADMAP.md", *sorted((ROOT / "docs").glob("*.md")))
+DEFAULT_MODEL_COVERAGE = ROOT / "coverage" / "operation-models.json"
 DEFAULT_OUTPUT = ROOT / "coverage" / "api-coverage.json"
 HTTP_METHODS = frozenset(("DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "TRACE"))
 
@@ -112,7 +113,7 @@ def tested_methods(test_dir: Path) -> Set[Tuple[str, str]]:
 def documented_methods(doc_paths: Iterable[Path]) -> Set[Tuple[str, str]]:
     text = "\n".join(path.read_text(encoding="utf-8") for path in doc_paths if path.exists())
     result: Set[Tuple[str, str]] = set()
-    for match in re.finditer(r"\bqb\.([a-z_]+)\.([a-z_]+)\b", text):
+    for match in re.finditer(r"\bqb\.([a-z0-9_]+)\.([a-z0-9_]+)\b", text):
         result.add((match.group(1), match.group(2)))
     return result
 
@@ -139,12 +140,19 @@ def build_report(
     client_path: Path,
     tests_path: Path,
     doc_paths: Iterable[Path],
+    model_coverage_path: Path = DEFAULT_MODEL_COVERAGE,
 ) -> Dict[str, Any]:
     spec = json.loads(spec_path.read_text(encoding="utf-8"))
     expected = documented_operations(spec)
     implemented = sdk_operations(resources_path)
     tests = tested_methods(tests_path)
     docs = documented_methods(doc_paths)
+    raw_model_coverage = (
+        json.loads(model_coverage_path.read_text(encoding="utf-8"))
+        if model_coverage_path.exists()
+        else {}
+    )
+    model_coverage = {tuple(key.split(" ", 1)): value for key, value in raw_model_coverage.items()}
     parity = sync_async_parity(client_path)
     missing = sorted(set(expected) - set(implemented))
     extra = sorted(set(implemented) - set(expected))
@@ -154,14 +162,15 @@ def build_report(
         upstream = expected[operation_key]
         sdk = implemented.get(operation_key)
         sdk_key = (sdk["resource"], sdk["method"]) if sdk else None
+        models = model_coverage.get(operation_key, {}) if sdk else {}
         entries.append(
             {
                 "documented": sdk_key in docs if sdk_key else False,
                 "method": method,
                 "operation_id": upstream.get("operationId"),
                 "path": path,
-                "request_model": None,
-                "response_model": None,
+                "request_model": models.get("request_model"),
+                "response_model": models.get("response_model"),
                 "sdk_method": f"{sdk['resource']}.{sdk['method']}" if sdk else None,
                 "sync_async": parity and sdk is not None,
                 "unit_tested": sdk_key in tests if sdk_key else False,

@@ -1,0 +1,58 @@
+{
+  "GET /account/callbackstatus": {
+    "request_model": null,
+    "response_model": "CallbackStatusResponse | WarningResponse"
+  },
+  "GET /account/countrylist": {
+    "request_model": null,
+    "response_model": "CountryListResponse | WarningResponse"
+  },
+  "GET /account/countryrate": {
+    "request_model": "CountryRateRequest",
+    "response_model": "InternationalRatesResponse | WarningResponse"
+  },
+  "GET /account/getaccoundetails": {
+    "request_model": null,
+    "response_model": "AccountDetailsResponse | WarningResponse"
+  },
+  "GET /account/getbalance": {
+    "request_model": null,
+    "response_model": "AccountBalanceResponse | WarningResponse"
+  },
+  "GET /account/nonusintfrate": {
+    "request_model": null,
+    "response_model": "InternationalTollFreeRatesResponse | WarningResponse"
+  },
+  "GET /account/rates": {
+    "request_model": null,
+    "response_model": "ServiceRates | WarningResponse"
+  },
+  "GET /account/ratezone2": {
+    "request_model": null,
+    "response_model": "InternationalRatesResponse | WarningResponse"
+  },
+  "POST /account/callbackconfig": {
+    "request_model": "CallbackConfigRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /account/refillbalance": {
+    "request_model": "RefillBalanceRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /account/setautorefill": {
+    "request_model": "SetAutorefillRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /account/setbalancereload": {
+    "request_model": "SetBalanceReloadRequest",
+    "response_model": "None | WarningResponse"
+  },
+  "PUT /account/setdailybalancealert": {
+    "request_model": "SetDailyBalanceAlertRequest",
+    "response_model": "AccountActionResponse | WarningResponse"
+  },
+  "PUT /account/setlowbalancealert": {
+    "request_model": "SetLowBalanceAlertRequest",
+    "response_model": "AccountActionResponse | WarningResponse"
+  }
+}

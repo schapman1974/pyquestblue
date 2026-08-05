@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any, Mapping, Optional
+from typing import TYPE_CHECKING, Any, Mapping, Optional
+
+if TYPE_CHECKING:
+    from .models import ErrorResponse
 
 
 class QuestBlueError(Exception):
@@ -46,6 +49,11 @@ class QuestBlueAPIError(QuestBlueError):
         self.request_id = request_id
         self.response = response
         self.body = body
+        self.error: Optional[ErrorResponse] = None
+        if isinstance(body, Mapping) and isinstance(body.get("error"), str):
+            from .models import ErrorResponse
+
+            self.error = ErrorResponse.model_validate(body)
 
     @property
     def details(self) -> Mapping[str, Any]:
