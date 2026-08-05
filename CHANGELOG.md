@@ -12,8 +12,8 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
   number-portability, and VoIP-server resources.
 - Typed transport errors, safe-read retry behavior, pagination, webhook parsing, framework recipes,
   contract fixtures, API coverage enforcement, and white-label architecture guidance.
-- Cross-platform CI, CodeQL, dependency auditing, reproducible-build checks, and GitHub artifact
-  attestations with PyPI Trusted Publishing.
+- Cross-platform CI, CodeQL, dependency auditing, reproducible-build checks, protected package-index
+  publishing, and GitHub artifact attestations.
 
 ### Changed
 

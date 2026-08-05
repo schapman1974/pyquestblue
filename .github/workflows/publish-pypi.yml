@@ -28,6 +28,9 @@ jobs:
           subject-path: "dist/*"
       - name: Publish release
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          attestations: false
+          password: ${{ secrets.PYPI_API_TOKEN }}
       - name: Attach artifacts to GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}

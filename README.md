@@ -198,12 +198,11 @@ documented in [`docs/transport.md`](docs/transport.md).
 - Every push and pull request is tested on Python 3.10 through 3.14.
 - **Publish to TestPyPI** is a manual GitHub Actions workflow.
 - Publishing a GitHub Release triggers **Publish to PyPI**.
-- Both publishing workflows use PyPI Trusted Publishing (OIDC), so repository API tokens are not
-  stored as secrets.
+- Publishing uses separate TestPyPI and PyPI API tokens stored as encrypted secrets in their
+  protected GitHub environments. Build-provenance attestations continue to use GitHub OIDC.
 
-Before the first release, create `testpypi` and `pypi` GitHub environments and configure this
-repository as a Trusted Publisher on each package index. TestPyPI and PyPI require separate
-publisher registrations.
+Before the first release, add `TEST_PYPI_API_TOKEN` to the `testpypi` GitHub environment and
+`PYPI_API_TOKEN` to the `pypi` environment. TestPyPI and PyPI use separate accounts and tokens.
 
 ## White-label platform direction
 
