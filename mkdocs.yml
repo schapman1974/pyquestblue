@@ -49,6 +49,7 @@ nav:
       - Migration guides: migrations.md
       - Compatibility and releases: compatibility.md
       - Simple API contract: simple-api-contract.md
+      - Simple API guide: simple-api.md
       - 1.0 release checklist: release-checklist.md
       - 1.0 security review: security-review-1.0.md
       - White-label architecture:

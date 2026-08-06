@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Optional, Type, TypeVar, Union
 
 import httpx
 
@@ -11,6 +11,32 @@ from questblue.models import WarningResponse
 from questblue.transport import TransportHook
 
 from ._errors import QuestBlueWarningError
+
+if TYPE_CHECKING:
+    from ._read import (
+        AccountReads,
+        AsyncAccountReads,
+        AsyncDLCReads,
+        AsyncEnterpriseFaxReads,
+        AsyncFaxReads,
+        AsyncInternationalNumberReads,
+        AsyncMessageReads,
+        AsyncNumberReads,
+        AsyncPortingReads,
+        AsyncReportReads,
+        AsyncServerReads,
+        AsyncVoiceReads,
+        DLCReads,
+        EnterpriseFaxReads,
+        FaxReads,
+        InternationalNumberReads,
+        MessageReads,
+        NumberReads,
+        PortingReads,
+        ReportReads,
+        ServerReads,
+        VoiceReads,
+    )
 
 ResultT = TypeVar("ResultT")
 
@@ -44,24 +70,30 @@ def _install_services(facade: Any, raw: Any) -> None:
         "servers": "servers",
     }
     for simple_name, raw_name in mappings.items():
-        setattr(facade, simple_name, SimpleService(getattr(raw, raw_name)))
+        from ._read import READ_SERVICE_TYPES
+
+        service_types = READ_SERVICE_TYPES.get(simple_name)
+        service_type = (
+            service_types[isinstance(raw, AsyncQuestBlue)] if service_types else SimpleService
+        )
+        setattr(facade, simple_name, service_type(getattr(raw, raw_name)))
     facade.workflows = SimpleService(raw)
 
 
 class SimpleQuestBlue:
     """Synchronous primitive-input facade over :class:`questblue.QuestBlue`."""
 
-    account: SimpleService
-    numbers: SimpleService
-    international_numbers: SimpleService
-    voice: SimpleService
-    messages: SimpleService
-    dlc: SimpleService
-    fax: SimpleService
-    enterprise_fax: SimpleService
-    reports: SimpleService
-    porting: SimpleService
-    servers: SimpleService
+    account: AccountReads
+    numbers: NumberReads
+    international_numbers: InternationalNumberReads
+    voice: VoiceReads
+    messages: MessageReads
+    dlc: DLCReads
+    fax: FaxReads
+    enterprise_fax: EnterpriseFaxReads
+    reports: ReportReads
+    porting: PortingReads
+    servers: ServerReads
     workflows: SimpleService
 
     def __init__(
@@ -116,17 +148,17 @@ class SimpleQuestBlue:
 class AsyncSimpleQuestBlue:
     """Asynchronous primitive-input facade over :class:`questblue.AsyncQuestBlue`."""
 
-    account: SimpleService
-    numbers: SimpleService
-    international_numbers: SimpleService
-    voice: SimpleService
-    messages: SimpleService
-    dlc: SimpleService
-    fax: SimpleService
-    enterprise_fax: SimpleService
-    reports: SimpleService
-    porting: SimpleService
-    servers: SimpleService
+    account: AsyncAccountReads
+    numbers: AsyncNumberReads
+    international_numbers: AsyncInternationalNumberReads
+    voice: AsyncVoiceReads
+    messages: AsyncMessageReads
+    dlc: AsyncDLCReads
+    fax: AsyncFaxReads
+    enterprise_fax: AsyncEnterpriseFaxReads
+    reports: AsyncReportReads
+    porting: AsyncPortingReads
+    servers: AsyncServerReads
     workflows: SimpleService
 
     def __init__(
