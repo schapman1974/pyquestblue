@@ -66,3 +66,32 @@ with SimpleQuestBlue() as qb:
 documented delivered or failed states and raises `DeliveryTimeoutError` when the bound is exhausted;
 it does not imply a delivery guarantee. File paths and contents are validated before any upload or
 send request, and enterprise fax uploads preserve their provider file IDs in the operation result.
+
+## Provisioning with explicit confirmation
+
+Provisioning helpers accept primitive values but keep the typed request models as the final
+validation authority. Every billable, routing, compliance-sensitive, or destructive operation has
+a matching confirmation keyword. Use `dry_run=True` to inspect the normalized operation without
+calling QuestBlue:
+
+```python
+with SimpleQuestBlue() as qb:
+    plan = qb.numbers.buy(
+        "+1 919 555 0100",
+        trunk="main",
+        dry_run=True,
+    )
+    print(plan.operations)
+
+    purchased = qb.numbers.buy(
+        "+1 919 555 0100",
+        trunk="main",
+        confirm_billable=True,
+    )
+    print(purchased.raw)  # original typed provider response
+```
+
+Inventory selection is always a separate read: `numbers.search()` and `fax.search()` never buy a
+number. Likewise, `porting.create_draft()` always sends `status="draft"`; the simple layer never
+submits an LNP request. Server, SIP trunk, Fax.Pro, enterprise-fax, international DID, backup, and
+number lifecycle helpers follow the same one-call confirmation and dry-run contract.
