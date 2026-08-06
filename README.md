@@ -34,7 +34,7 @@ QuestBlue uses HTTP Basic authentication plus a `Security-Key` header. Credentia
 directly or loaded from `QUESTBLUE_USERNAME`, `QUESTBLUE_PASSWORD`, and
 `QUESTBLUE_SECURITY_KEY`.
 
-For common tasks, the additive simple facade needs no request-model imports:
+The simple facade accepts normal Python values—no request-model imports required:
 
 ```python
 from questblue import SimpleQuestBlue
@@ -42,149 +42,88 @@ from questblue import SimpleQuestBlue
 with SimpleQuestBlue() as qb:
     balance = qb.account.balance()
     numbers = qb.numbers.search(zip_code="27513", limit=5)
+    calls = qb.reports.calls(period="today")
 ```
 
-Use the typed client below for exact provider control, `.raw` to drop down from a simple service,
-and `qb.workflows` for inspectable, journaled multi-step provisioning.
+Search only returns candidates; it never purchases one. Billable and routing operations require an
+explicit confirmation:
 
 ```python
-from questblue import DIDAvailabilityRequest, DIDType, QuestBlue
-
-with QuestBlue("username", "password", "security-key") as qb:
-    balance = qb.account.balance()
-    available = qb.dids.available(
-        DIDAvailabilityRequest(did_type=DIDType.LOCAL, zip=27513, total_list=10)
+with SimpleQuestBlue() as qb:
+    plan = qb.numbers.buy(
+        "+1 919 555 0100",
+        trunk="main",
+        dry_run=True,
     )
-    trunks = qb.sip_trunks.list(per_page=100)
-```
 
-Send an SMS/MMS:
-
-```python
-result = qb.sms.send(
-    did=15551234567,
-    did_to=15557654321,
-    msg="Hello from pyquestblue",
-    file_url=["https://example.com/image.png"],
-)
-```
-
-Retrieve typed call history:
-
-```python
-from questblue import CallHistoryRequest, Period
-
-calls = qb.reports.call_history(
-    CallHistoryRequest(
-        period=Period.THIS_MONTH,
-        trunk=["primary", "backup"],
-        timezone="America/New_York",
-        per_page=5000,
+    purchased = qb.numbers.buy(
+        "+1 919 555 0100",
+        trunk="main",
+        confirm_billable=True,
     )
-)
+    print(purchased.raw)  # original typed QuestBlue response
 ```
 
-Async applications use the same resource layout:
+Send a consented SMS and wait for its provider status:
 
 ```python
-from questblue import AsyncQuestBlue, DIDListRequest
-
-async with AsyncQuestBlue() as qb:
-    inventory = await qb.dids.list(DIDListRequest(per_page=200))
+with SimpleQuestBlue() as qb:
+    sent = qb.messages.send(
+        from_number="+1 919 555 0100",
+        to="+1 919 555 0101",
+        text="Your service is ready",
+        recipient_opted_in=True,
+    )
+    status = qb.messages.wait_for_delivery(sent.identifiers["message_id"], attempts=5, interval=1.0)
 ```
 
-Typed models preserve new upstream fields instead of dropping them, and paginators offer both item
-iteration and raw page access:
+Multi-step provisioning is inspectable before execution and keeps a correlated step journal:
 
 ```python
-from questblue import QuestBlueModel, model_parser
+events = []
 
-
-class CallRecord(QuestBlueModel):
-    call_id: str
-
-
-records = qb.paginate(
-    "/callhistory",
-    params={"period": "today", "per_page": 500},
-    item_parser=model_parser(CallRecord),
-)
-for record in records:
-    print(record.call_id)
+with SimpleQuestBlue() as qb:
+    workflow = qb.workflows.voice_number(
+        "+1 919 555 0100",
+        "main",
+        password="generated-secret",
+        correlation_id="order-42",
+        journal_hook=events.append,
+    )
+    print(workflow.operations)
+    result = workflow.execute(confirm_routing_change=True, confirm_billable=True)
 ```
 
-See [`docs/modeling.md`](docs/modeling.md) for validation, forward compatibility, raw payloads, and
-custom pagination selectors.
-
-See [`docs/transport.md`](docs/transport.md) for retry safety, per-request controls, raw responses,
-transport errors, structured logging, and OpenTelemetry hooks.
-
-See [`docs/account.md`](docs/account.md) for typed balance, rates, refill, alert, and callback
-operations, including explicit safeguards around billable balance changes.
-
-See [`docs/dids.md`](docs/dids.md) for typed Voice DID discovery, ordering, E911/DLDA configuration,
-pagination, fraud validation, and destructive-operation safeguards.
-
-See [`docs/international-dids.md`](docs/international-dids.md) for country/city discovery,
-international inventory pagination, ordering, routing updates, and release safeguards.
-
-See [`docs/sip-trunks.md`](docs/sip-trunks.md) for registration/static trunks, routing controls,
-status troubleshooting, channel options, and blocked callers.
-
-See [`docs/sms.md`](docs/sms.md) for SMS/MMS sending, inbound settings, delivery and history,
-off-net service, carrier lookup, PII-safe diagnostics, and compliance safeguards.
-
-See [`docs/dlc.md`](docs/dlc.md) for 10DLC brand and campaign registration, lifecycle states,
-upstream rejection detail, protected registration data, and compliance safeguards.
-
-See [`docs/fax.md`](docs/fax.md) for Fax.Pro discovery, inventory lifecycle, validated document
-sending, email permissions, migration safeguards, and executable examples.
-
-See [`docs/enterprise-fax.md`](docs/enterprise-fax.md) for typed iFax Enterprise account, group,
-user, permission, upload, multi-file send, and lifecycle workflows.
-
-See [`docs/reports.md`](docs/reports.md) for typed voice and fax history, large-result iteration,
-incremental fax downloads, and CSV/pandas-friendly exports.
-
-See [`docs/lnp.md`](docs/lnp.md) for typed portability checks, LNP lifecycle operations, validated
-bill uploads, sensitive-data handling, and production-only safeguards.
-
-See [`docs/servers.md`](docs/servers.md) for typed server provisioning, IP allowlists, upgrades,
-backup schedules, restoration, and destructive/billable safeguards.
-
-See [`docs/contract-testing.md`](docs/contract-testing.md) for sanitized recorded fixtures,
-production risk classes, explicit live-test gates, and the verification matrix.
-
-See [`docs/integrations.md`](docs/integrations.md) for inbound messaging webhooks, FastAPI and
-Django adapters, safe observability, and white-label integration boundaries.
-
-See [`docs/compatibility.md`](docs/compatibility.md), [`SUPPORT.md`](SUPPORT.md), and
-[`SECURITY.md`](SECURITY.md) for supported platforms, SemVer and deprecation guarantees, the release
-process, support boundaries, and private vulnerability reporting.
-
-Every resource method accepts the parameter names from QuestBlue's API documentation. List values
-are serialized as comma-separated values, matching QuestBlue's generated Node client. For an API
-addition that has not yet received a convenience method, the authenticated transport remains usable:
+Async applications use the same helpers and workflow names:
 
 ```python
-result = qb.request("GET", "/new-endpoint", params={"example": "value"})
+from questblue import AsyncSimpleQuestBlue
+
+async with AsyncSimpleQuestBlue() as qb:
+    inventory = await qb.numbers.list(per_page=200)
 ```
+
+Use [`docs/simple-api.md`](docs/simple-api.md) for the complete helper guide and
+[`docs/simple-api-contract.md`](docs/simple-api-contract.md) for the helper-to-provider mapping.
+The lower-level typed API remains available through `QuestBlue`, `simple.raw`, or a service's `.raw`
+property; see the [API reference](docs/api-reference.md) when you need exact provider control.
 
 ## Resource map
 
-| SDK resource | QuestBlue areas |
+| Simple service | Common helpers |
 | --- | --- |
-| `qb.account` | balance, details, rates, refill, alerts, callbacks |
-| `qb.dids` | inventory, availability, ordering, configuration, fraud validation |
-| `qb.international_dids` | countries, cities, inventory, ordering |
-| `qb.sip_trunks` | trunks, registration status, blocked callers |
-| `qb.sms` | SMS/MMS, settings, history, delivery, off-net orders, carrier checks |
-| `qb.dlc` | 10DLC brands and campaigns |
-| `qb.fax` | Fax.Pro inventory, sending, email permissions |
-| `qb.enterprise_fax` | iFax Enterprise accounts, groups, users, permissions, files |
-| `qb.reports` | voice CDRs, fax history, fax downloads |
-| `qb.lnp` | portability checks and LNP request lifecycle |
-| `qb.servers` | server inventory, IPs, upgrades, backup lifecycle |
+| `qb.account` | `balance`, `details`, `rates`, alert/callback/refill configuration |
+| `qb.numbers` | `search`, `list`, `buy`, `configure`, `move_to_fax`, `release` |
+| `qb.international_numbers` | `countries`, `cities`, `list`, `buy`, `configure`, `release` |
+| `qb.voice` | trunk listing/status, create/configure/delete trunk, caller blocking |
+| `qb.messages` | `send`, `history`, delivery waiting, carrier and off-net helpers |
+| `qb.dlc` | brand and campaign reads and lifecycle helpers |
+| `qb.fax` | `search`, `list`, `buy`, `configure`, `send`, email access, release |
+| `qb.enterprise_fax` | number, group, user, permission, upload, and send helpers |
+| `qb.reports` | call/fax history, downloads, and CSV exports |
+| `qb.porting` | portability checks, listing, and draft-only LNP creation |
+| `qb.servers` | server provisioning, IP, backup, restore, and release helpers |
+| `qb.workflows` | voice/fax onboarding, enterprise fax, LNP draft, and server plans |
 
 ## API coverage contract
 
