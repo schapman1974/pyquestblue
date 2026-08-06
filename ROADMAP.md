@@ -163,6 +163,24 @@ production hardening.
 - Complete API reference, changelog, upgrade guide, and security review.
 - Publish the attested 1.0 release from protected `main` and verify a clean PyPI installation.
 
+## Milestone v1.1.0 — Simple API and workflows
+
+### QB-021: Epic — Simple API and safe workflow layer
+
+- Preserve the typed 1.0 API while adding primitive-input sync and async facades.
+- Build explicit, inspectable workflows without hiding charges or claiming atomicity.
+
+### QB-022: Define the simple API public contract
+
+- Decide lifecycle, normalization, results, errors, safety gates, workflow, and parity semantics.
+- Map the proposed helper catalog to existing typed operations before implementation.
+
+### QB-023 through QB-029
+
+- Build the facade foundation, read-only services, communications, provisioning, workflows, and
+  white-label hooks in dependency order.
+- Finish with executable documentation, abstraction coverage enforcement, and the 1.1.0 release.
+
 ## Questions requiring QuestBlue or live-account confirmation
 
 - Sandbox availability and rules for non-billable provisioning tests
