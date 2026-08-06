@@ -7,7 +7,7 @@ from datetime import date, datetime
 from decimal import Decimal
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, Generic, Mapping, Optional, Tuple, TypeVar, cast
+from typing import Any, Dict, Generic, Iterator, Mapping, Optional, Sequence, Tuple, TypeVar, cast
 
 from pydantic import BaseModel
 
@@ -101,6 +101,45 @@ class OperationResult(Generic[ValueT]):
 
     def __repr__(self) -> str:
         return f"OperationResult({self.to_dict(include_raw=False)!r})"
+
+
+@dataclass(frozen=True, repr=False)
+class SimpleRecord:
+    """Immutable ergonomic view that retains its exact typed provider record."""
+
+    raw: Any = field(repr=False)
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self.raw, name)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return cast(Dict[str, Any], json_safe(self.raw))
+
+    def __repr__(self) -> str:
+        return f"SimpleRecord({self.to_dict()!r})"
+
+
+@dataclass(frozen=True, repr=False)
+class SimpleCollection(Sequence[ValueT], Generic[ValueT]):
+    """Immutable automatically collected values plus every typed response page."""
+
+    items: Tuple[ValueT, ...]
+    raw: Tuple[Any, ...] = field(default_factory=tuple, repr=False)
+
+    def __getitem__(self, index: Any) -> Any:
+        return self.items[index]
+
+    def __len__(self) -> int:
+        return len(self.items)
+
+    def __iter__(self) -> Iterator[ValueT]:
+        return iter(self.items)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {"items": json_safe(self.items), "raw": json_safe(self.raw)}
+
+    def __repr__(self) -> str:
+        return f"SimpleCollection(items={json_safe(self.items)!r})"
 
 
 @dataclass(frozen=True, repr=False)
