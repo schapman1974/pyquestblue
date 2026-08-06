@@ -69,6 +69,11 @@ parameters or claim support for private behavior.
 | External systems | Identity provider, secret manager/KMS, queue, database, billing/tax/payment providers, CRM/help desk, observability stack |
 | QuestBlue | Provider accounts and inventory, wholesale service delivery, authoritative private partner capabilities, provider statements and support escalation |
 
+Operation context in the simple workflow layer is opaque metadata for application hooks. It is not
+sent to QuestBlue and does not prove authentication, tenant membership, resource ownership, or
+authorization. Applications must make those decisions in a deny-by-default policy hook and persist
+the SDK's versioned, redacted audit events in their own durable store.
+
 The tenant-security decision is recorded in
 [ADR 0001](adr/0001-tenant-isolation.md). Proposed implementation slices and their provider-answer
 gates are in the [white-label backlog](white-label-backlog.md).
