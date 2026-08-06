@@ -5,7 +5,7 @@ It supports synchronous and asynchronous applications and provides resource-orie
 full documented QuestBlue 2.3.2 surface: accounts, voice and international DIDs, SIP trunks, SMS/MMS,
 10DLC, Fax.Pro, iFax Enterprise, reports, number portability, and VoIP servers.
 
-> Status: **stable 1.0**. All 103 pinned QuestBlue 2.3.2 operations have typed sync/async coverage;
+> Status: **stable 1.1**. All 103 pinned QuestBlue 2.3.2 operations have typed sync/async coverage;
 > production contract verification remains explicitly credential-gated.
 
 Versioned, searchable documentation is published at
@@ -33,6 +33,19 @@ pytest
 QuestBlue uses HTTP Basic authentication plus a `Security-Key` header. Credentials can be passed
 directly or loaded from `QUESTBLUE_USERNAME`, `QUESTBLUE_PASSWORD`, and
 `QUESTBLUE_SECURITY_KEY`.
+
+For common tasks, the additive simple facade needs no request-model imports:
+
+```python
+from questblue import SimpleQuestBlue
+
+with SimpleQuestBlue() as qb:
+    balance = qb.account.balance()
+    numbers = qb.numbers.search(zip_code="27513", limit=5)
+```
+
+Use the typed client below for exact provider control, `.raw` to drop down from a simple service,
+and `qb.workflows` for inspectable, journaled multi-step provisioning.
 
 ```python
 from questblue import DIDAvailabilityRequest, DIDType, QuestBlue

@@ -2,6 +2,26 @@
 
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 
+## [1.1.0] - 2026-08-05
+
+### Added
+
+- Additive `SimpleQuestBlue` and `AsyncSimpleQuestBlue` clients with primitive-input reads,
+  communications, provisioning, and complete access to typed responses through `.raw`.
+- Explicit risk confirmations, normalized dry-run plans, draft-only LNP conveniences, delivery
+  polling, and deterministic file, phone, enum, and date normalization.
+- Inspectable sync/async workflow plans with correlated journals, partial and uncertain outcomes,
+  application-owned persistence hooks, and no false atomicity guarantees.
+- White-label operation context, deny-by-default policy hooks, versioned redacted audit events, and
+  FastAPI, Django, worker, queue, and durable-persistence guidance.
+- Machine-checked simple-to-typed abstraction coverage and sync/async parity evidence.
+
+### Compatibility
+
+- The complete typed 1.0 surface remains unchanged; 1.1 is additive and supports CPython 3.10–3.14.
+- QuestBlue's published contract still has no documented sandbox, tenant/subaccount authorization,
+  customer billing, or branding API; these remain application/provider responsibilities.
+
 ## [1.0.0] - 2026-08-05
 
 ### Added
@@ -25,4 +45,5 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/) and S
 - QuestBlue does not document a sandbox or webhook authentication, retry, ordering, and unique-ID
   guarantees. Live tests therefore require explicit approval and a dedicated provider subaccount.
 
+[1.1.0]: https://github.com/schapman1974/pyquestblue/releases/tag/v1.1.0
 [1.0.0]: https://github.com/schapman1974/pyquestblue/releases/tag/v1.0.0

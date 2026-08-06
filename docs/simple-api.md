@@ -4,6 +4,18 @@ The additive simple clients accept ordinary Python values, validate them before 
 every request to the complete typed client. Use `.raw` on a client, service, record, or collection
 when you need provider-specific fields or an operation not yet covered by a convenience helper.
 
+## Choose the right layer
+
+| Need | Use |
+| --- | --- |
+| Common reads, sends, or one-resource lifecycle calls | `SimpleQuestBlue` |
+| Exact request/response models and every provider field | `QuestBlue` |
+| A provider operation missing from a convenience helper | `simple.raw` or `simple.service.raw` |
+| Previewed, correlated, multi-step provisioning | `simple.workflows` |
+
+The simple and workflow APIs are additive: they delegate to the typed 1.0 implementation rather
+than replacing it.
+
 ## Account and inventory
 
 ```python

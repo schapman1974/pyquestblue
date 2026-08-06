@@ -1,0 +1,578 @@
+{
+  "entries": [
+    {
+      "async": true,
+      "simple_method": "account.balance",
+      "sync": true,
+      "typed_operations": [
+        "account.balance"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "account.details",
+      "sync": true,
+      "typed_operations": [
+        "account.details"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "account.rates",
+      "sync": true,
+      "typed_operations": [
+        "account.rates"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "dlc.brands",
+      "sync": true,
+      "typed_operations": [
+        "dlc.list_brands"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "dlc.campaigns",
+      "sync": true,
+      "typed_operations": [
+        "dlc.list_campaigns"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.buy",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.create"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.create_group",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.create_group"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.create_user",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.create_user"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.delete_group",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.delete_group"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.groups",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.list_groups"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.list",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.list"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.permissions",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.list_permissions"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.release",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.delete"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.send",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.send",
+        "enterprise_fax.upload"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.set_permission",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.set_permission"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "enterprise_fax.users",
+      "sync": true,
+      "typed_operations": [
+        "enterprise_fax.list_users"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "fax.buy",
+      "sync": true,
+      "typed_operations": [
+        "fax.create"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "fax.configure",
+      "sync": true,
+      "typed_operations": [
+        "fax.pause",
+        "fax.update"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "fax.list",
+      "sync": true,
+      "typed_operations": [
+        "fax.list"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "fax.move_to_voice",
+      "sync": true,
+      "typed_operations": [
+        "fax.move_to_voice"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "fax.release",
+      "sync": true,
+      "typed_operations": [
+        "fax.delete"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "fax.search",
+      "sync": true,
+      "typed_operations": [
+        "fax.available"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "fax.send",
+      "sync": true,
+      "typed_operations": [
+        "fax.send"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "fax.set_email_access",
+      "sync": true,
+      "typed_operations": [
+        "fax.delete_email_permission",
+        "fax.set_email_permission"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "international_numbers.buy",
+      "sync": true,
+      "typed_operations": [
+        "international_dids.order"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "international_numbers.cities",
+      "sync": true,
+      "typed_operations": [
+        "international_dids.cities"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "international_numbers.configure",
+      "sync": true,
+      "typed_operations": [
+        "international_dids.update"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "international_numbers.countries",
+      "sync": true,
+      "typed_operations": [
+        "international_dids.countries"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "international_numbers.list",
+      "sync": true,
+      "typed_operations": [
+        "international_dids.list",
+        "international_dids.list"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "international_numbers.release",
+      "sync": true,
+      "typed_operations": [
+        "international_dids.delete"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "messages.carrier",
+      "sync": true,
+      "typed_operations": [
+        "sms.carrier"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "messages.configure",
+      "sync": true,
+      "typed_operations": [
+        "sms.update"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "messages.delivery_status",
+      "sync": true,
+      "typed_operations": [
+        "sms.delivery_status"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "messages.history",
+      "sync": true,
+      "typed_operations": [
+        "sms.history"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "messages.numbers",
+      "sync": true,
+      "typed_operations": [
+        "sms.list"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "messages.offnet_status",
+      "sync": true,
+      "typed_operations": [
+        "sms.offnet_status"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "messages.send",
+      "sync": true,
+      "typed_operations": [
+        "sms.send"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "messages.wait_for_delivery",
+      "sync": true,
+      "typed_operations": []
+    },
+    {
+      "async": true,
+      "simple_method": "numbers.buy",
+      "sync": true,
+      "typed_operations": [
+        "dids.order"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "numbers.configure",
+      "sync": true,
+      "typed_operations": [
+        "dids.update"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "numbers.list",
+      "sync": true,
+      "typed_operations": [
+        "dids.list",
+        "dids.list"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "numbers.move_to_fax",
+      "sync": true,
+      "typed_operations": [
+        "dids.move_to_fax"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "numbers.release",
+      "sync": true,
+      "typed_operations": [
+        "dids.delete"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "numbers.search",
+      "sync": true,
+      "typed_operations": [
+        "dids.available"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "numbers.validate_fraud",
+      "sync": true,
+      "typed_operations": [
+        "dids.validate_fraud"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "porting.check",
+      "sync": true,
+      "typed_operations": [
+        "lnp.check"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "porting.create_draft",
+      "sync": true,
+      "typed_operations": [
+        "lnp.create"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "porting.list",
+      "sync": true,
+      "typed_operations": [
+        "lnp.list"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "reports.calls",
+      "sync": true,
+      "typed_operations": [
+        "reports.call_history"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "reports.download_fax",
+      "sync": true,
+      "typed_operations": [
+        "reports.download_fax"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "reports.faxes",
+      "sync": true,
+      "typed_operations": [
+        "reports.fax_history"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "servers.add_ip",
+      "sync": true,
+      "typed_operations": [
+        "servers.add_ip"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "servers.backups",
+      "sync": true,
+      "typed_operations": [
+        "servers.list_backups"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "servers.list",
+      "sync": true,
+      "typed_operations": [
+        "servers.list"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "servers.provision",
+      "sync": true,
+      "typed_operations": [
+        "servers.create"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "servers.release",
+      "sync": true,
+      "typed_operations": [
+        "servers.delete"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "servers.remove_backup",
+      "sync": true,
+      "typed_operations": [
+        "servers.remove_backup"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "servers.restore",
+      "sync": true,
+      "typed_operations": [
+        "servers.restore_backup"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "servers.schedule_backups",
+      "sync": true,
+      "typed_operations": [
+        "servers.manage_backup_schedule"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "voice.blocked_callers",
+      "sync": true,
+      "typed_operations": [
+        "sip_trunks.blocked_callers"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "voice.configure_trunk",
+      "sync": true,
+      "typed_operations": [
+        "sip_trunks.update"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "voice.create_registration_trunk",
+      "sync": true,
+      "typed_operations": [
+        "sip_trunks.create"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "voice.create_static_trunk",
+      "sync": true,
+      "typed_operations": [
+        "sip_trunks.create"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "voice.delete_trunk",
+      "sync": true,
+      "typed_operations": [
+        "sip_trunks.delete"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "voice.set_caller_block",
+      "sync": true,
+      "typed_operations": [
+        "sip_trunks.block_caller"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "voice.trunk_status",
+      "sync": true,
+      "typed_operations": [
+        "sip_trunks.status"
+      ]
+    },
+    {
+      "async": true,
+      "simple_method": "voice.trunks",
+      "sync": true,
+      "typed_operations": [
+        "sip_trunks.list"
+      ]
+    }
+  ],
+  "summary": {
+    "sync_async_parity": true
+  },
+  "workflows": [
+    {
+      "async": true,
+      "simple_method": "workflows.fax_number",
+      "sync": true
+    },
+    {
+      "async": true,
+      "simple_method": "workflows.onboard_enterprise_fax",
+      "sync": true
+    },
+    {
+      "async": true,
+      "simple_method": "workflows.porting_draft",
+      "sync": true
+    },
+    {
+      "async": true,
+      "simple_method": "workflows.provision_server",
+      "sync": true
+    },
+    {
+      "async": true,
+      "simple_method": "workflows.send_enterprise_fax",
+      "sync": true
+    },
+    {
+      "async": true,
+      "simple_method": "workflows.voice_number",
+      "sync": true
+    }
+  ]
+}

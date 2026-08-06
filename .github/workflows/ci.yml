@@ -30,6 +30,7 @@ jobs:
       - run: python scripts/check_white_label_matrix.py
       - run: python scripts/check_docs.py
       - run: python scripts/api_coverage.py --check
+      - run: python scripts/simple_coverage.py --check
       - run: mkdocs build --strict
       - run: pytest
       - run: python -m build

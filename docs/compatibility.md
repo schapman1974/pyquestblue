@@ -13,6 +13,10 @@ exceptions, models, and optional integration helpers. Private modules and names 
 underscore are not compatibility promises. Upstream QuestBlue additions may appear as preserved
 extra model fields or open-enum values without requiring an SDK release.
 
+Version 1.1 adds the simple and workflow facades without changing typed 1.0 method signatures,
+models, exceptions, transport semantics, or resource layout. Applications may adopt the new layer
+incrementally and retain exact provider access through `.raw`.
+
 ## Deprecation policy
 
 Deprecations emit `DeprecationWarning`, appear in release notes and migration docs, and include the
