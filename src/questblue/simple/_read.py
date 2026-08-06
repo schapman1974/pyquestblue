@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import asyncio
+import time
 from datetime import date, datetime
+from pathlib import Path
 from typing import Any, Iterable, List, Optional, Sequence, Tuple, Union, cast
 
 from questblue import did as did_models
@@ -18,8 +21,15 @@ from questblue import sms as sms_models
 from questblue.models import Period, QuestBlueModel, TimestampRange
 
 from ._client import SimpleService, unwrap_warning
-from ._normalizers import normalize_date_range, normalize_enum, normalize_list, normalize_phone
-from ._results import SimpleCollection, SimpleRecord
+from ._errors import ConfirmationRequiredError, DeliveryTimeoutError, MissingProviderIdentifierError
+from ._normalizers import (
+    normalize_date_range,
+    normalize_enum,
+    normalize_list,
+    normalize_path,
+    normalize_phone,
+)
+from ._results import OperationResult, SimpleCollection, SimpleRecord
 
 
 def _items(response: Any) -> List[Any]:
@@ -281,6 +291,73 @@ def _blocked_request(**kwargs: Any) -> sip_models.BlockedCallersRequest:
 
 
 class MessageReads(SimpleService):
+    def configure(
+        self,
+        *,
+        number: Union[str, int],
+        mode: Union[sms_models.SMSMode, str],
+        forward_email: Optional[str] = None,
+        webhook_url: Optional[str] = None,
+        webhook_method: Union[sms_models.SMSPostMethod, str] = sms_models.SMSPostMethod.FORM,
+        confirm_routing_change: bool = False,
+    ) -> OperationResult[Any]:
+        if not confirm_routing_change:
+            raise ConfirmationRequiredError("routing-change")
+        request = sms_models.SMSSettingsUpdateRequest(
+            did=normalize_phone(number),
+            sms_mode=normalize_enum(sms_models.SMSMode, mode),
+            forward2email=forward_email,
+            post2url=webhook_url,
+            post2urlmethod=normalize_enum(sms_models.SMSPostMethod, webhook_method),
+        )
+        response = unwrap_warning(self.raw.update(request))
+        return OperationResult(value=response.success, raw=response)
+
+    def send(
+        self,
+        *,
+        from_number: Union[str, int],
+        to: Union[str, int],
+        text: str,
+        media_urls: Optional[Sequence[str]] = None,
+        recipient_opted_in: bool = False,
+    ) -> OperationResult[str]:
+        if not recipient_opted_in:
+            raise ConfirmationRequiredError("consent-required")
+        request = sms_models.SendMessageRequest(
+            did=normalize_phone(from_number),
+            did_to=normalize_phone(to),
+            msg=text,
+            file_url=list(media_urls) if media_urls is not None else None,
+        )
+        response = unwrap_warning(self.raw.send(request))
+        if not response.data or not response.data[0].msg_id:
+            raise MissingProviderIdentifierError("message ID")
+        message_id = response.data[0].msg_id
+        return OperationResult(
+            value=message_id, identifiers={"message_id": message_id}, raw=response
+        )
+
+    def wait_for_delivery(
+        self,
+        message_id: Union[str, int],
+        *,
+        attempts: int = 10,
+        interval: float = 1.0,
+    ) -> SimpleRecord:
+        if attempts < 1 or interval < 0:
+            raise ValueError("attempts must be positive and interval must not be negative")
+        for attempt in range(attempts):
+            result = self.delivery_status(message_id)
+            if result.status in (
+                sms_models.MessageDeliveryStatus.DELIVERED,
+                sms_models.MessageDeliveryStatus.FAILED,
+            ):
+                return result
+            if attempt + 1 < attempts:
+                time.sleep(interval)
+        raise DeliveryTimeoutError(str(message_id), attempts)
+
     def numbers(
         self, *, number: Optional[str] = None, per_page: int = 25, page: int = 1
     ) -> SimpleCollection[Any]:
@@ -329,6 +406,73 @@ class MessageReads(SimpleService):
 
 
 class AsyncMessageReads(SimpleService):
+    async def configure(
+        self,
+        *,
+        number: Union[str, int],
+        mode: Union[sms_models.SMSMode, str],
+        forward_email: Optional[str] = None,
+        webhook_url: Optional[str] = None,
+        webhook_method: Union[sms_models.SMSPostMethod, str] = sms_models.SMSPostMethod.FORM,
+        confirm_routing_change: bool = False,
+    ) -> OperationResult[Any]:
+        if not confirm_routing_change:
+            raise ConfirmationRequiredError("routing-change")
+        request = sms_models.SMSSettingsUpdateRequest(
+            did=normalize_phone(number),
+            sms_mode=normalize_enum(sms_models.SMSMode, mode),
+            forward2email=forward_email,
+            post2url=webhook_url,
+            post2urlmethod=normalize_enum(sms_models.SMSPostMethod, webhook_method),
+        )
+        response = unwrap_warning(await self.raw.update(request))
+        return OperationResult(value=response.success, raw=response)
+
+    async def send(
+        self,
+        *,
+        from_number: Union[str, int],
+        to: Union[str, int],
+        text: str,
+        media_urls: Optional[Sequence[str]] = None,
+        recipient_opted_in: bool = False,
+    ) -> OperationResult[str]:
+        if not recipient_opted_in:
+            raise ConfirmationRequiredError("consent-required")
+        request = sms_models.SendMessageRequest(
+            did=normalize_phone(from_number),
+            did_to=normalize_phone(to),
+            msg=text,
+            file_url=list(media_urls) if media_urls is not None else None,
+        )
+        response = unwrap_warning(await self.raw.send(request))
+        if not response.data or not response.data[0].msg_id:
+            raise MissingProviderIdentifierError("message ID")
+        message_id = response.data[0].msg_id
+        return OperationResult(
+            value=message_id, identifiers={"message_id": message_id}, raw=response
+        )
+
+    async def wait_for_delivery(
+        self,
+        message_id: Union[str, int],
+        *,
+        attempts: int = 10,
+        interval: float = 1.0,
+    ) -> SimpleRecord:
+        if attempts < 1 or interval < 0:
+            raise ValueError("attempts must be positive and interval must not be negative")
+        for attempt in range(attempts):
+            result = await self.delivery_status(message_id)
+            if result.status in (
+                sms_models.MessageDeliveryStatus.DELIVERED,
+                sms_models.MessageDeliveryStatus.FAILED,
+            ):
+                return result
+            if attempt + 1 < attempts:
+                await asyncio.sleep(interval)
+        raise DeliveryTimeoutError(str(message_id), attempts)
+
     async def numbers(
         self, *, number: Optional[str] = None, per_page: int = 25, page: int = 1
     ) -> SimpleCollection[Any]:
@@ -394,6 +538,61 @@ class AsyncDLCReads(SimpleService):
 
 
 class FaxReads(SimpleService):
+    def set_email_access(
+        self,
+        *,
+        number: Union[str, int],
+        email: str,
+        allow_send: bool = False,
+        allow_receive: bool = False,
+        remove: bool = False,
+        confirm_routing_change: bool = False,
+    ) -> OperationResult[bool]:
+        if not confirm_routing_change:
+            raise ConfirmationRequiredError("routing-change")
+        did = normalize_phone(number)
+        if remove:
+            warning = self.raw.delete_email_permission(
+                fax_models.FaxEmailPermissionDeleteRequest(did=did, email=email)
+            )
+        else:
+            warning = self.raw.set_email_permission(
+                fax_models.FaxEmailPermissionRequest(
+                    did=did,
+                    email=email,
+                    allow_send=fax_models.FaxYesNo.YES if allow_send else fax_models.FaxYesNo.NO,
+                    allow_receive=fax_models.FaxYesNo.YES
+                    if allow_receive
+                    else fax_models.FaxYesNo.NO,
+                )
+            )
+        unwrap_warning(warning)
+        return OperationResult(value=True, raw=warning)
+
+    def send(
+        self,
+        *,
+        from_number: Union[str, int],
+        to: Union[str, int],
+        file: Union[str, Path],
+        destination_confirmed: bool = False,
+    ) -> OperationResult[int]:
+        if not destination_confirmed:
+            raise ConfirmationRequiredError("destination-confirmation")
+        path = normalize_path(
+            file,
+            allowed_extensions=fax_models.SUPPORTED_FAX_EXTENSIONS,
+            max_bytes=fax_models.MAX_FAX_FILE_SIZE,
+        )
+        request = fax_models.FaxSendRequest.from_path(
+            path, did_from=normalize_phone(from_number), did_to=normalize_phone(to)
+        )
+        response = unwrap_warning(self.raw.send(request))
+        fax_id = response.data.fax_id
+        if not fax_id:
+            raise MissingProviderIdentifierError("fax ID")
+        return OperationResult(value=fax_id, identifiers={"fax_id": str(fax_id)}, raw=response)
+
     def search(
         self,
         *,
@@ -433,6 +632,61 @@ class FaxReads(SimpleService):
 
 
 class AsyncFaxReads(SimpleService):
+    async def set_email_access(
+        self,
+        *,
+        number: Union[str, int],
+        email: str,
+        allow_send: bool = False,
+        allow_receive: bool = False,
+        remove: bool = False,
+        confirm_routing_change: bool = False,
+    ) -> OperationResult[bool]:
+        if not confirm_routing_change:
+            raise ConfirmationRequiredError("routing-change")
+        did = normalize_phone(number)
+        if remove:
+            warning = await self.raw.delete_email_permission(
+                fax_models.FaxEmailPermissionDeleteRequest(did=did, email=email)
+            )
+        else:
+            warning = await self.raw.set_email_permission(
+                fax_models.FaxEmailPermissionRequest(
+                    did=did,
+                    email=email,
+                    allow_send=fax_models.FaxYesNo.YES if allow_send else fax_models.FaxYesNo.NO,
+                    allow_receive=fax_models.FaxYesNo.YES
+                    if allow_receive
+                    else fax_models.FaxYesNo.NO,
+                )
+            )
+        unwrap_warning(warning)
+        return OperationResult(value=True, raw=warning)
+
+    async def send(
+        self,
+        *,
+        from_number: Union[str, int],
+        to: Union[str, int],
+        file: Union[str, Path],
+        destination_confirmed: bool = False,
+    ) -> OperationResult[int]:
+        if not destination_confirmed:
+            raise ConfirmationRequiredError("destination-confirmation")
+        path = normalize_path(
+            file,
+            allowed_extensions=fax_models.SUPPORTED_FAX_EXTENSIONS,
+            max_bytes=fax_models.MAX_FAX_FILE_SIZE,
+        )
+        request = fax_models.FaxSendRequest.from_path(
+            path, did_from=normalize_phone(from_number), did_to=normalize_phone(to)
+        )
+        response = unwrap_warning(await self.raw.send(request))
+        fax_id = response.data.fax_id
+        if not fax_id:
+            raise MissingProviderIdentifierError("fax ID")
+        return OperationResult(value=fax_id, identifiers={"fax_id": str(fax_id)}, raw=response)
+
     async def search(self, **kwargs: Any) -> SimpleCollection[Any]:
         request = _fax_search_request(**kwargs)
         return _collection((await self.raw.available(request),))
@@ -468,6 +722,43 @@ def _fax_search_request(**kwargs: Any) -> fax_models.FaxAvailabilityRequest:
 
 
 class EnterpriseFaxReads(SimpleService):
+    def send(
+        self,
+        *,
+        from_number: Union[str, int],
+        to: Union[str, int],
+        files: Sequence[Union[str, Path]],
+        destination_confirmed: bool = False,
+    ) -> OperationResult[int]:
+        if not destination_confirmed:
+            raise ConfirmationRequiredError("destination-confirmation")
+        paths = [normalize_path(path) for path in files]
+        requests = [
+            enterprise_fax_models.EnterpriseFaxUploadRequest.from_path(path) for path in paths
+        ]
+        if not requests:
+            raise ValueError("files must contain at least one path")
+        uploads = [unwrap_warning(self.raw.upload(request)) for request in requests]
+        file_ids = [upload.file_id for upload in uploads]
+        if any(not value for value in file_ids):
+            raise MissingProviderIdentifierError("file ID")
+        response = unwrap_warning(
+            self.raw.send(
+                enterprise_fax_models.EnterpriseFaxSendRequest(
+                    did_from=normalize_phone(from_number),
+                    did_to=normalize_phone(to),
+                    file_id=file_ids,
+                )
+            )
+        )
+        if not response.fax_id:
+            raise MissingProviderIdentifierError("fax ID")
+        return OperationResult(
+            value=response.fax_id,
+            identifiers={"fax_id": str(response.fax_id)},
+            raw=(uploads, response),
+        )
+
     def list(
         self, *, number: Optional[str] = None, per_page: int = 25, page: int = 1
     ) -> SimpleCollection[Any]:
@@ -511,6 +802,43 @@ class EnterpriseFaxReads(SimpleService):
 
 
 class AsyncEnterpriseFaxReads(SimpleService):
+    async def send(
+        self,
+        *,
+        from_number: Union[str, int],
+        to: Union[str, int],
+        files: Sequence[Union[str, Path]],
+        destination_confirmed: bool = False,
+    ) -> OperationResult[int]:
+        if not destination_confirmed:
+            raise ConfirmationRequiredError("destination-confirmation")
+        paths = [normalize_path(path) for path in files]
+        requests = [
+            enterprise_fax_models.EnterpriseFaxUploadRequest.from_path(path) for path in paths
+        ]
+        if not requests:
+            raise ValueError("files must contain at least one path")
+        uploads = [unwrap_warning(await self.raw.upload(request)) for request in requests]
+        file_ids = [upload.file_id for upload in uploads]
+        if any(not value for value in file_ids):
+            raise MissingProviderIdentifierError("file ID")
+        response = unwrap_warning(
+            await self.raw.send(
+                enterprise_fax_models.EnterpriseFaxSendRequest(
+                    did_from=normalize_phone(from_number),
+                    did_to=normalize_phone(to),
+                    file_id=file_ids,
+                )
+            )
+        )
+        if not response.fax_id:
+            raise MissingProviderIdentifierError("fax ID")
+        return OperationResult(
+            value=response.fax_id,
+            identifiers={"fax_id": str(response.fax_id)},
+            raw=(uploads, response),
+        )
+
     async def list(
         self, *, number: Optional[str] = None, per_page: int = 25, page: int = 1
     ) -> SimpleCollection[Any]:
@@ -571,6 +899,13 @@ def _message_history_request(**kwargs: Any) -> sms_models.SMSHistoryRequest:
 
 
 class ReportReads(SimpleService):
+    def download_fax(self, fax_id: int, destination: Optional[Union[str, Path]] = None) -> bytes:
+        response = unwrap_warning(self.raw.download_fax(fax_id))
+        content = b"".join(response.data.iter_bytes())
+        if destination is not None:
+            Path(destination).write_bytes(content)
+        return content
+
     def calls(
         self,
         *,
@@ -616,6 +951,15 @@ class ReportReads(SimpleService):
 
 
 class AsyncReportReads(SimpleService):
+    async def download_fax(
+        self, fax_id: int, destination: Optional[Union[str, Path]] = None
+    ) -> bytes:
+        response = unwrap_warning(await self.raw.download_fax(fax_id))
+        content = b"".join(response.data.iter_bytes())
+        if destination is not None:
+            await asyncio.to_thread(Path(destination).write_bytes, content)
+        return content
+
     async def calls(self, **kwargs: Any) -> SimpleCollection[Any]:
         request = _call_request(**kwargs)
         records = []

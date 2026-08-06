@@ -1,7 +1,12 @@
 """Ergonomic, primitive-input facade for common QuestBlue tasks."""
 
 from ._client import AsyncSimpleQuestBlue, SimpleQuestBlue, SimpleService, unwrap_warning
-from ._errors import ConfirmationRequiredError, QuestBlueWarningError
+from ._errors import (
+    ConfirmationRequiredError,
+    DeliveryTimeoutError,
+    MissingProviderIdentifierError,
+    QuestBlueWarningError,
+)
 from ._normalizers import (
     normalize_date_range,
     normalize_enum,
@@ -26,6 +31,8 @@ from ._results import (
 __all__ = [
     "AsyncSimpleQuestBlue",
     "ConfirmationRequiredError",
+    "DeliveryTimeoutError",
+    "MissingProviderIdentifierError",
     "OperationPlan",
     "OperationResult",
     "PlannedOperation",

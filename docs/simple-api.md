@@ -40,3 +40,29 @@ with SimpleQuestBlue() as qb:
 ```
 
 The same service and method names are available from `AsyncSimpleQuestBlue`; only `await` changes.
+
+## Sending communications safely
+
+Message and fax mutations require a named acknowledgement. Confirmations are scoped to the single
+call and cannot disable safety globally:
+
+```python
+with SimpleQuestBlue() as qb:
+    sent = qb.messages.send(
+        from_number="+1 919 555 0100",
+        to="+1 919 555 0101",
+        text="Your service is ready",
+        recipient_opted_in=True,
+    )
+    fax = qb.fax.send(
+        from_number="+1 919 555 0100",
+        to="+1 919 555 0101",
+        file="invoice.pdf",
+        destination_confirmed=True,
+    )
+```
+
+`wait_for_delivery()` uses a caller-controlled attempt count and interval. It stops on QuestBlue's
+documented delivered or failed states and raises `DeliveryTimeoutError` when the bound is exhausted;
+it does not imply a delivery guarantee. File paths and contents are validated before any upload or
+send request, and enterprise fax uploads preserve their provider file IDs in the operation result.
