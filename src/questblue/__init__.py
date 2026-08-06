@@ -255,6 +255,7 @@ from .servers import (
     VitalPBXConfig,
     VodiaConfig,
 )
+from .simple import AsyncSimpleQuestBlue, SimpleQuestBlue
 from .sip_trunk import (
     BlockAction,
     BlockCallerRequest,
@@ -335,6 +336,7 @@ __all__ = [
     "AccountToggle",
     "AsyncPaginator",
     "AsyncQuestBlue",
+    "AsyncSimpleQuestBlue",
     "AvailableDIDsResponse",
     "AvailableFaxDIDsResponse",
     "BackupListResponse",
@@ -593,6 +595,7 @@ __all__ = [
     "SetBalanceReloadRequest",
     "SetDailyBalanceAlertRequest",
     "SetLowBalanceAlertRequest",
+    "SimpleQuestBlue",
     "SpecialCampaignType",
     "StandardCampaignType",
     "SyncPaginator",
