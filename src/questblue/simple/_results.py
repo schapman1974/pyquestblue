@@ -149,6 +149,7 @@ class WorkflowStep:
     name: str
     risk: Risk
     status: WorkflowStatus
+    correlation_id: Optional[str] = None
     identifiers: Mapping[str, str] = field(default_factory=dict)
     warnings: Tuple[str, ...] = ()
     raw: Any = field(default=None, repr=False)
@@ -172,6 +173,7 @@ class WorkflowResult(Generic[ValueT]):
     failed_step: Optional[str] = None
     uncertain_step: Optional[str] = None
     recovery: Optional[str] = None
+    error: Any = field(default=None, repr=False)
     raw: Tuple[Any, ...] = field(default_factory=tuple, repr=False)
 
     def to_dict(self) -> Dict[str, Any]:

@@ -39,6 +39,7 @@ if TYPE_CHECKING:
         MessageReads,
         ReportReads,
     )
+    from ._workflows import AsyncWorkflows, Workflows
 
 ResultT = TypeVar("ResultT")
 
@@ -82,7 +83,9 @@ def _install_services(facade: Any, raw: Any) -> None:
             service_types[isinstance(raw, AsyncQuestBlue)] if service_types else SimpleService
         )
         setattr(facade, simple_name, service_type(getattr(raw, raw_name)))
-    facade.workflows = SimpleService(raw)
+    from ._workflows import AsyncWorkflows, Workflows
+
+    facade.workflows = AsyncWorkflows(raw) if isinstance(raw, AsyncQuestBlue) else Workflows(raw)
 
 
 class SimpleQuestBlue:
@@ -99,7 +102,7 @@ class SimpleQuestBlue:
     reports: ReportReads
     porting: PortingProvisioning
     servers: ServerProvisioning
-    workflows: SimpleService
+    workflows: Workflows
 
     def __init__(
         self,
@@ -164,7 +167,7 @@ class AsyncSimpleQuestBlue:
     reports: AsyncReportReads
     porting: AsyncPortingProvisioning
     servers: AsyncServerProvisioning
-    workflows: SimpleService
+    workflows: AsyncWorkflows
 
     def __init__(
         self,

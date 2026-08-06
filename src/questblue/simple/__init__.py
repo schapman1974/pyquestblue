@@ -27,11 +27,15 @@ from ._results import (
     WorkflowStep,
     json_safe,
 )
+from ._workflows import AsyncWorkflowPlan, AsyncWorkflows, JournalHook, WorkflowPlan, Workflows
 
 __all__ = [
     "AsyncSimpleQuestBlue",
+    "AsyncWorkflowPlan",
+    "AsyncWorkflows",
     "ConfirmationRequiredError",
     "DeliveryTimeoutError",
+    "JournalHook",
     "MissingProviderIdentifierError",
     "OperationPlan",
     "OperationResult",
@@ -42,9 +46,11 @@ __all__ = [
     "SimpleQuestBlue",
     "SimpleRecord",
     "SimpleService",
+    "WorkflowPlan",
     "WorkflowResult",
     "WorkflowStatus",
     "WorkflowStep",
+    "Workflows",
     "json_safe",
     "normalize_date_range",
     "normalize_enum",
