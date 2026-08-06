@@ -10,7 +10,15 @@ from uuid import uuid4
 
 from questblue._exceptions import QuestBlueTimeoutError
 
-from ._errors import ConfirmationRequiredError
+from ._errors import ConfirmationRequiredError, PolicyDeniedError
+from ._integration import (
+    AuditEvent,
+    AuditHook,
+    OperationContext,
+    PolicyHook,
+    PolicyRequest,
+    policy_decision,
+)
 from ._provision import (
     AsyncEnterpriseFaxProvisioning,
     AsyncFaxProvisioning,
@@ -65,6 +73,9 @@ class WorkflowPlan:
     correlation_id: str
     _calls: Tuple[SyncCall, ...] = field(repr=False)
     _hook: Optional[JournalHook] = field(default=None, repr=False)
+    context: OperationContext = field(default_factory=OperationContext)
+    _policy_hook: Optional[PolicyHook] = field(default=None, repr=False)
+    _audit_hook: Optional[AuditHook] = field(default=None, repr=False)
 
     @property
     def risks(self) -> Tuple[Risk, ...]:
@@ -81,7 +92,17 @@ class WorkflowPlan:
     ) -> WorkflowResult[Any]:
         confirmations = locals()
         for operation in self.operations:
-            if not _confirmed(operation.risk, confirmations):
+            decision = policy_decision(
+                self._policy_hook(PolicyRequest(operation, self.context))
+                if self._policy_hook
+                else True
+            )
+            if self._policy_hook and not decision.allowed:
+                raise PolicyDeniedError(operation.name, decision.reason)
+            if (
+                not _confirmed(operation.risk, confirmations)
+                and operation.risk not in decision.confirmed_risks
+            ):
                 raise ConfirmationRequiredError(operation.risk.value)
         steps: list[WorkflowStep] = []
         identifiers: dict[str, str] = {}
@@ -92,6 +113,10 @@ class WorkflowPlan:
             )
             if self._hook:
                 self._hook(started)
+            if self._audit_hook:
+                self._audit_hook(
+                    AuditEvent(operation.name, operation.risk, WorkflowStatus.PLANNED, self.context)
+                )
             try:
                 result = call()
                 if not isinstance(result, OperationResult):
@@ -107,6 +132,17 @@ class WorkflowPlan:
                 steps.append(failed)
                 if self._hook:
                     self._hook(failed)
+                if self._audit_hook:
+                    self._audit_hook(
+                        AuditEvent(
+                            operation.name,
+                            operation.risk,
+                            failed.status,
+                            self.context,
+                            recovery=_recovery(operation.name, uncertain),
+                            handoff="reconcile" if uncertain else "dead-letter",
+                        )
+                    )
                 return WorkflowResult(
                     status=WorkflowStatus.UNCERTAIN
                     if uncertain
@@ -133,6 +169,17 @@ class WorkflowPlan:
             raw.append(result.raw)
             if self._hook:
                 self._hook(completed)
+            if self._audit_hook:
+                self._audit_hook(
+                    AuditEvent(
+                        operation.name,
+                        operation.risk,
+                        WorkflowStatus.SUCCEEDED,
+                        self.context,
+                        result.identifiers,
+                        result.warnings,
+                    )
+                )
         return WorkflowResult(
             status=WorkflowStatus.SUCCEEDED,
             value=True,
@@ -150,6 +197,9 @@ class AsyncWorkflowPlan:
     correlation_id: str
     _calls: Tuple[AsyncCall, ...] = field(repr=False)
     _hook: Optional[JournalHook] = field(default=None, repr=False)
+    context: OperationContext = field(default_factory=OperationContext)
+    _policy_hook: Optional[PolicyHook] = field(default=None, repr=False)
+    _audit_hook: Optional[AuditHook] = field(default=None, repr=False)
 
     @property
     def risks(self) -> Tuple[Risk, ...]:
@@ -158,6 +208,12 @@ class AsyncWorkflowPlan:
     async def _emit(self, step: WorkflowStep) -> None:
         if self._hook:
             result = self._hook(step)
+            if inspect.isawaitable(result):
+                await result
+
+    async def _audit(self, event: AuditEvent) -> None:
+        if self._audit_hook:
+            result = self._audit_hook(event)
             if inspect.isawaitable(result):
                 await result
 
@@ -172,7 +228,17 @@ class AsyncWorkflowPlan:
     ) -> WorkflowResult[Any]:
         confirmations = locals()
         for operation in self.operations:
-            if not _confirmed(operation.risk, confirmations):
+            decision = policy_decision(
+                self._policy_hook(PolicyRequest(operation, self.context))
+                if self._policy_hook
+                else True
+            )
+            if self._policy_hook and not decision.allowed:
+                raise PolicyDeniedError(operation.name, decision.reason)
+            if (
+                not _confirmed(operation.risk, confirmations)
+                and operation.risk not in decision.confirmed_risks
+            ):
                 raise ConfirmationRequiredError(operation.risk.value)
         steps: list[WorkflowStep] = []
         identifiers: dict[str, str] = {}
@@ -182,6 +248,9 @@ class AsyncWorkflowPlan:
                 WorkflowStep(
                     operation.name, operation.risk, WorkflowStatus.PLANNED, self.correlation_id
                 )
+            )
+            await self._audit(
+                AuditEvent(operation.name, operation.risk, WorkflowStatus.PLANNED, self.context)
             )
             try:
                 result = await call()
@@ -197,6 +266,16 @@ class AsyncWorkflowPlan:
                 )
                 steps.append(failed)
                 await self._emit(failed)
+                await self._audit(
+                    AuditEvent(
+                        operation.name,
+                        operation.risk,
+                        failed.status,
+                        self.context,
+                        recovery=_recovery(operation.name, uncertain),
+                        handoff="reconcile" if uncertain else "dead-letter",
+                    )
+                )
                 return WorkflowResult(
                     status=WorkflowStatus.UNCERTAIN
                     if uncertain
@@ -222,6 +301,16 @@ class AsyncWorkflowPlan:
             identifiers.update(result.identifiers)
             raw.append(result.raw)
             await self._emit(completed)
+            await self._audit(
+                AuditEvent(
+                    operation.name,
+                    operation.risk,
+                    WorkflowStatus.SUCCEEDED,
+                    self.context,
+                    result.identifiers,
+                    result.warnings,
+                )
+            )
         return WorkflowResult(
             status=WorkflowStatus.SUCCEEDED,
             value=True,
@@ -236,8 +325,18 @@ def _id(value: Optional[str]) -> str:
 
 
 class Workflows:
-    def __init__(self, raw: Any) -> None:
+    def __init__(
+        self,
+        raw: Any,
+        *,
+        context: Optional[OperationContext] = None,
+        policy_hook: Optional[PolicyHook] = None,
+        audit_hook: Optional[AuditHook] = None,
+    ) -> None:
         self.raw = raw
+        self.context = context or OperationContext()
+        self.policy_hook = policy_hook
+        self.audit_hook = audit_hook
         self.numbers = NumberProvisioning(raw.dids)
         self.voice = VoiceProvisioning(raw.sip_trunks)
         self.fax = FaxProvisioning(raw.fax)
@@ -245,6 +344,11 @@ class Workflows:
         self.enterprise_reads = EnterpriseFaxReads(raw.enterprise_fax)
         self.porting = PortingProvisioning(raw.lnp)
         self.servers = ServerProvisioning(raw.servers)
+
+    def _integration(
+        self, correlation_id: str
+    ) -> tuple[OperationContext, Optional[PolicyHook], Optional[AuditHook]]:
+        return self.context.with_correlation(correlation_id), self.policy_hook, self.audit_hook
 
     def voice_number(
         self,
@@ -271,14 +375,16 @@ class Workflows:
             assert isinstance(result, OperationResult)
             return result
 
+        cid = _id(correlation_id)
         return WorkflowPlan(
             (
                 PlannedOperation("sip_trunks.create", Risk.ROUTING_CHANGE, {"trunk": trunk}),
                 PlannedOperation("dids.order", Risk.BILLABLE, {"did": number, "trunk": trunk}),
             ),
-            _id(correlation_id),
+            cid,
             (create, lambda: self.numbers.buy(number, trunk=trunk, confirm_billable=True)),
             journal_hook,
+            *self._integration(cid),
         )
 
     def fax_number(
@@ -292,9 +398,10 @@ class Workflows:
         correlation_id: Optional[str] = None,
         journal_hook: Optional[JournalHook] = None,
     ) -> WorkflowPlan:
+        cid = _id(correlation_id)
         return WorkflowPlan(
             (PlannedOperation("fax.create", Risk.BILLABLE, {"did": number, "email": email}),),
-            _id(correlation_id),
+            cid,
             (
                 lambda: self.fax.buy(
                     number,
@@ -306,6 +413,7 @@ class Workflows:
                 ),
             ),
             journal_hook,
+            *self._integration(cid),
         )
 
     def onboard_enterprise_fax(
@@ -351,7 +459,8 @@ class Workflows:
                 confirm_routing_change=True,
             ),
         )
-        return WorkflowPlan(operations, _id(correlation_id), calls, journal_hook)
+        cid = _id(correlation_id)
+        return WorkflowPlan(operations, cid, calls, journal_hook, *self._integration(cid))
 
     def send_enterprise_fax(
         self,
@@ -362,6 +471,7 @@ class Workflows:
         correlation_id: Optional[str] = None,
         journal_hook: Optional[JournalHook] = None,
     ) -> WorkflowPlan:
+        cid = _id(correlation_id)
         return WorkflowPlan(
             (
                 PlannedOperation(
@@ -370,13 +480,14 @@ class Workflows:
                     {"from": from_number, "to": to, "files": files},
                 ),
             ),
-            _id(correlation_id),
+            cid,
             (
                 lambda: self.enterprise_reads.send(
                     from_number=from_number, to=to, files=files, destination_confirmed=True
                 ),
             ),
             journal_hook,
+            *self._integration(cid),
         )
 
     def porting_draft(
@@ -386,11 +497,13 @@ class Workflows:
         journal_hook: Optional[JournalHook] = None,
         **fields: Any,
     ) -> WorkflowPlan:
+        cid = _id(correlation_id)
         return WorkflowPlan(
             (PlannedOperation("lnp.create", Risk.COMPLIANCE_SENSITIVE, fields),),
-            _id(correlation_id),
+            cid,
             (lambda: self.porting.create_draft(**fields, confirm_compliance=True),),
             journal_hook,
+            *self._integration(cid),
         )
 
     def provision_server(
@@ -448,12 +561,25 @@ class Workflows:
                     state["server_id"], backup_schedule, confirm_routing_change=True
                 )
             )
-        return WorkflowPlan(tuple(operations), _id(correlation_id), tuple(calls), journal_hook)
+        cid = _id(correlation_id)
+        return WorkflowPlan(
+            tuple(operations), cid, tuple(calls), journal_hook, *self._integration(cid)
+        )
 
 
 class AsyncWorkflows:
-    def __init__(self, raw: Any) -> None:
+    def __init__(
+        self,
+        raw: Any,
+        *,
+        context: Optional[OperationContext] = None,
+        policy_hook: Optional[PolicyHook] = None,
+        audit_hook: Optional[AuditHook] = None,
+    ) -> None:
         self.raw = raw
+        self.context = context or OperationContext()
+        self.policy_hook = policy_hook
+        self.audit_hook = audit_hook
         self.numbers = AsyncNumberProvisioning(raw.dids)
         self.voice = AsyncVoiceProvisioning(raw.sip_trunks)
         self.fax = AsyncFaxProvisioning(raw.fax)
@@ -461,6 +587,11 @@ class AsyncWorkflows:
         self.enterprise_reads = AsyncEnterpriseFaxReads(raw.enterprise_fax)
         self.porting = AsyncPortingProvisioning(raw.lnp)
         self.servers = AsyncServerProvisioning(raw.servers)
+
+    def _integration(
+        self, correlation_id: str
+    ) -> tuple[OperationContext, Optional[PolicyHook], Optional[AuditHook]]:
+        return self.context.with_correlation(correlation_id), self.policy_hook, self.audit_hook
 
     def voice_number(
         self,
@@ -487,14 +618,16 @@ class AsyncWorkflows:
         async def buy() -> OperationResult[Any]:
             return await self.numbers.buy(number, trunk=trunk, confirm_billable=True)  # type: ignore[return-value]
 
+        cid = _id(correlation_id)
         return AsyncWorkflowPlan(
             (
                 PlannedOperation("sip_trunks.create", Risk.ROUTING_CHANGE, {"trunk": trunk}),
                 PlannedOperation("dids.order", Risk.BILLABLE, {"did": number, "trunk": trunk}),
             ),
-            _id(correlation_id),
+            cid,
             (create, buy),
             journal_hook,
+            *self._integration(cid),
         )
 
     def fax_number(
@@ -518,11 +651,13 @@ class AsyncWorkflows:
                 confirm_billable=True,
             )  # type: ignore[return-value]
 
+        cid = _id(correlation_id)
         return AsyncWorkflowPlan(
             (PlannedOperation("fax.create", Risk.BILLABLE, {"did": number, "email": email}),),
-            _id(correlation_id),
+            cid,
             (buy,),
             journal_hook,
+            *self._integration(cid),
         )
 
     def onboard_enterprise_fax(
@@ -576,11 +711,13 @@ class AsyncWorkflows:
                 {"login": login, "did": number},
             ),
         )
+        cid = _id(correlation_id)
         return AsyncWorkflowPlan(
             operations,
-            _id(correlation_id),
+            cid,
             (group_call, user_call, did_call, permission_call),
             journal_hook,
+            *self._integration(cid),
         )
 
     def send_enterprise_fax(
@@ -597,6 +734,7 @@ class AsyncWorkflows:
                 from_number=from_number, to=to, files=files, destination_confirmed=True
             )
 
+        cid = _id(correlation_id)
         return AsyncWorkflowPlan(
             (
                 PlannedOperation(
@@ -605,9 +743,10 @@ class AsyncWorkflows:
                     {"from": from_number, "to": to, "files": files},
                 ),
             ),
-            _id(correlation_id),
+            cid,
             (send,),
             journal_hook,
+            *self._integration(cid),
         )
 
     def porting_draft(
@@ -620,11 +759,13 @@ class AsyncWorkflows:
         async def create() -> OperationResult[Any]:
             return await self.porting.create_draft(**fields, confirm_compliance=True)  # type: ignore[return-value]
 
+        cid = _id(correlation_id)
         return AsyncWorkflowPlan(
             (PlannedOperation("lnp.create", Risk.COMPLIANCE_SENSITIVE, fields),),
-            _id(correlation_id),
+            cid,
             (create,),
             journal_hook,
+            *self._integration(cid),
         )
 
     def provision_server(
@@ -683,4 +824,7 @@ class AsyncWorkflows:
                 )
             )
             calls.append(schedule)
-        return AsyncWorkflowPlan(tuple(operations), _id(correlation_id), tuple(calls), journal_hook)
+        cid = _id(correlation_id)
+        return AsyncWorkflowPlan(
+            tuple(operations), cid, tuple(calls), journal_hook, *self._integration(cid)
+        )

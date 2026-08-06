@@ -23,6 +23,16 @@ class ConfirmationRequiredError(QuestBlueError):
         super().__init__(f"The {risk!r} risk must be explicitly confirmed")
 
 
+class PolicyDeniedError(QuestBlueError):
+    """An application policy did not explicitly authorize an operation."""
+
+    def __init__(self, operation: str, reason: str | None = None) -> None:
+        self.operation = operation
+        self.reason = reason
+        detail = f": {reason}" if reason else ""
+        super().__init__(f"Application policy denied {operation}{detail}")
+
+
 class MissingProviderIdentifierError(QuestBlueError):
     """QuestBlue reported success without the identifier needed to continue."""
 

@@ -13,6 +13,7 @@ from questblue.transport import TransportHook
 from ._errors import QuestBlueWarningError
 
 if TYPE_CHECKING:
+    from ._integration import AuditHook, OperationContext, PolicyHook
     from ._provision import (
         AsyncEnterpriseFaxProvisioning,
         AsyncFaxProvisioning,
@@ -58,7 +59,14 @@ class SimpleService:
         self.raw = raw
 
 
-def _install_services(facade: Any, raw: Any) -> None:
+def _install_services(
+    facade: Any,
+    raw: Any,
+    *,
+    operation_context: Optional[OperationContext] = None,
+    policy_hook: Optional[PolicyHook] = None,
+    audit_hook: Optional[AuditHook] = None,
+) -> None:
     mappings = {
         "account": "account",
         "numbers": "dids",
@@ -85,7 +93,10 @@ def _install_services(facade: Any, raw: Any) -> None:
         setattr(facade, simple_name, service_type(getattr(raw, raw_name)))
     from ._workflows import AsyncWorkflows, Workflows
 
-    facade.workflows = AsyncWorkflows(raw) if isinstance(raw, AsyncQuestBlue) else Workflows(raw)
+    workflow_type = AsyncWorkflows if isinstance(raw, AsyncQuestBlue) else Workflows
+    facade.workflows = workflow_type(
+        raw, context=operation_context, policy_hook=policy_hook, audit_hook=audit_hook
+    )
 
 
 class SimpleQuestBlue:
@@ -115,6 +126,9 @@ class SimpleQuestBlue:
         max_retries: int = 2,
         http_client: Optional[httpx.Client] = None,
         transport_hook: Optional[TransportHook] = None,
+        operation_context: Optional[OperationContext] = None,
+        policy_hook: Optional[PolicyHook] = None,
+        audit_hook: Optional[AuditHook] = None,
     ) -> None:
         self._raw = QuestBlue(
             username,
@@ -127,15 +141,34 @@ class SimpleQuestBlue:
             transport_hook=transport_hook,
         )
         self._owns_raw = True
-        _install_services(self, self._raw)
+        _install_services(
+            self,
+            self._raw,
+            operation_context=operation_context,
+            policy_hook=policy_hook,
+            audit_hook=audit_hook,
+        )
 
     @classmethod
-    def wrap(cls: Type[SimpleQuestBlue], client: QuestBlue) -> SimpleQuestBlue:
+    def wrap(
+        cls: Type[SimpleQuestBlue],
+        client: QuestBlue,
+        *,
+        operation_context: Optional[OperationContext] = None,
+        policy_hook: Optional[PolicyHook] = None,
+        audit_hook: Optional[AuditHook] = None,
+    ) -> SimpleQuestBlue:
         """Borrow an existing typed client without taking ownership."""
         instance = cls.__new__(cls)
         instance._raw = client
         instance._owns_raw = False
-        _install_services(instance, client)
+        _install_services(
+            instance,
+            client,
+            operation_context=operation_context,
+            policy_hook=policy_hook,
+            audit_hook=audit_hook,
+        )
         return instance
 
     @property
@@ -180,6 +213,9 @@ class AsyncSimpleQuestBlue:
         max_retries: int = 2,
         http_client: Optional[httpx.AsyncClient] = None,
         transport_hook: Optional[TransportHook] = None,
+        operation_context: Optional[OperationContext] = None,
+        policy_hook: Optional[PolicyHook] = None,
+        audit_hook: Optional[AuditHook] = None,
     ) -> None:
         self._raw = AsyncQuestBlue(
             username,
@@ -192,15 +228,34 @@ class AsyncSimpleQuestBlue:
             transport_hook=transport_hook,
         )
         self._owns_raw = True
-        _install_services(self, self._raw)
+        _install_services(
+            self,
+            self._raw,
+            operation_context=operation_context,
+            policy_hook=policy_hook,
+            audit_hook=audit_hook,
+        )
 
     @classmethod
-    def wrap(cls: Type[AsyncSimpleQuestBlue], client: AsyncQuestBlue) -> AsyncSimpleQuestBlue:
+    def wrap(
+        cls: Type[AsyncSimpleQuestBlue],
+        client: AsyncQuestBlue,
+        *,
+        operation_context: Optional[OperationContext] = None,
+        policy_hook: Optional[PolicyHook] = None,
+        audit_hook: Optional[AuditHook] = None,
+    ) -> AsyncSimpleQuestBlue:
         """Borrow an existing async typed client without taking ownership."""
         instance = cls.__new__(cls)
         instance._raw = client
         instance._owns_raw = False
-        _install_services(instance, client)
+        _install_services(
+            instance,
+            client,
+            operation_context=operation_context,
+            policy_hook=policy_hook,
+            audit_hook=audit_hook,
+        )
         return instance
 
     @property
