@@ -95,3 +95,28 @@ Inventory selection is always a separate read: `numbers.search()` and `fax.searc
 number. Likewise, `porting.create_draft()` always sends `status="draft"`; the simple layer never
 submits an LNP request. Server, SIP trunk, Fax.Pro, enterprise-fax, international DID, backup, and
 number lifecycle helpers follow the same one-call confirmation and dry-run contract.
+
+## Composite workflows
+
+Workflow builders return an inspectable plan and perform no I/O until `execute()` is called. A
+caller-supplied correlation ID and journal hook make every planned, completed, failed, or uncertain
+step available to application persistence:
+
+```python
+events = []
+plan = qb.workflows.voice_number(
+    "+1 919 555 0100",
+    "main",
+    password="generated-secret",
+    correlation_id="order-42",
+    journal_hook=events.append,
+)
+print(plan.operations)
+result = plan.execute(confirm_routing_change=True, confirm_billable=True)
+```
+
+Workflows stop at the first failure. Completed provider changes are not silently rolled back, and
+the result reports `partial`, `failed`, or `uncertain` status with recovery guidance. In particular,
+a timeout after a mutation is uncertain and must be reconciled with QuestBlue before retrying.
+Async plans expose the same builders and use `await plan.execute(...)`; async journal hooks may also
+be awaitable.
