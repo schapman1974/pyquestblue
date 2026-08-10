@@ -30,7 +30,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-django = ["django>=4.2,<5.2"]
+django = ["django>=4.2,<5.3"]
 fastapi = ["fastapi>=0.115,<1"]
 dev = [
   "build>=1.2",
